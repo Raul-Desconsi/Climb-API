@@ -1,0 +1,193 @@
+  .hero-1 {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), 
+                        url('/climb/climb_interface_application/src/assets/wallpaperflare.com_wallpaper.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+        }
+
+   
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card img {
+    transition: transform 0.4s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover img {
+    transform: scale(1.1);
+}
+
+.card-body {
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.card:hover .card-text {
+    color: #01ccff;
+    font-weight: 500;
+}
+
+
+section h2 {
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+section h2::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #00ccbe;
+    margin: 8px auto 0;
+    border-radius: 2px;
+}
+
+
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.card img {
+    transition: transform 0.4s ease;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card:hover img {
+    transform: scale(1.05);
+}
+
+.card-body {
+    text-align: center;
+    padding: 20px;
+}
+
+.card:hover .card-text {
+    color: #00ccbe;
+    font-weight: 500;
+}
+
+
+.bg-light {
+    background-color: #f9fafc !important;
+}
+
+section {
+    padding: 80px 0;
+}
+
+
+#contact i {
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+#contact i:hover {
+    transform: scale(1.2);
+    color: #007bff;
+}
+
+
+.footer {
+    background: #2F2F2F;
+    color: #bbb;
+    padding: 40px 0;
+    margin-top: 50px;
+}
+
+.footer p {
+    margin: 5px 0;
+}
+
+.footer span {
+    color: #ff4d6d;
+}
+
+
+.btn-primary {
+    background-color: #00ccbe;
+    border: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #00EDDD;
+    transform: translateY(-2px);
+}
+.hero-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: transparent; 
+    z-index: 10;
+}
+
+
+
+.navbar .nav-link {
+    color: #fff !important;
+    font-weight: 500;
+    margin: 0 10px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+
+.navbar .nav-link:hover {
+    color: #00ccbe !important;
+}
+
+
+.navbar .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: -4px;
+    background-color: #00ccbe;
+    transition: width 0.3s ease;
+}
+
+.navbar .nav-link:hover::after {
+    width: 100%;
+}
+
+
+.navbar .nav-link.fw-bolder {
+    color: #fff !important;
+    background: #00ccbe;
+    border-radius: 10px;
+    padding: 6px 16px;
+    transition: all 0.3s ease;
+}
+
+.navbar .nav-link.fw-bolder:hover {
+    background: #00eddd;
+    color: #fff !important;
+    transform: translateY(-2px);
+}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Fluxo</title>
+    <link rel="stylesheet" href="/climb/climb_interface_application/libs/bootstrap.min.css">
+    <link rel="stylesheet" href="/climb/climb_interface_application/src/style/componentsStyle.css">
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+
+        .form-container {
+            min-height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 700px;
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <div class="form-card">
+            <h2 class="mb-4 text-center text-primary color-primary">Cadastro de Fluxo</h2>
+            <form id="fluxoForm" class="form-control">
+                <div class="mb-3">
+                    <label for="motivo" class="form-label">Por que você quer abrir esse fluxo?</label>
+                    <input type="text" class="form-control" id="motivo" name="motivo" placeholder="Digite o motivo"
+                        required>
+                </div>
+
+                <!-- Dropdown 1 -->
+                <div class="dropdown mb-3">
+                    <label class="form-label">Para qual área você acha que esse fluxo deve ser guiado?</label>
+
+                    <button class="btn btn-primary bg-primary w-100" type="button" id="dropAreaGuiada"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Selecione uma opção
+                    </button>
+
+                    <ul class="dropdown-menu w-100" aria-labelledby="dropAreaGuiada">
+                        <li><a class="dropdown-item" href="#" data-value="suporte">Suporte</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="financeiro">Financeiro</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="desenvolvimento">Desenvolvimento</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="operacional">Operacional</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="nao_sei">Não sei</a></li>
+                    </ul>
+
+                    <input type="hidden" id="direcionamento" name="direcionamento" required>
+                </div>
+
+                <!-- Dropdown 2 -->
+                <div class="dropdown mb-3">
+                    <label class="form-label">Qual área será afetada com esse fluxo?</label>
+
+                    <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropAreaAfetada"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Selecione uma opção
+                    </button>
+
+                    <ul class="dropdown-menu w-100" aria-labelledby="dropAreaAfetada">
+                        <li><a class="dropdown-item" href="#" data-value="afet_suporte">Suporte</a></li>
+                        <li><a class="dropdown-item btn btn-outline-danger" href="#"
+                                data-value="afet_financeiro">Financeiro</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="afet_desenvolvimento">Desenvolvimento</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="afet_operacional">Operacional</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="afet_naosei">Não sei</a></li>
+                    </ul>
+
+                    <input type="hidden" id="areas-afetadas" name="areas-afetadas" required>
+                </div>
+
+
+
+                <div class="mb-3">
+                    <label for="problema" class="form-label">Descreva seu problema</label>
+                    <textarea class="form-control" id="problema" name="problema" rows="4"
+                        placeholder="Detalhe o problema..." required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Qual é o nível de urgência?</label>
+                    <div class="d-flex gap-2 flex-wrap">
+
+                        <input type="radio" class="btn-check" name="urgencia" id="urgencia-baixa" value="baixa"
+                            required>
+                        <label class="btn btn-outline-success rounded-pill px-4" for="urgencia-baixa">Baixa</label>
+
+                        <input type="radio" class="btn-check" name="urgencia" id="urgencia-media" value="media">
+                        <label class="btn btn-outline-warning rounded-pill px-4" for="urgencia-media">Média</label>
+
+                        <input type="radio" class="btn-check" name="urgencia" id="urgencia-alta" value="alta">
+                        <label class="btn btn-outline-danger rounded-pill px-4" for="urgencia-alta">Alta</label>
+
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="anexo" class="form-label">Deseja anexar um arquivo?</label>
+                    <input class="form-control" type="file" id="anexo" name="anexo">
+                </div>
+
+                <!-- Botão -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary  bg-primary">Cadastrar Fluxo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/climb/climb_interface_application/libs/bootstrap.bundle.min.js"></script>
+    <script>
+        function configurarDropdown(buttonId, inputId) {
+            const button = document.getElementById(buttonId);
+            const inputHidden = document.getElementById(inputId);
+
+            document.querySelectorAll(`#${buttonId} + .dropdown-menu .dropdown-item`).forEach(item => {
+                item.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const valor = this.getAttribute("data-value");
+                    const texto = this.textContent;
+
+                    inputHidden.value = valor;     
+                    button.textContent = texto;   
+                });
+            });
+        }
+
+        configurarDropdown("dropAreaGuiada", "direcionamento");
+        configurarDropdown("dropAreaAfetada", "areas-afetadas");
+
+    
+        document.getElementById("fluxoForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const motivo = document.getElementById("motivo").value;
+            const direcionamento = document.getElementById("direcionamento").value;
+            const areaAfetada = document.getElementById("areas-afetadas").value;
+            const problema = document.getElementById("problema").value;
+            const urgencia = document.querySelector('input[name="urgencia"]:checked')?.value || "não selecionado";
+            const anexo = document.getElementById("anexo").files[0]?.name || "nenhum arquivo anexado";
+
+            let mensagem = `
+    Motivo: ${motivo}
+    Direcionamento: ${direcionamento}
+    Área Afetada: ${areaAfetada}
+    Problema: ${problema}
+    Urgência: ${urgencia}
+    Anexo: ${anexo}
+    `;
+
+            alert(mensagem);
+        });
+
+        document.querySelectorAll(".dropdown").forEach(dropdown => {
+            const button = dropdown.querySelector("button");
+            const hiddenInput = dropdown.querySelector("input[type=hidden]");
+            const items = dropdown.querySelectorAll(".dropdown-item");
+
+            items.forEach(item => {
+                item.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    const value = this.getAttribute("data-value");
+                    const text = this.textContent;
+
+                   
+                    button.textContent = text;
+                    hiddenInput.value = value;
+
+                    items.forEach(i => i.classList.remove("active"));
+                    this.classList.add("active");
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>

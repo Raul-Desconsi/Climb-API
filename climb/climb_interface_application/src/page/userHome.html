@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <link rel="stylesheet" href="/climb/climb_interface_application/libs/bootstrap.min.css">
+    <link rel="stylesheet" href="/climb/climb_interface_application/src/style/componentsStyle.css">
+    <link rel="stylesheet" href="/climb/climb_interface_application/src/style/home.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+    
+
+
+<div class="d-flex ">
+    <nav class="sidebar d-flex flex-column flex-shrink-0 position-fixed">
+        <button class="toggle-btn" onclick="toggleSidebar()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="d-flex  mb-5">
+            <div class=" logo-image-container">
+            <img class="logo-image" src="/climb/climb_interface_application/src/assets/EMBLEMA-PRINCIPAL.png" 
+                class="rounded " alt="Climb">
+            </div>
+            <div class=" logo-text">
+                <h4 class="logo-text fw-bold mb-0">Climb</h4>
+                
+            </div>
+        </div>
+        <div class="nav flex-column">
+            <a id="dashboardBtn" class="sidebar-link active text-decoration-none p-3">
+                <i class="fas fa-home me-3"></i>
+                <span class="hide-on-collapse">Dashboard</span>
+            </a>
+            <a id="adicionarBtn" class="sidebar-link text-decoration-none p-3">
+                <i class="fas fa-plus me-3"></i>
+                <span class="hide-on-collapse">Adicionar</span>
+            </a>
+            <a href="#" class="sidebar-link text-decoration-none p-3">
+                <i class="fas fa-ticket me-3"></i>
+                <span class="hide-on-collapse">Chamados Pendentes</span>
+            </a>
+
+            <a href="#" class="sidebar-link text-decoration-none p-3">
+                <i class="fas fa-clock-rotate-left me-3"></i>
+                <span class="hide-on-collapse">Chamados Fechados</span>
+            </a>
+            <a href="#" class="visually-hidden sidebar-link text-decoration-none p-3">
+                <i class="fas fa-gear me-3"></i>
+                <span class="hide-on-collapse">Configurações</span>
+            </a>
+        </div>
+
+        <div class="profile-section mt-auto p-1">
+        <div class="nav p-1">
+            <a href="/climb/climb_interface_application/src/page/login.html" class="sidebar-link  text-decoration-none p-3">
+                <i class="fas fa-arrow-right-from-bracket  me-3" style="color: #ffffff;"></i>  
+
+                
+            </a>
+        </div>
+            
+        </div>
+        
+    </nav>
+
+    <main class="main-content" id="main-content" >
+        
+        
+
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+
+    </script>
+</div>
+
+
+
+
+
+
+
+    <script src="/climb/climb_interface_application/libs/bootstrap.bundle.min.js"></script>
+        <script src="/climb/climb_interface_application/src/events/userHome.js"></script>
+
+</body>
+
+</html>

@@ -1,54 +1,44 @@
 package com.application.climb.Model;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Entity
-@Table
-
-
+@Table(name = "funcionario")
+@Getter
+@Setter
 public class Funcionario {
-    @Getter
-    @Setter
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true) 
     private Integer id;
 
-    
-    @Column(length =14, nullable = false, unique = true)
+    @Column(length = 14, nullable = false, unique = true)
     private String cpf;
 
-
-    @Column(length =70, nullable = false, unique = false)
+    @Column(length = 70, nullable = false)
     private String nome;
 
-
-    @Column(length =100, nullable = false, unique = true)
+    @Column(length = 100, nullable = false, unique = true, updatable = false)
     private String email;
 
-    
-    @Column(length =255, nullable = false, unique = false)
+    @Column(length = 255, nullable = false)
     private String senha;
 
-
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false)
     private int nivelPermissao;
 
-    
-    @Column(length =100, nullable = false, unique = false)
+    @Column(length = 100, nullable = false)
     private String funcao;
 
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "setor_id", nullable = false, updatable = false)
+    private Setor setor;
 
-    private Setor idSetor;
-
-    private Empresa idEmpresa;
-
-    }
+   
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empresa_id", nullable = false, updatable = false)
+    private Empresa empresa;
+}

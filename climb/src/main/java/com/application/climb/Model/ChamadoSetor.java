@@ -1,29 +1,24 @@
 package com.application.climb.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Setter;
+import jakarta.persistence.*;
 import lombok.Getter;
-import jakarta.persistence.Column;
+import lombok.Setter;
 
 @Entity
-@Table
+@Table(name = "chamado_setor")
+@Getter
+@Setter
 public class ChamadoSetor {
-    @Getter
-    @Setter
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
-    private Chamado idChamado;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "chamado_id", nullable = false)
+    private Chamado chamado;
 
-    @Column(nullable = false, unique = false)
-    private Setor idSetor;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "setor_id", nullable = false)
+    private Setor setor;
 }
-

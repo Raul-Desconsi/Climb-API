@@ -18,10 +18,13 @@ public class Setor {
     @Column(length = 90, nullable = false)
     private String nome;
 
-    @ManyToOne(fetch = FetchType.EAGER) 
-    @JoinColumn(name = "empresa_id", nullable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
 
-    @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Funcionario> funcionarios;
+
+    @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Chamado> chamados;
 }

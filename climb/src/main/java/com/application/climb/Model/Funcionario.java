@@ -32,13 +32,11 @@ public class Funcionario {
     @Column(length = 100, nullable = false)
     private String funcao;
 
-    
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "setor_id", nullable = false, updatable = false)
+    @JoinColumn(name = "setor_id", nullable = false)
     private Setor setor;
 
-   
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "empresa_id", nullable = false, updatable = false)
+    @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
 }

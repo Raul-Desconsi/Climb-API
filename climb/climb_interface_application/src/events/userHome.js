@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("logout");
 
-    if (localStorage.getItem("jwtToken") === null) {
-        location.href = 'login.html';
-    }
+    if (!localStorage.getItem("jwtToken") || localStorage.getItem("nivelPermissao") !== "2") {
+    location.href = 'login.html';
+}
 
-    
+
     logoutBtn.addEventListener("click", callLogout);
 
     

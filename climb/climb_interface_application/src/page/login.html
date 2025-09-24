@@ -54,21 +54,21 @@
                             <div class="row gy-3 ">
                                 <div class="col-12 mb-3">
                                     <div class="form-floating">
-                                        <input class="form-control" name="Email" id="Email"
+                                        <input type="email" class="form-control" name="Email" id="email"
                                             placeholder="name@example.com" required>
-                                        <label for="cracha">Email</label>
+                                        <label for="email">Email</label>
                                     </div>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <div class="form-floating">
-                                        <input type="password" class="form-control" name="password" id="password"
-                                            placeholder="Password" required>
-                                        <label for="password">Senha</label>
+                                        <input type="password" class="form-control" name="senha" id="senha"
+                                            placeholder="senha" required>
+                                        <label for="senha">Senha</label>
                                     </div>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <div class="d-grid">
-                                        <button class="btn btn-primary bg-primary btn-lg" type="submit">Acessar</button>
+                                        <button id="submitLogin" class="btn btn-primary bg-primary btn-lg" type="submit">Acessar</button>
                                     </div>
                                 </div>
                             </div>
@@ -89,6 +89,7 @@
 
 
 
+    <script src="/climb/climb_interface_application/src/controller/login.js"></script>
     <script src="/climb/climb_interface_application/libs/bootstrap.bundle.min.js"></script>
 </body>
 

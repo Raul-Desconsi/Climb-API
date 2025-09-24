@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const adicionarBtn = document.getElementById("adicionarBtn");
-    const maincontent = document.getElementById("main-content");
+    const logoutBtn = document.getElementById("logout");
 
-    adicionarBtn.addEventListener("click", callRegisterFlow);
+    if (localStorage.getItem("jwtToken") === null) {
+        location.href = 'login.html';
+    }
 
-    function callRegisterFlow() {
-        maincontent.innerHTML = "";
+    
+    logoutBtn.addEventListener("click", callLogout);
 
-        const iframe = document.createElement("iframe");
-        iframe.src = "/climb/climb_interface_application/src/page/registerFlow.html"; 
-       
-        
+    
 
-        maincontent.appendChild(iframe);
+    function callLogout() {
+        localStorage.removeItem('jwtToken');
+        localStorage.removeItem('setor');
+        localStorage.removeItem('id');
+        location.href = 'login.html';
     }
 });
-
-

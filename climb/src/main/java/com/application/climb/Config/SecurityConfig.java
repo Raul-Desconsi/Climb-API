@@ -2,11 +2,11 @@ package com.application.climb.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -19,6 +19,7 @@ import java.util.Arrays;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
+        // Rotas liberadas 
     private static final String[] PUBLIC_MATCHERS = {
             "/"
     };
@@ -26,18 +27,25 @@ public class SecurityConfig {
     private static final String[] PUBLIC_MATCHERS_POST = {
             
             "/funcionario/login"
-
+            
     };
 
+    private static final String[] PUBLIC_MATCHERS_GET = {
+        "/funcionario/GetFuncionario"
+        };    
+
+        // Filtro para permitir todas as rotas  e metodos 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults()) //
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PUBLIC_MATCHERS).permitAll()
-                        .requestMatchers(PUBLIC_MATCHERS_POST).permitAll()
-                        .anyRequest().authenticated()
+                .requestMatchers(PUBLIC_MATCHERS).permitAll()
+                .requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+                .requestMatchers(PUBLIC_MATCHERS_POST).permitAll()
+                .anyRequest().authenticated()
+
                 );
 
         return http.build();

@@ -5,9 +5,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ FuncionarioService funcionarioService;
 AuthService authService;
 
 
-
+//Post de formulario (formFromWeb) para criar token e verificar senha e email e nivel de permissão 
 
 @PostMapping("/login")
 public ResponseEntity<?> funcionarioLogin(@RequestBody Funcionario formFromWeb) {
@@ -52,16 +53,26 @@ public ResponseEntity<?> funcionarioLogin(@RequestBody Funcionario formFromWeb) 
 }
 
 
+// Get funcionario pelo id + necessidade de token para validar permissão para realizar a entrega do ResponseEntity
+@GetMapping("/GetFuncionario")
+public ResponseEntity<?> getFuncionario(@RequestParam Long id, @RequestHeader("Authorization") String token) {
 
+    try {
+        if (!authService.authenticate(token)) {
+            return ResponseEntity.status(403).body("Sem permissão");
+        }
 
+        Optional<Funcionario> funcionarioOPT = funcionarioService.findById(id);
 
-
-
-
-
-
-
-
+        if (funcionarioOPT.isPresent()) {
+            return ResponseEntity.ok(funcionarioOPT.get());
+        } else {
+            return ResponseEntity.status(404).body("Funcionário inexistente");
+        }
+    } catch (Exception e) {
+        return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
+    }
+}
 
 
 }

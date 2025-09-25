@@ -29,7 +29,8 @@ public class Empresa {
 
     @Column(length = 20)
     private String telefone;
-
+    
     @OneToMany(mappedBy = "empresa",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER )
+    
     private List<Setor> setores;
 }

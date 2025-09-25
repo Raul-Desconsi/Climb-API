@@ -16,8 +16,16 @@ FuncionarioRepository funcionarioRepository;
 
 
 public Funcionario findByEmail(String email) {
-    return this.funcionarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Funcionario not found"));
+
+    
+    return this.funcionarioRepository.findByEmail(email.toLowerCase().trim()).orElseThrow(() -> new RuntimeException("not found"));
 }
+
+public Optional<Funcionario> findById(Long id) {
+    return this.funcionarioRepository.findById(id);
+}
+
+
 }
 
 

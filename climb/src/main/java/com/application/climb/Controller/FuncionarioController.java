@@ -59,6 +59,10 @@ public ResponseEntity<?> getFuncionario(@RequestParam Long id, @RequestHeader("A
 
     try {
         if (!authService.authenticate(token)) {
+            return ResponseEntity.status(401).body("Token inválido ou expirado");
+        }
+        
+        if (authService.getNivelPermissaoFromToken(token) != 1 ) {
             return ResponseEntity.status(403).body("Sem permissão");
         }
 

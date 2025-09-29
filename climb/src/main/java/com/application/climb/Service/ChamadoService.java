@@ -1,0 +1,33 @@
+package com.application.climb.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.application.climb.Model.Chamado;
+//import com.application.climb.Model.Funcionario;
+//import com.application.climb.Model.Setor;
+import com.application.climb.Repository.ChamadoRepository;
+
+@Service
+public class ChamadoService {
+
+    @Autowired
+    private ChamadoRepository chamadoRepository;
+
+    public Chamado save(Chamado chamado) {
+        
+        if (chamado.getData() == null) {
+            chamado.setData(LocalDateTime.now());
+        }
+        return chamadoRepository.save(chamado);
+    }
+
+    public Optional<Chamado> findById(Integer id) {
+        return chamadoRepository.findById(id);
+    }
+
+// Criar outros metodos depois
+}

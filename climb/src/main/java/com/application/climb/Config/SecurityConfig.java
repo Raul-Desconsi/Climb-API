@@ -26,13 +26,14 @@ public class SecurityConfig {
 
     private static final String[] PUBLIC_MATCHERS_POST = {
             
-            "/funcionario/login"
+            "/funcionario/login",  "/chamado/create" 
             
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
         "/funcionario/GetFuncionario"
-        };    
+        }; 
+        
 
         // Filtro para permitir todas as rotas  e metodos 
     @Bean

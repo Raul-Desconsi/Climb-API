@@ -1,11 +1,18 @@
 package com.application.climb.Controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.application.climb.Dto.ChamadoDTO;
 import com.application.climb.Model.Chamado;
@@ -15,8 +22,6 @@ import com.application.climb.Model.Funcionario;
 import com.application.climb.Service.AuthService;
 import com.application.climb.Service.ChamadoService;
 import com.application.climb.Service.FuncionarioService;
-//import com.application.climb.Model.Setor;
-//import com.application.climb.Service.SetorService; // se não existir, adaptar
 
 @RestController
 @RequestMapping("/chamado")
@@ -48,19 +53,16 @@ public class ChamadoController {
             chamado.setAreaAfetada(dto.getAreaAfetada());
             chamado.setDescricao(dto.getDescricao());
 
-            // data definida no service, porém podemos setar aqui também
-            // chamado.setData(LocalDateTime.now());
-
             String urg = dto.getUrgencia();
             if (urg != null) {
                 switch (urg.toLowerCase()) {
-                    case "Baixa":
+                    case "baixa":
                         chamado.setUrgencia(Urgencia.Baixa);
                         break;
-                    case "Media":
+                    case "media":
                         chamado.setUrgencia(Urgencia.Media);
                         break;
-                    case "Alta":
+                    case "alta":
                         chamado.setUrgencia(Urgencia.Alta);
                         break;
                     default:
@@ -84,16 +86,6 @@ public class ChamadoController {
                 return ResponseEntity.status(400).body("Responsável pela abertura não informado");
             }
 
-            // setor: se informado, busca setor
-            //if (dto.getSetorId() != null && setorService != null) {
-           //     Optional<Setor> sopt = setorService.findById(dto.getSetorId());
-           //    if (sopt.isPresent()) {
-           //         chamado.setSetor(sopt.get());
-           //     } else {
-           //         return ResponseEntity.status(404).body("Setor não encontrado");
-        //        }
-        //    }
-
             Chamado salvo = chamadoService.save(chamado);
 
             return ResponseEntity.ok(Map.of("message", "Chamado criado", "id", salvo.getId()));
@@ -102,7 +94,6 @@ public class ChamadoController {
             return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
         }
     }
-
 
     @GetMapping("/get")
     public ResponseEntity<?> getChamado(@RequestParam Integer id, @RequestHeader("Authorization") String token) {
@@ -120,4 +111,17 @@ public class ChamadoController {
             return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
         }
     }
+
+    // 🔹 View com Thymeleaf (caso use templates
+    // 🔹 API REST para frontend consumir JSON
+    @GetMapping("/all")
+    public ResponseEntity<List<Chamado>> listarTodos(@RequestHeader("Authorization") String token) {
+    if (!authService.authenticate(token.replace("Bearer ", ""))) {
+        return ResponseEntity.status(403).build();
+    }
+    List<Chamado> chamados = chamadoService.findAll();
+    return ResponseEntity.ok(chamados);
+}
+
+
 }

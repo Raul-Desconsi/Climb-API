@@ -15,8 +15,8 @@ import com.application.climb.Model.Funcionario;
 import com.application.climb.Service.AuthService;
 import com.application.climb.Service.ChamadoService;
 import com.application.climb.Service.FuncionarioService;
-//import com.application.climb.Model.Setor;
-//import com.application.climb.Service.SetorService; // se não existir, adaptar
+import com.application.climb.Model.Setor;
+import com.application.climb.Service.SetorService; // se não existir, adaptar
 
 @RestController
 @RequestMapping("/chamado")
@@ -32,7 +32,7 @@ public class ChamadoController {
     private FuncionarioService funcionarioService;
 
     @Autowired(required = false)
-    //private SetorService setorService;
+    private SetorService setorService;
 
     @PostMapping("/create")
     public ResponseEntity<?> criarChamado(@RequestBody ChamadoDTO dto,
@@ -85,14 +85,14 @@ public class ChamadoController {
             }
 
             // setor: se informado, busca setor
-            //if (dto.getSetorId() != null && setorService != null) {
-           //     Optional<Setor> sopt = setorService.findById(dto.getSetorId());
-           //    if (sopt.isPresent()) {
-           //         chamado.setSetor(sopt.get());
-           //     } else {
-           //         return ResponseEntity.status(404).body("Setor não encontrado");
-        //        }
-        //    }
+            if (dto.getSetorId() != null && setorService != null) {
+                Optional<Setor> sopt = setorService.buscarPorId(dto.getSetorId());
+               if (sopt.isPresent()) {
+                    chamado.setSetor(sopt.get());
+                } else {
+                    return ResponseEntity.status(404).body("Setor não encontrado");
+                }
+            }
 
             Chamado salvo = chamadoService.save(chamado);
 

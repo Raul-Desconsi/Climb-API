@@ -2,7 +2,6 @@ document.getElementById("fluxoForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
     const motivo = document.getElementById("motivo").value.trim();
-    const direcionamento = document.getElementById("direcionamento").value; 
     const areaAfetada = document.getElementById("areas-afetadas").value;
     const problema = document.getElementById("problema").value.trim();
     const urgencia = document.querySelector('input[name="urgencia"]:checked')?.value || "baixa";

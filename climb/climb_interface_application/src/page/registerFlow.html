@@ -45,27 +45,7 @@
                         required>
                 </div>
 
-                <!-- Dropdown 1 -->
-                <div class="dropdown mb-3">
-                    <label class="form-label">Para qual área você acha que esse fluxo deve ser guiado?</label>
-
-                    <button class="btn btn-primary bg-primary w-100" type="button" id="dropAreaGuiada"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Selecione uma opção
-                    </button>
-
-                    <ul class="dropdown-menu w-100" aria-labelledby="dropAreaGuiada">
-                        <li><a class="dropdown-item" href="#" data-value="suporte">Suporte</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="financeiro">Financeiro</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="desenvolvimento">Desenvolvimento</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="operacional">Operacional</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="nao_sei">Não sei</a></li>
-                    </ul>
-
-                    <input type="hidden" id="direcionamento" name="direcionamento" required>
-                </div>
-
-                <!-- Dropdown 2 -->
+                
                 <div class="dropdown mb-3">
                     <label class="form-label">Qual área será afetada com esse fluxo?</label>
 
@@ -74,13 +54,8 @@
                         Selecione uma opção
                     </button>
 
-                    <ul class="dropdown-menu w-100" aria-labelledby="dropAreaAfetada">
-                        <li><a class="dropdown-item" href="#" data-value="afet_suporte">Suporte</a></li>
-                        <li><a class="dropdown-item btn btn-outline-danger" href="#"
-                                data-value="afet_financeiro">Financeiro</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="afet_desenvolvimento">Desenvolvimento</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="afet_operacional">Operacional</a></li>
-                        <li><a class="dropdown-item" href="#" data-value="afet_naosei">Não sei</a></li>
+                    <ul class="dropdown-menu w-100" id="dropAreaAfetada" aria-labelledby="dropAreaAfetada">
+                       
                     </ul>
 
                     <input type="hidden" id="areas-afetadas" name="areas-afetadas" required>
@@ -111,12 +86,6 @@
                     </div>
                 </div>
 
-
-                <div class="mb-3">
-                    <label for="anexo" class="form-label">Deseja anexar um arquivo?</label>
-                    <input class="form-control" type="file" id="anexo" name="anexo">
-                </div>
-
                 <!-- Botão -->
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary  bg-primary">Cadastrar Fluxo</button>
@@ -126,9 +95,9 @@
     </div>
 
     <script src="/Climb-API/climb/climb_interface_application/libs/bootstrap.bundle.min.js"></script>
-    <script src="/Climb-API/climb/climb_interface_application/src/controller/openFlow.js">
-        
-    </script>
+    <script src="/Climb-API/climb/climb_interface_application/src/controller/openFlow.js"></script>
+    <script src="/Climb-API/climb/climb_interface_application/src/events/flowScreen.js"></script>
+
 </body>
 
 </html>

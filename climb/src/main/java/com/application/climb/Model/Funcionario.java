@@ -38,6 +38,5 @@ public class Funcionario {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", nullable = false)
-    
     private Empresa empresa;
 }

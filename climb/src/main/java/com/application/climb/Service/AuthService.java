@@ -51,7 +51,6 @@ public class AuthService {
                 .setSubject(funcionario.getId().toString())         
                 .claim("email", funcionario.getEmail())            
                 .claim("nivelPermissao", funcionario.getNivelPermissao())
-                .claim("empresaId", funcionario.getEmpresa().getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1h
                 .signWith(getSecretKey(), SignatureAlgorithm.HS256)

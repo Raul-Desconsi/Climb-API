@@ -23,6 +23,10 @@ import com.application.climb.Service.AuthService;
 import com.application.climb.Service.ChamadoService;
 import com.application.climb.Service.FuncionarioService;
 
+// Descomente se houver SetorService
+// import com.application.climb.Model.Setor;
+// import com.application.climb.Service.SetorService;
+
 @RestController
 @RequestMapping("/chamado")
 public class ChamadoController {
@@ -36,12 +40,12 @@ public class ChamadoController {
     @Autowired
     private FuncionarioService funcionarioService;
 
-    @Autowired(required = false)
-    //private SetorService setorService;
+    // @Autowired(required = false)
+    // private SetorService setorService;
 
     @PostMapping("/create")
     public ResponseEntity<?> criarChamado(@RequestBody ChamadoDTO dto,
-                                         @RequestHeader("Authorization") String token) {
+                                          @RequestHeader("Authorization") String token) {
         try {
             if (!authService.authenticate(token)) {
                 return ResponseEntity.status(403).body("Sem permissão");
@@ -86,6 +90,16 @@ public class ChamadoController {
                 return ResponseEntity.status(400).body("Responsável pela abertura não informado");
             }
 
+            // Se houver SetorService, descomente e adapte:
+            // if (dto.getSetorId() != null && setorService != null) {
+            //     Optional<Setor> sopt = setorService.buscarPorId(dto.getSetorId());
+            //     if (sopt.isPresent()) {
+            //         chamado.setSetor(sopt.get());
+            //     } else {
+            //         return ResponseEntity.status(404).body("Setor não encontrado");
+            //     }
+            // }
+
             Chamado salvo = chamadoService.save(chamado);
 
             return ResponseEntity.ok(Map.of("message", "Chamado criado", "id", salvo.getId()));
@@ -112,16 +126,12 @@ public class ChamadoController {
         }
     }
 
-    // 🔹 View com Thymeleaf (caso use templates
-    // 🔹 API REST para frontend consumir JSON
     @GetMapping("/all")
     public ResponseEntity<List<Chamado>> listarTodos(@RequestHeader("Authorization") String token) {
-    if (!authService.authenticate(token.replace("Bearer ", ""))) {
-        return ResponseEntity.status(403).build();
+        if (!authService.authenticate(token.replace("Bearer ", ""))) {
+            return ResponseEntity.status(403).build();
+        }
+        List<Chamado> chamados = chamadoService.findAll();
+        return ResponseEntity.ok(chamados);
     }
-    List<Chamado> chamados = chamadoService.findAll();
-    return ResponseEntity.ok(chamados);
-}
-
-
 }

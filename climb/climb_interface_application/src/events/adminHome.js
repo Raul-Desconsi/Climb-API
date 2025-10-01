@@ -1,19 +1,68 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const logoutBtn = document.getElementById("logout");
+    const logoutBtn = document.getElementById("log_out");
 
+    // Verificação de autenticação
     if (!localStorage.getItem("jwtToken") || localStorage.getItem("nivelPermissao") !== "1") {
-    location.href = 'login.html';
+        location.href = 'login.html';
+        return;
+    }
+
+    // Botão logout (só adiciona se existir no DOM)
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem('jwtToken');
+            localStorage.removeItem('setor');
+            localStorage.removeItem('id');
+            location.href = 'login.html';
+        });
+    }
+});
+
+// Função genérica para carregar iframes
+function loadIframe(maincontent, src) {
+    if (!maincontent) return;
+    maincontent.innerHTML = "";
+    const iframe = document.createElement("iframe");
+    iframe.src = src;
+    iframe.width = "100%";
+    iframe.height = "100%";
+    iframe.style.border = "none";
+    maincontent.appendChild(iframe);
 }
 
+function dashboardbtn(maincontent) {
+    loadIframe(maincontent, "/climb/climb_interface_application/src/page/adminDashboard");
+}
 
-    logoutBtn.addEventListener("click", callLogout);
+function funcionariosbtn(maincontent) {
+    loadIframe(maincontent, "/climb/climb_interface_application/src/page/adminFuncionarios.html");
+}
 
-    
+function accountBtn(maincontent) {
+    loadIframe(maincontent, "/climb/climb_interface_application/src/page/perfil.html");
+}
 
-    function callLogout() {
-        localStorage.removeItem('jwtToken');
-        localStorage.removeItem('setor');
-        localStorage.removeItem('id');
-        location.href = 'login.html';
+function setoresBtn(maincontent) {
+    loadIframe(maincontent, "/climb/climb_interface_application/src/page/adminSetores.html");
+}
+
+// Captura cliques nos botões
+document.addEventListener("click", function (event) {
+    const maincontent = document.getElementById("main-content");
+    if (!maincontent) return;
+
+    switch (event.target.id) {
+        case "dashboardbtn":
+            dashboardbtn(maincontent);
+            break;
+        case "funcionariosbtn":
+            funcionariosbtn(maincontent);
+            break;
+        case "setoresbtn":
+            setoresBtn(maincontent);
+            break;
+        case "accountBtn":
+            accountBtn(maincontent);
+            break;
     }
 });

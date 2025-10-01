@@ -1,97 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-
-    <link rel="stylesheet" href="/Climb-API/climb/climb_interface_application/libs/bootstrap.min.css">
-    <link rel="stylesheet" href="/Climb-API/climb/climb_interface_application/src/style/componentsStyle.css">
-    <link rel="stylesheet" href="/Climb-API/climb/climb_interface_application/src/style/home.css">
+    <meta charset="UTF-8" />
+    <title>Climb</title>
+    <link rel="stylesheet" href="/climb/climb_interface_application/src/style/home.css" />
+    <link rel="stylesheet" href="/climb/climb_interface_application/src/style/componentsStyle.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 
-
-
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
-    
-
-
-<div class="d-flex ">
-    <nav class="sidebar d-flex flex-column flex-shrink-0 position-fixed">
-        <button class="toggle-btn" onclick="toggleSidebar()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="d-flex  mb-5">
-            <div class=" logo-image-container">
-            <img class="logo-image" src="/Climb-API/climb/climb_interface_application/src/assets/EMBLEMA-PRINCIPAL.png" 
+    <div class="sidebar">
+        <div class="logo-details">
+            <img class="logo-image" width="90px" height="90px" src="/climb/climb_interface_application/src/assets/EMBLEMA-PRINCIPAL.png" 
                 class="rounded " alt="Climb">
-            </div>
-            <div class=" logo-text">
-                <h4 class="logo-text fw-bold mb-0">Climb</h4>
-                
-            </div>
+            <div class="logo_name">Climb</div>
+            <i class="bx bx-menu" id="btn"></i>
         </div>
-        <div class="nav flex-column">
-            <a id="dashboardBtn" href="#" class="sidebar-link active text-decoration-none p-3">
-                <i class="fas fa-home me-3"></i>
-                <span class="hide-on-collapse">Dashboard</span>
-            </a>
-            <a id="adicionarBtn" href="#" class="sidebar-link text-decoration-none p-3">
-                <i class="fas fa-plus me-3"></i>
-                <span class="hide-on-collapse">Registrar Chamado</span>
-            </a>
-            <a href="#" id="chamadosBtn" class="sidebar-link text-decoration-none p-3">
-                <i class="fas fa-ticket me-3"></i>
-                <span class="hide-on-collapse">Chamados</span>
-            </a>
-
-            <a href="#"  id="accountBtn" class="sidebar-link text-decoration-none p-3">
-                <i class="fas fa-user me-3"></i>
-                <span class="hide-on-collapse">Minha Conta</span>
-            </a>
-        </div>
-
-        <div class="profile-section mt-auto p-1">
-        <div class="nav p-1">
-            <a href="/climb/climb_interface_application/src/page/login.html" class="sidebar-link  text-decoration-none p-3">
-                <i class="fas fa-arrow-right-from-bracket  me-3" style="color: #ffffff;"></i>
-
-
-            </a>
-        </div>
+        <ul class="nav-list">
             
-        </div>
-        
-    </nav>
+            <li>
+                <a id="dashboardBtn" href="#">
+                    <i class="bx bx-grid-alt"></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a id="adicionarBtn" href="#">
+                    <i class="bx bx-plus"></i>
+                    <span class="links_name">Adicionar </span>
+                </a>
+                <span class="tooltip">Adicionar</span>
+            </li>
+            <li>
+                <a  id="chamadosBtn" href="#">
+                    <i class='bx  bx-message'  ></i> 
+                    <span class="links_name">Chamados</span>
+                </a>
+                <span class="tooltip">Chamados</span>
+            </li>
+            <li>
+                <a id="accountBtn" href="#">
+                    <i class="bx bx-user"></i>
+                    <span class="links_name">Perfil</span>
+                </a>
+                <span class="tooltip">Perfil</span>
+            </li>
+           
+            <li class="profile">
+                <div class="profile-details">
+                    <img src="/climb/climb_interface_application/src/assets/usericon.png"  alt="profileImg" />
+                    <div class="name_job">
+                        <div class="name"></div>
+                        <div class="job"></div>
+                    </div>
+                </div>
 
-    <main class="main-content" id="main-content" >
+                <i  class="bx bx-log-out" id="log_out"></i>
+            </li>
+        </ul>
+    </div>
+     <main class="main-content" id="main-content" >
         
         
 
     </main>
 
+
     <script>
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('collapsed');
+        let sidebar = document.querySelector(".sidebar");
+        let closeBtn = document.querySelector("#btn");
+
+        closeBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            menuBtnChange()
+        });
+
+        searchBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            menuBtnChange(); 
+        });
+
+        function menuBtnChange() {
+            if (sidebar.classList.contains("open")) {
+                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else {
+                closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+            }
         }
 
+
     </script>
-</div>
 
-
-
-
-
-
-
-    <script src="/Climb-API/climb/climb_interface_application/libs/bootstrap.bundle.min.js"></script>
-        <script src="/Climb-API/climb/climb_interface_application/src/events/userHome.js"></script>
-
+    <script src="/climb/climb_interface_application/src/events/userHome.js"></script>
 </body>
 
 </html>

@@ -1,98 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-
-    <link rel="stylesheet" href="/climb/climb_interface_application/libs/bootstrap.min.css">
+    <meta charset="UTF-8" />
+    <title>Climb</title>
+    <link rel="stylesheet" href="/climb/climb_interface_application/src/style/home.css" />
     <link rel="stylesheet" href="/climb/climb_interface_application/src/style/componentsStyle.css">
-    <link rel="stylesheet" href="/climb/climb_interface_application/src/style/home.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 
-
-
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
-    
-
-
-<div class="d-flex">
-    <nav class="sidebar d-flex flex-column flex-shrink-0 shadow-lg position-fixed">
-        <button class="toggle-btn" onclick="toggleSidebar()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="d-flex  mb-5">
-            <div class=" logo-image-container">
-            <img class="logo-image" src="/climb/climb_interface_application/src/assets/EMBLEMA-PRINCIPAL.png" 
+    <div class="sidebar">
+        <div class="logo-details">
+            <img class="logo-image" width="90px" height="90px" src="/climb/climb_interface_application/src/assets/EMBLEMA-PRINCIPAL.png" 
                 class="rounded " alt="Climb">
-            </div>
-            <div class=" logo-text">
-                <h4 class="logo-text fw-bold mb-0">Climb</h4>
-                
-            </div>
+            <div class="logo_name">Climb</div>
+            <i class="bx bx-menu" id="btn"></i>
         </div>
-        <div class="nav flex-column">
-            <a href="#" class="sidebar-link active text-decoration-none p-3">
-                <i class="fas fa-home me-3"></i>
-                <span class="hide-on-collapse">Dashboard</span>
-            </a>
-            <a href="#" class="sidebar-link text-decoration-none p-3">
-                <i class="fas fa-chart-bar me-3"></i>
-                <span class="hide-on-collapse">Desempenho</span>
-            </a>
-            <a href="#" class="sidebar-link text-decoration-none p-3">
-                <i class="fas fa-user me-3"></i>
-                <span class="hide-on-collapse">Funcionários</span>
-            </a>
-
-            <a href="#" class="sidebar-link text-decoration-none p-3">
-                <i class="fas fa-users me-3"></i>
-                <span class="hide-on-collapse">Setores</span>
-            </a>
-            <a href="#" class="visually-hidden sidebar-link text-decoration-none p-3">
-                <i class="fas fa-gear me-3"></i>
-                <span class="hide-on-collapse">Configurações</span>
-            </a>
-        </div>
-
-        <div class="profile-section mt-auto p-1">
-        <div class="nav p-1">
-            <a id="logout" class="sidebar-link  text-decoration-none p-3">
-                <i class="fas fa-arrow-right-from-bracket  me-3" style="color: #ffffff;"></i>  
- 
-                
-            </a>
-        </div>
+        <ul class="nav-list">
             
-        </div>
-        
-    </nav>
+            <li>
+                <a id="dashboardbtn" href="#">
+                    <i class="bx bx-grid-alt"></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
 
-    <main class="main-content">
+            <li>
+                <a  id="funcionariosbtn" href="#">
+                    <i class='bx  bx-group'  ></i> 
+                    <span class="links_name">Funcinários</span>
+                </a>
+                <span class="tooltip">Funcinários</span>
+            </li>
+            <li>
+                <a id="setoresbtn" href="#">
+                    <i class="bx bx-building"></i>
+                    <span class="links_name">Setores</span>
+                </a>
+                <span class="tooltip">Setores</span>
+            </li>
+            <li>
+                <a  id="funcionariosbtn" href="#">
+                    <i class='bx  bx-user'  ></i> 
+                    <span class="links_name">Perfil</span>
+                </a>
+                <span class="tooltip">Perfil</span>
+            </li>
+           
+            <li class="profile">
+                <div class="profile-details">
+                    <img src="/climb/climb_interface_application/src/assets/usericon.png"  alt="profileImg" />
+                    <div class="name_job">
+                        <div class="name"></div>
+                        <div class="job"></div>
+                    </div>
+                </div>
+
+                <i  class="bx bx-log-out" id="log_out"></i>
+            </li>
+        </ul>
+    </div>
+     <main class="main-content" id="main-content" >
         
         
 
     </main>
 
+
     <script>
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('collapsed');
+        let sidebar = document.querySelector(".sidebar");
+        let closeBtn = document.querySelector("#btn");
+
+        closeBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            menuBtnChange()
+        });
+
+        searchBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            menuBtnChange(); 
+        });
+
+        function menuBtnChange() {
+            if (sidebar.classList.contains("open")) {
+                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else {
+                closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+            }
         }
+
+
     </script>
-</div>
-
-
-
-
-
 
     <script src="/climb/climb_interface_application/src/events/adminHome.js"></script>
-    <script src="/climb/climb_interface_application/libs/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

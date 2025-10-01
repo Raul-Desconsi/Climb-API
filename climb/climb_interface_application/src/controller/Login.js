@@ -44,9 +44,10 @@ function submitLogin(event) {
                     localStorage.setItem('jwtToken', response.token);
                     localStorage.setItem('setor', response.setor);
                     localStorage.setItem('id', response.id);
-                    localStorage.setItem('nivelPermissao', response.nivelPermissao); 
-                    localStorage.setItem('empresaId', response.empresaId);
-                                    
+                    localStorage.setItem('nivelPermissao', response.nivelPermissao);
+
+
+                    
                    
 
                     switch (response.nivelPermissao) {

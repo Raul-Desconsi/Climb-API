@@ -31,11 +31,10 @@ public class SecurityConfig {
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
-        "/funcionario/GetFuncionario",
-        "/api/setores/empresa/**"
+        "/funcionario/GetFuncionario"
         }; 
         
-            
+
         // Filtro para permitir todas as rotas  e metodos 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

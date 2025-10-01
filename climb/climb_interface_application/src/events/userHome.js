@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const logoutBtn = document.getElementById("logout");
+    const logoutBtn = document.getElementById("log_out");
 
     if (!localStorage.getItem("jwtToken") || localStorage.getItem("nivelPermissao") !== "2") {
     location.href = 'login.html';
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 function callRegisterFlow(maincontent, iframe) {
   maincontent.innerHTML = "";
-  iframe.src = "/Climb-API/climb/climb_interface_application/src/page/registerFlow.html"; 
+  iframe.src = "/climb/climb_interface_application/src/page/registerFlow.html"; 
   maincontent.appendChild(iframe);
 }
 
@@ -52,3 +52,4 @@ document.addEventListener("click", function (event) {
         break; // chama a função correta
   }
 });
+

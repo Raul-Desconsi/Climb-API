@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "setor")
 @Getter
@@ -23,9 +25,11 @@ public class Setor {
     
     private Empresa empresa;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Funcionario> funcionarios;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Chamado> chamados;
 }

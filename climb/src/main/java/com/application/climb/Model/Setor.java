@@ -36,7 +36,6 @@ public class Setor {
     
     private Empresa empresa;
 
-
     @JsonIgnore
     @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Funcionario> funcionarios;

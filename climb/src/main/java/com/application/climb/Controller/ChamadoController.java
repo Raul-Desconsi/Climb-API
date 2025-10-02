@@ -30,6 +30,9 @@ public class ChamadoController {
 
     @Autowired
     private FuncionarioService funcionarioService;
+    
+     @Autowired(required = false)
+    private SetorService setorService;
 
     @Autowired(required = false)
     private SetorService setorService;

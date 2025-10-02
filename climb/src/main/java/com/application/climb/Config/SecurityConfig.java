@@ -31,7 +31,12 @@ public class SecurityConfig {
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
-        "/funcionario/GetFuncionario"
+        "/funcionario/GetFuncionario",
+        "/api/setores/empresa/**",
+        "/chamado/get",
+        "/chamado/all",
+        "/api/setores/**"
+
         }; 
         
 

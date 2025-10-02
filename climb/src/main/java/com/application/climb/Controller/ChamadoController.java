@@ -22,10 +22,8 @@ import com.application.climb.Model.Funcionario;
 import com.application.climb.Service.AuthService;
 import com.application.climb.Service.ChamadoService;
 import com.application.climb.Service.FuncionarioService;
+import com.application.climb.Service.SetorService;
 
-// Descomente se houver SetorService
-// import com.application.climb.Model.Setor;
-// import com.application.climb.Service.SetorService;
 
 @RestController
 @RequestMapping("/chamado")
@@ -39,9 +37,11 @@ public class ChamadoController {
 
     @Autowired
     private FuncionarioService funcionarioService;
+    
+     @Autowired(required = false)
+    private SetorService setorService;
 
-    // @Autowired(required = false)
-    // private SetorService setorService;
+    
 
     @PostMapping("/create")
     public ResponseEntity<?> criarChamado(@RequestBody ChamadoDTO dto,

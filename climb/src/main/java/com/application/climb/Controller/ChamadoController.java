@@ -34,8 +34,7 @@ public class ChamadoController {
      @Autowired(required = false)
     private SetorService setorService;
 
-    @Autowired(required = false)
-    private SetorService setorService;
+    
 
     @PostMapping("/create")
     public ResponseEntity<?> criarChamado(@RequestBody ChamadoDTO dto,

@@ -1,5 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("log_out");
+    
+    const nomelbl = document.getElementById("nome");
+    const funcaolbl = document.getElementById("funcao");
+
+    insertUserInfo();
+
+    function insertUserInfo() {
+        const nome = localStorage.getItem('nome');
+        const funcao = localStorage.getItem('funcao');
+
+        nomelbl.innerText = nome
+        funcaolbl.innerText = funcao
+
+    }
+
 
     // Verificação de autenticação
     if (!localStorage.getItem("jwtToken") || localStorage.getItem("nivelPermissao") !== "1") {
@@ -13,6 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.removeItem('jwtToken');
             localStorage.removeItem('setor');
             localStorage.removeItem('id');
+            localStorage.removeItem('nome');
+            localStorage.removeItem('funcao');
             location.href = 'login.html';
         });
     }
@@ -66,3 +83,5 @@ document.addEventListener("click", function (event) {
             break;
     }
 });
+
+

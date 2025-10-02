@@ -41,7 +41,9 @@ public ResponseEntity<?> funcionarioLogin(@RequestBody Funcionario formFromWeb) 
             "nivelPermissao", funcionario.getNivelPermissao(),
             "id", funcionario.getId(),
             "setor", funcionario.getSetor().getId(),
-            "empresaId",  funcionario.getEmpresa().getId()
+            "empresaId",  funcionario.getEmpresa().getId(),
+            "nome", funcionario.getNome(),
+            "funcao", funcionario.getFuncao()
         ));
 
     } catch (RuntimeException e) {

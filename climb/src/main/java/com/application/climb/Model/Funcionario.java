@@ -1,7 +1,5 @@
 package com.application.climb.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,14 +32,11 @@ public class Funcionario {
     @Column(length = 100, nullable = false)
     private String funcao;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "setor_id", nullable = false)
     private Setor setor;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", nullable = false)
-    
     private Empresa empresa;
 }

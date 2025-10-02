@@ -40,7 +40,8 @@ public ResponseEntity<?> funcionarioLogin(@RequestBody Funcionario formFromWeb) 
             "token", token,
             "nivelPermissao", funcionario.getNivelPermissao(),
             "id", funcionario.getId(),
-            "setor", funcionario.getSetor().getId()
+            "setor", funcionario.getSetor().getId(),
+            "empresaId",  funcionario.getEmpresa().getId()
         ));
 
     } catch (RuntimeException e) {
@@ -59,10 +60,6 @@ public ResponseEntity<?> getFuncionario(@RequestParam Long id, @RequestHeader("A
 
     try {
         if (!authService.authenticate(token)) {
-            return ResponseEntity.status(401).body("Token inválido ou expirado");
-        }
-        
-        if (authService.getNivelPermissaoFromToken(token) != 1 ) {
             return ResponseEntity.status(403).body("Sem permissão");
         }
 

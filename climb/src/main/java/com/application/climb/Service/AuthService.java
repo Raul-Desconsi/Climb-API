@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.application.climb.Model.Funcionario;
 import com.application.climb.Repository.FuncionarioRepository;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -51,6 +50,7 @@ public class AuthService {
                 .setSubject(funcionario.getId().toString())         
                 .claim("email", funcionario.getEmail())            
                 .claim("nivelPermissao", funcionario.getNivelPermissao())
+                .claim("empresaId", funcionario.getEmpresa().getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1h
                 .signWith(getSecretKey(), SignatureAlgorithm.HS256)
@@ -72,19 +72,4 @@ public class AuthService {
             return false;
         }
     }
-
-    //Pega o nivel de permissão do usuario baseado no seu token
-    public Integer getNivelPermissaoFromToken(String token) {
-    try {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getSecretKey()) 
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.get("nivelPermissao", Integer.class);
-    } catch (Exception e) {
-        throw new RuntimeException("Token inválido ou expirado", e);
-    }
-}
 }

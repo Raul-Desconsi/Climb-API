@@ -100,8 +100,7 @@ public class ChamadoController {
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
-        }
-    }
+        }};
 
 
     @GetMapping("/get")

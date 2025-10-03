@@ -1,0 +1,51 @@
+[33mcdb96bc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmerge-para-setores[m[33m, [m[1;31morigin/Raul[m[33m, [m[1;32mRaul[m[33m)[m Merge branch 'Samii' into Raul
+[33m8ee5957[m[33m ([m[1;31morigin/Samii[m[33m, [m[1;32mSamii[m[33m)[m COMMIT ACERCA DE CHAMADOS / LISTAGEM
+[33m4b25086[m Revert "COMMIT ACERCA DE CHAMADOS / LISTAGEM"
+[33m4740fc2[m Criação de formulario para cadastro do funcionário
+[33maa48c3b[m[33m ([m[1;32mmaster[m[33m, [m[1;32mbkp-caminhos_corrigidos[m[33m)[m Caminhos dos arquivos alterados
+[33mace2f79[m Adição de informações sobre o usuario na  home
+[33m1071e6a[m Mensagem corrigida do último commit
+[33maba8e0a[m Versionamento com Setores novamente funcional
+[33m18188f8[m Merge pull request #39 from Raul-Desconsi/Raul
+[33m310d041[m Correção e revisão do versionamento
+[33m6fbc067[m Corrigindo versionamento
+[33m74328e3[m Merge branch 'main' into chamados
+[33m1b44407[m Corrigindo versões
+[33m9be1949[m Merge pull request #37 from Raul-Desconsi/Raul
+[33m712b56f[m Merge branch 'main' into Raul
+[33m5ccf766[m Criação de nova interface para a home
+[33me372fae[m Merge branch 'main' of https://github.com/Raul-Desconsi/Climb-API
+[33mccb1f93[m COMMIT ACERCA DE CHAMADOS / LISTAGEM
+[33m7ec79b4[m Merge branch 'main' of https://github.com/Raul-Desconsi/Climb-API
+[33me0bae4b[m Registro de chamados concluído
+[33m1e69906[m Merge pull request #34 from Raul-Desconsi/Raul
+[33mb772712[m Autenticação de nivel de permissão
+[33mf82517e[m Merge branch 'main' of https://github.com/Raul-Desconsi/Climb-API into Raul
+[33m65c178d[m verificação para as permissões do usuário
+[33m96f02b1[m Registro de chamados feito ( Requer refatoração )
+[33m643624e[m Merge pull request #30 from Raul-Desconsi/Raul
+[33m537a888[m Criação de validação simples para token
+[33m0125bed[m Merge pull request #29 from Raul-Desconsi/Raul
+[33mb6825ac[m Merge pull request #28 from Raul-Desconsi/Raul
+[33m39fd608[m Correção de falha no login
+[33m5685489[m Criação de lógica de login e implementação web
+[33m5b0adcd[m Merge pull request #14 from Raul-Desconsi/Raul
+[33m66bfe7a[m Criação de arquitetura JPA
+[33m1b19d5e[m Definindo tipagem das colunas e suas especificações
+[33mbdadf23[m Merge pull request #11 from Raul-Desconsi/Raul
+[33m109008c[m Criação de model de funcionario setor e empresa
+[33m92fa413[m Definindo tipagem das colunas e suas especificações
+[33m76642cc[m Adicionada a estrutura do Model
+[33mbf7b9b6[m Merge pull request #9 from Raul-Desconsi/Raul
+[33m0fbe3fc[m Desenvolvimento de navbar lateral para integração com iframes
+[33mc92a52b[m Interface de Cadastro de fluxo criada
+[33m6b65cad[m Merge pull request #7 from Raul-Desconsi/Raul
+[33m6617e69[m Criação de tela de login e padrão de estilização
+[33m44e18be[m Merge pull request #6 from Raul-Desconsi/Raul
+[33mc980c5c[m Import do bootstrap e criação de página inicial
+[33md6e877d[m #1 from Raul-Desconsi/Samii
+[33mbef5ce8[m Estruturação de pastas e arquivos iniciais do projeto
+[33mc7f2fb9[m Update README.md
+[33m2a81e66[m Update README.md
+[33mb134adc[m[33m ([m[1;31morigin/Roger[m[33m)[m Primeiro commit
+[33m580504f[m Initial commit

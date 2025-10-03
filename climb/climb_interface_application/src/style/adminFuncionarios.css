@@ -1,0 +1,171 @@
+    /*Tabela de funcionários*/
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background-color: #f8f9fa;
+    }
+
+    .container-fluid {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 20px;
+        overflow: hidden;
+    }
+
+    .table-controls.header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table-controls.header h5 {
+        font-weight: 600;
+        color: #0d6efd;
+    }
+
+    .table-controls.filters {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .table-controls.filters label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+        margin-bottom: 0;
+    }
+
+    .table-controls.filters .d-flex {
+        gap: 8px;
+    }
+
+    .table-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .table-responsive {
+        flex: 1;
+        overflow-y: auto;
+        margin-bottom: 0;
+    }
+
+    table {
+        width: 100%;
+        min-width: 600px;
+        margin-bottom: 0;
+    }
+
+    table thead th {
+        background-color: #f1f5fd;
+        color: #495057;
+        font-weight: 600;
+        border-bottom: 2px solid #dee2e6;
+        padding: 12px 15px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    table tbody td {
+        padding: 12px 15px;
+        vertical-align: middle;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .pagination-container {
+        padding: 15px;
+        border-top: 1px solid #dee2e6;
+        background-color: #fff;
+    }
+
+    .pagination {
+        margin-bottom: 0;
+    }
+
+    .form-select,
+    .form-control {
+        min-width: 100px;
+        border-radius: 6px;
+        border: 1px solid #ced4da;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-select:focus,
+    .form-control:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .modal-title {
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .table-controls.filters {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .table-controls.filters .d-flex {
+            width: 100%;
+        }
+
+        .table-controls.filters .d-flex input {
+            flex: 1;
+        }
+    }
+
+
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        color: #6c757d;
+    }
+
+    .empty-state i {
+        font-size: 48px;
+        margin-bottom: 15px;
+        opacity: 0.5;
+    }
+
+    /*-----------------------------------------------------*/

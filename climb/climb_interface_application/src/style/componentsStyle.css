@@ -1,35 +1,74 @@
 /*PADRONIZAÇÃO*/
-.color-primary{ 
+.color-primary {
     color: #00ccbe !important;
 }
 
-.bg-primary{
+
+/*Backgound primary*/
+.bg-primary {
     background-color: #00ccbe !important;
 }
 
 .bg-primary:hover,
 .bg-primary:focus,
-.bg-primary:active{
+.bg-primary:active {
     background-color: #00EDDD !important;
 }
 
-/*------------------*/
 
-/*Acessórios*/
+/*Botão primary*/
 .btn-primary {
     border: none;
     transition: background 0.3s ease, transform 0.2s ease;
 }
+
 .btn-primary:hover {
     transform: translateY(-2px);
 }
+
 .btn-primary:active,
-.btn-primary:focus{
+.btn-primary:focus {
     color: #fff !important;
     box-shadow: none;
     transform: translateY(2px);
-
 }
+
+/*-----------------------------------------------------*/
+
+
+/*background secondary*/
+
+.bg-secondary {
+    background-color: #474747 !important;
+}
+
+.bg-secondary:hover,
+.bg-secondary:focus,
+.bg-secondary:active {
+    background-color: #565656 !important;
+}
+
+/* Botão secondary */
+.btn-secondary {
+    border: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+}
+
+.btn-secondary:active,
+.btn-secondary:focus {
+    color: #fff !important;
+    box-shadow: none;
+    transform: translateY(2px);
+}
+
+/*-----------------------------------------------------*/
+
+
+
 /* Inputs com class form-control */
 .form-control {
     border: 1px solid #ccc;
@@ -42,45 +81,109 @@
     border-color: #00EDDD !important;
     box-shadow: 0 0 8px rgba(0, 237, 221, 0.4);
     outline: none;
-    
 }
 
-.form-select{
-    border: 1px solid #ccc;
+.form-select {
+    border: 1px solid #ccc !important; /* força a borda padrão */
     border-radius: 8px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: none !important; /* remove sombra padrão do bootstrap */
 }
 
-.form-select:hover{
+.form-select:hover {
     border-color: #00EDDD !important;
-    box-shadow: 0 0 8px rgba(0, 237, 221, 0.4);
-    outline: none;
-    
-}
-.dropdown-item{
-    border: none;
-    border-radius: 8px;
-    text-align: center;
+    box-shadow: 0 0 8px rgba(0, 237, 221, 0.4) !important;
+    outline: none !important;
 }
 
-.dropdown-item:hover{
+.form-select:focus,
+.form-select:active {
+    border: 1px solid #00EDDD !important; /* força cor da borda */
+    box-shadow: 0 0 8px rgba(0, 237, 221, 0.4) !important; /* substitui box-shadow do bootstrap */
+    outline: none !important;
+}
+
+
+/*-----------------------------------------------------*/
+
+
+/* dropdown-item */
+
+.dropdown-menu {
+ max-height:150px;
+    overflow-y: auto;
+    scrollbar-width: large;
+
+
+}
+
+.dropdown-item {
+    border: none ;
+    text-align: center;
+
+}
+
+.dropdown-item:hover {
     box-shadow: 0 0 8px rgba(0, 237, 221, 0.4);
     outline: none;
     background-color: #00EDDD !important;
     color: #fff;
-    
+
 }
+
 .dropdown-item.active,
 .dropdown-item:active {
-  background-color: #b9b9b9 !important; /* cor do selecionado */
-  color: #fff !important;              /* texto branco para contraste */
+    background-color: #b9b9b9 !important;
+    color: #fff !important;
 }
+
+/*-----------------------------------------------------*/
+
+
 /* background de containers com class bg-light */
 .bg-light {
     background-color: #f9fafc !important;
 }
+
 .selectOption.active,
 .selectOption:active {
-  background-color: #b9b9b9 !important; /* cor do selecionado */
-  color: #fff !important;              /* texto branco para contraste */
+    background-color: #b9b9b9 !important;
+    /* cor do selecionado */
+    color: #fff !important;
+    /* texto branco para contraste */
 }
+
+/*-----------------------------------------------------*/
+
+
+/* class page-link usando em componentes de paginação  */
+a.page-link {
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    border: solid 1px #ccc;
+    background-color: #fff;
+    color: #000000;
+}
+
+a.page-link:hover,
+a.page-link:focus {
+    background-color: #00eddd !important;
+    color: #fff !important;
+    text-decoration: none;
+    border-color: #00ccbe;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.page-item.active .page-link {
+    background-color: #00ccbe !important;
+    color: #fff !important;
+    border-color: #00ccbe !important;
+}
+
+/*-----------------------------------------------------*/

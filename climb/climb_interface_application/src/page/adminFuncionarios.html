@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -11,149 +11,247 @@
     <link rel="stylesheet" href="../style/componentsStyle.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="/climb/climb_interface_application/libs/bootstrap.min.css">
+  <link rel="stylesheet" href="/climb/climb_interface_application/src/style/adminFuncionarios.css">
+  <link rel="stylesheet" href="/climb/climb_interface_application/src/style/componentsStyle.css">
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
 
 
 </head>
 
 <body>
-  
-  <div class="container-fluid py-4">
-   
-    <div class="card shadow mb-4">
-      <div class="card-header py-3">
-        <div class="row">
-          <div class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
-            <h5 class="card-title mb-0 text-md-start text-center">Employee Management</h5>
-          </div>
-          <div class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto mt-0">
-            <div class="dt-buttons btn-group flex-wrap mb-0">
-              <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
-                <i class="fa fa-plus me-1"></i> Add New Employee
-              </button>
-            </div>
-          </div>
-        </div>
+
+  <div class="container-fluid">
+    <!-- Header -->
+    <div class="table-controls header">
+      <h5 class="color-primary mb-0">Tabela de Gerenciamento de Funcionários</h5>
+      <button class="btn btn-primary bg-primary" type="button" data-bs-toggle="modal"
+        data-bs-target="#addEmployeeModal">
+        <i class="bx bx-plus"></i> Adicionar Funcionário
+      </button>
+    </div>
+
+
+    <div class="table-controls filters">
+      <label>Exibir
+        <select class="form-select d-inline" id="entriesPerPage">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        registros
+      </label>
+
+      <div class="d-flex align-items-center">
+        <input type="search" class="form-control" id="searchInput" placeholder="Buscar funcionário...">
+        <button class="btn btn-primary bg-primary" type="button">
+          <i class="bx bx-search"></i>
+        </button>
       </div>
-      
-      <!-- Table Controls -->
-      <div class="card-body">
-        <div class="row mb-3 justify-content-between">
-          <div class="col-md-auto">
-            <label>Show
-              <select class="form-select d-inline w-auto" id="entriesPerPage">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-              entries
-            </label>
-          </div>
-          <div class="col-md-auto">
-            <label>Search:
-              <input type="search" class="form-control d-inline w-auto" id="searchInput" placeholder="Type to search...">
-            </label>
-          </div>
-        </div>
-
-        <!-- Table -->
-        <div class="table-responsive">
-          <table class="table table-bordered align-middle" id="employeeTable">
-            <thead class="table-light">
-              <tr>
-                <th><input type="checkbox" id="selectAll"></th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Date</th>
-                <th>Salary</th>
-                <th>Status</th>
-                <th class="text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="employeeTableBody">
-              
-                
+    </div>
 
 
+    <div class="table-container">
+      <div class="table-responsive">
+        <table class="table align-middle" id="employeeTable">
+          <thead class="table-light">
+            <tr>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Função</th>
+              <th>Setor</th>
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="employeeTableBody">
+            <tr>
+              <td>João Silva</td>
+              <td>joao.silva@email.com</td>
+              <td>Engenheiro</td>
+              <td>Engenharia</td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-warning me-2" title="Editar">
+                  <i class="bx bx-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" title="Excluir">
+                  <i class="bx bx-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Maria Souza</td>
+              <td>maria.souza@email.com</td>
+              <td>Analista</td>
+              <td>Financeiro</td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-warning me-2" title="Editar">
+                  <i class="bx bx-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" title="Excluir">
+                  <i class="bx bx-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Carlos Oliveira</td>
+              <td>carlos.oliveira@email.com</td>
+              <td>Desenvolvedor</td>
+              <td>Tecnologia</td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-warning me-2" title="Editar">
+                  <i class="bx bx-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" title="Excluir">
+                  <i class="bx bx-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Ana Costa</td>
+              <td>ana.costa@email.com</td>
+              <td>Gerente</td>
+              <td>Administração</td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-warning me-2" title="Editar">
+                  <i class="bx bx-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" title="Excluir">
+                  <i class="bx bx-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-            </tbody>
-          </table>
-        </div>
-
-      
-        <div class="row mt-3 justify-content-between">
-          <div class="col-md-auto">
-            <span id="tableInfo">Showing 0 to 0 of 0 entries</span>
-          </div>
-          <div class="col-md-auto">
-            <ul class="pagination" id="pagination">
-            </ul>
-          </div>
-        </div>
+      <div class="pagination-container">
+        <nav aria-label="Navegação de páginas">
+          <ul class="pagination justify-content-center mb-0">
+            <li class="page-item">
+              <a class="page-link" href="#">Anterior</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Próximo</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
 
-  <!-- Modal Add Employee -->
+
   <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addEmployeeModalLabel">Add New Employee</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="employeeForm">
-            <div class="mb-3">
-              <label for="employeeName" class="form-label">Full Name</label>
-              <input type="text" class="form-control" id="employeeName" required>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addEmployeeModalLabel">Adicionar Novo Funcionário</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <form class="listaCadastro">
+          
+          <div class="mb-3">
+            <label for="inputEmail" class="form-label">Email</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bx bx-envelope color-primary"></i>
+              </span>
+              <input type="email" class="form-control" id="inputEmail" name="email" placeholder="email@exemplo.com"
+                required aria-label="Email">
             </div>
-            <div class="mb-3">
-              <label for="employeeEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="employeeEmail" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="inputNome" class="form-label">Nome completo</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bx bx-user color-primary"></i>
+              </span>
+              <input type="text" class="form-control" id="inputNome" name="nome" placeholder="Nome completo"
+                required aria-label="Nome completo">
             </div>
-            <div class="mb-3">
-              <label for="employeePosition" class="form-label">Position</label>
-              <input type="text" class="form-control" id="employeePosition" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="inputCPF" class="form-label">CPF</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bx bx-credit-card-front color-primary"></i>
+              </span>
+              <input type="text" class="form-control" id="inputCPF" name="cpf" placeholder="000.000.000-00" required
+                aria-label="CPF">
             </div>
-            <div class="mb-3">
-              <label for="employeeDate" class="form-label">Hire Date</label>
-              <input type="date" class="form-control" id="employeeDate" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="inputSenha" class="form-label">Senha</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bx bx-key color-primary"></i>
+              </span>
+              <input type="password" class="form-control" id="inputSenha" name="senha"
+                placeholder="Crie uma senha segura" required aria-label="Senha">
             </div>
-            <div class="mb-3">
-              <label for="employeeSalary" class="form-label">Salary</label>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label for="inputFuncao" class="form-label">Função</label>
               <div class="input-group">
-                <span class="input-group-text">$</span>
-                <input type="number" class="form-control" id="employeeSalary" step="0.01" required>
+                <span class="input-group-text">
+                  <i class="bx bx-briefcase color-primary"></i>
+                </span>
+                <input type="text" class="form-control" id="inputFuncao" name="funcao" 
+                      placeholder="Função na empresa" required aria-label="Função">
               </div>
             </div>
-            <div class="mb-3">
-              <label for="employeeStatus" class="form-label">Status</label>
-              <select class="form-select" id="employeeStatus" required>
-                <option value="">Select Status</option>
-                <option value="Professional">Professional</option>
-                <option value="Trainee">Trainee</option>
-                <option value="On Leave">On Leave</option>
-                <option value="Terminated">Terminated</option>
-              </select>
+
+            <div class="col-md-6 mb-3">
+              <label for="nivelUsuario" class="form-label">Nível do Usuário</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bx bx-shield-quarter color-primary"></i>
+                </span>
+                <select class="form-select" id="nivelUsuario" name="nivelUsuario" required>
+                  <option value="">Selecione</option>
+                  <option value="1">Administrador</option>
+                  <option value="2">Operador</option>
+                  <option value="3">Funcionário</option>
+                </select>
+              </div>
             </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="saveEmployee">Save Employee</button>
-        </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="setorSelect" class="form-label">Setor</label>
+            <div class="dropdown w-100">
+              <button class="btn btn-primary bg-primary dropdown-toggle w-100" required type="button"
+                id="setorSelect" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="listbox">
+                Selecione uma opção
+              </button>
+              <ul id="setorDropdown" class="dropdown-menu w-100" aria-labelledby="setorSelect" role="listbox">
+              </ul>
+              <input type="hidden" id="setorSelecionadoId" name="setorId" required>
+              <input type="hidden" id="setorSelecionadoNome" name="setorNome">
+            </div>
+            <div class="invalid-feedback">Por favor, selecione um setor.</div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary bg-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button id="btnSubmitAdd" type="submit" class="btn btn-primary bg-primary">Salvar</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-
-
-
-
-
-
-
-
+</div>
+        <script src="../../libs/bootstrap.bundle.min.js"></script>
+        <script src="../controller/adminFuncionarios.js"></script>
     
     <script src="../../libs/bootstrap.bundle.min.js"></script>
 </body>

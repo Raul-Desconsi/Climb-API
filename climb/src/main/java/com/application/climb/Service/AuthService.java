@@ -3,12 +3,14 @@ package com.application.climb.Service;
 import java.util.Date;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.application.climb.Model.Funcionario;
 import com.application.climb.Repository.FuncionarioRepository;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -50,7 +52,6 @@ public class AuthService {
                 .setSubject(funcionario.getId().toString())         
                 .claim("email", funcionario.getEmail())            
                 .claim("nivelPermissao", funcionario.getNivelPermissao())
-                .claim("empresaId", funcionario.getEmpresa().getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1h
                 .signWith(getSecretKey(), SignatureAlgorithm.HS256)
@@ -72,4 +73,29 @@ public class AuthService {
             return false;
         }
     }
+    
+ //Pega o usuario baseado no seu token
+public Funcionario getFuncionarioFromToken(String token) {
+    try {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSecretKey()) 
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        Optional<Funcionario> funcionarioOPT = this.funcionarioRepository.findById(Long.parseLong(claims.getSubject()));
+
+        if (funcionarioOPT.isPresent()) {
+            Funcionario funcionario = funcionarioOPT.get();
+            return funcionario;
+        } else {
+            throw new RuntimeException("Funcionário não encontrado para o token fornecido");
+        }
+
+    } catch (Exception e) {
+        throw new RuntimeException("Token inválido ou expirado", e);
+    }
 }
+}
+
+

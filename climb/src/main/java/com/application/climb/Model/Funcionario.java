@@ -1,5 +1,7 @@
 package com.application.climb.Model;
 
+import java.util.Optional;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

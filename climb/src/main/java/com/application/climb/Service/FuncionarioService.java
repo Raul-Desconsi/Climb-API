@@ -26,7 +26,14 @@ public Optional<Funcionario> findById(Long id) {
 }
 
 
+public Funcionario create(Funcionario funcionario){
+    return this.funcionarioRepository.save(funcionario);
 }
+
+
+}
+
+
 
 
 

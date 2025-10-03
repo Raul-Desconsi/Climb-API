@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climb</title>
+
+    <!-- CSS local -->
+    <link rel="stylesheet" href="../style/home.css" />
+    <link rel="stylesheet" href="../style/componentsStyle.css">
+
+    <!-- Bootstrap (caso necessário) -->
+    <link rel="stylesheet" href="../../libs/bootstrap.min.css">
+
+    <!-- Icones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="d-flex">
+        <nav class="sidebar d-flex flex-column flex-shrink-0 shadow-lg position-fixed">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <div class="d-flex mb-5">
+                <div class="logo-image-container">
+                    <img class="logo-image" width="90px" height="90px" src="../assets/EMBLEMA-PRINCIPAL.png" alt="Climb">
+                    <div class="logo_name">Climb</div>
+                    <i class="bx bx-menu" id="btn"></i>
+                </div>
+            </div>
+
+            <ul class="nav-list">
+                <li>
+                    <a id="dashboardbtn" href="#">
+                        <i class="bx bx-grid-alt"></i>
+                        <span class="links_name">Dashboard</span>
+                    </a>
+                    <span class="tooltip">Dashboard</span>
+                </li>
+
+                <li>
+                    <a id="funcionariosbtn" href="#">
+                        <i class='bx bx-group'></i>
+                        <span class="links_name">Funcionários</span>
+                    </a>
+                    <span class="tooltip">Funcionários</span>
+                </li>
+
+                <li>
+                    <a id="setoresbtn" href="#">
+                        <i class="bx bx-building"></i>
+                        <span class="links_name">Setores</span>
+                    </a>
+                    <span class="tooltip">Setores</span>
+                </li>
+
+                <li>
+                    <a id="perfilbtn" href="#">
+                        <i class='bx bx-user'></i>
+                        <span class="links_name">Perfil</span>
+                    </a>
+                    <span class="tooltip">Perfil</span>
+                </li>
+
+                <li class="profile">
+                    <div class="profile-details">
+                        <img src="../assets/usericon.png" alt="profileImg" />
+                        <div class="name_job">
+                            <div class="name"></div>
+                            <div class="job"></div>
+                        </div>
+                    </div>
+                    <i class="bx bx-log-out" id="log_out"></i>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content" id="main-content">
+            <!-- Conteúdo principal -->
+        </main>
+    </div>
+
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let closeBtn = document.querySelector("#btn");
+        let searchBtn = document.querySelector("#searchBtn"); // Certifique-se que existe
+
+        closeBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            menuBtnChange();
+        });
+
+        searchBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            menuBtnChange();
+        });
+
+        function menuBtnChange() {
+            if (sidebar.classList.contains("open")) {
+                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else {
+                closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+            }
+        }
+    </script>
+
+    <script src="../events/adminHome.js"></script>
+</body>
+
+</html>

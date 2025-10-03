@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>Climb</title>
-    <link rel="stylesheet" href="/climb/climb_interface_application/src/style/home.css" />
-    <link rel="stylesheet" href="/climb/climb_interface_application/src/style/componentsStyle.css">
+    <link rel="stylesheet" href="../style/home.css" />
+    <link rel="stylesheet" href="../style/componentsStyle.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
@@ -53,10 +53,10 @@
            
             <li class="profile">
                 <div class="profile-details">
-                    <img src="/climb/climb_interface_application/src/assets/usericon.png"  alt="profileImg" />
+                    <img src="../assets/usericon.png"  alt="profileImg" />
                     <div class="name_job">
-                        <div id="nome" class="name"></div>
-                        <div id="funcao" class="job"></div>
+                        <div class="name"></div>
+                        <div class="job"></div>
                     </div>
                 </div>
 
@@ -78,6 +78,11 @@
         closeBtn.addEventListener("click", () => {
             sidebar.classList.toggle("open");
             menuBtnChange()
+        });
+
+        searchBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            menuBtnChange(); 
         });
 
         function menuBtnChange() {

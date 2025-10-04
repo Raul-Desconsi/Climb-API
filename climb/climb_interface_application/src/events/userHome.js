@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("log_out");
 
-    const nomelbl = document.getElementById("nome");
+   const nomelbl = document.getElementById("nome");
     const funcaolbl = document.getElementById("funcao");
 
     insertUserInfo();
@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    // Verificação de autenticação
     if (!localStorage.getItem("jwtToken") || localStorage.getItem("nivelPermissao") !== "2") {
     location.href = 'login.html';
 }

@@ -113,21 +113,7 @@
     .pagination {
         margin-bottom: 0;
     }
-
-    .form-select,
-    .form-control {
-        min-width: 100px;
-        border-radius: 6px;
-        border: 1px solid #ced4da;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
-
-    .form-select:focus,
-    .form-control:focus {
-        border-color: #86b7fe;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    }
-
+    
     .modal-header {
         background-color: #f8f9fa;
         border-bottom: 1px solid #dee2e6;

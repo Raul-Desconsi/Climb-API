@@ -4,15 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>Climb</title>
-
-    <!-- CSS local -->
     <link rel="stylesheet" href="../style/home.css" />
     <link rel="stylesheet" href="../style/componentsStyle.css">
-
-    <link rel="stylesheet" href="/Climb-API/climb/climb_interface_application/libs/bootstrap.min.css">
-    <link rel="stylesheet" href="/Climb-API/climb/climb_interface_application/src/style/componentsStyle.css">
-    <link rel="stylesheet" href="/Climb-API/climb/climb_interface_application/src/style/home.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
@@ -34,85 +27,6 @@
                 </a>
                 <span class="tooltip">Dashboard</span>
             </li>
-
-            <li>
-                <a  id="funcionariosbtn" href="#">
-                    <i class='bx  bx-group'  ></i> 
-                    <span class="links_name">Funcinários</span>
-                </a>
-                <span class="tooltip">Funcinários</span>
-            </li>
-            <li>
-                <a id="setoresbtn" href="#">
-                    <i class="bx bx-building"></i>
-                    <span class="links_name">Setores</span>
-                </a>
-                <span class="tooltip">Setores</span>
-            </li>
-            <li>
-                <a  id="funcionariosbtn" href="#">
-                    <i class='bx  bx-user'  ></i> 
-                    <span class="links_name">Perfil</span>
-                </a>
-                <span class="tooltip">Perfil</span>
-            </li>
-           
-            <li class="profile">
-                <div class="profile-details">
-                    <img src="/climb/climb_interface_application/src/assets/user.png"  alt="profileImg" />
-                    <div class="name_job">
-                        <div  id="nome" class="name"></div>
-                        <div id="funcao" class="job"></div>
-                    </div>
-                </div>
-
-                <i  class="bx bx-log-out" id="log_out"></i>
-            </li>
-        </ul>
-    </div>
-     <main class="main-content" id="main-content" >
-        
-        
-
-    </main>
-
-
-    <script>
-        let sidebar = document.querySelector(".sidebar");
-        let closeBtn = document.querySelector("#btn");
-
-        closeBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("open");
-            menuBtnChange()
-        });
-
-        function menuBtnChange() {
-            if (sidebar.classList.contains("open")) {
-                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
-            } else {
-                closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
-            }
-        }
-
-
-    </script>
-
-    <script src="../events/adminHome.js"></script>
-</body>
-
-</html>
-<!--
-    NÃO RETIREI PORQUE NÃO SABIA QUAL ERA O MAIS ATUAL FAVOR VERIFICAR
-<div class="d-flex">
-    <nav class="sidebar d-flex flex-column flex-shrink-0 shadow-lg position-fixed">
-        <button class="toggle-btn" onclick="toggleSidebar()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="d-flex  mb-5">
-            <div class=" logo-image-container">
-            <img class="logo-image" src="/Climb-API/climb/climb_interface_application/src/assets/EMBLEMA-PRINCIPAL.png" 
-                class="rounded " alt="Climb">
-            </div>
 
             <ul class="nav-list">
                 <li>
@@ -154,4 +68,69 @@
                             <div class="name"></div>
                             <div class="job"></div>
                         </div>
->>>>>>> Samii -->
+            <li>
+                <a  id="funcionariosbtn" href="#">
+                    <i class='bx  bx-group'  ></i> 
+                    <span class="links_name">Funcinários</span>
+                </a>
+                <span class="tooltip">Funcinários</span>
+            </li>
+            <li>
+                <a id="setoresbtn" href="#">
+                    <i class="bx bx-building"></i>
+                    <span class="links_name">Setores</span>
+                </a>
+                <span class="tooltip">Setores</span>
+            </li>
+            <li>
+                <a  id="funcionariosbtn" href="#">
+                    <i class='bx  bx-user'  ></i> 
+                    <span class="links_name">Perfil</span>
+                </a>
+                <span class="tooltip">Perfil</span>
+            </li>
+           
+            <li class="profile">
+                <div class="profile-details">
+                    <img src="../assets/user.png"  alt="profileImg" />
+                    <div class="name_job">
+                        <div  id="nome" class="name"></div>
+                        <div id="funcao" class="job"></div>
+                    </div>
+                </div>
+
+                <i  class="bx bx-log-out" id="log_out"></i>
+            </li>
+        </ul>
+    </div>
+     <main class="main-content" id="main-content" >
+        
+        
+
+    </main>
+
+
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let closeBtn = document.querySelector("#btn");
+
+        closeBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            menuBtnChange()
+        });
+
+        function menuBtnChange() {
+            if (sidebar.classList.contains("open")) {
+                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else {
+                closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+            }
+        }
+
+
+    </script>
+
+    <script src="../events/adminHome.js"></script>
+</body>
+
+</html>

@@ -16,6 +16,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+     const nomelbl = document.getElementById("nome");
+    const funcaolbl = document.getElementById("funcao");
+
+    insertUserInfo();
+
+    function insertUserInfo() {
+        const nome = localStorage.getItem('nome');
+        const funcao = localStorage.getItem('funcao');
+
+        nomelbl.innerText = nome
+        funcaolbl.innerText = funcao
+
+    }
+
+
     // Verificação de autenticação
     if (!localStorage.getItem("jwtToken") || localStorage.getItem("nivelPermissao") !== "1") {
         location.href = 'login.html';

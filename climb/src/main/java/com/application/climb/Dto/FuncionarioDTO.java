@@ -1,39 +1,37 @@
 package com.application.climb.Dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 public class FuncionarioDTO {
 
-    private String cpf;
-    private String nome;
-    private String email;
-    private String senha;
-    private int nivelPermissao;
-    private String funcao;
-    private int setor;
-    private int empresa;
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Create {
+        private String cpf;
+        private String nome;
+        private String email;
+        private String senha;
+        private int nivelPermissao;
+        private String funcao;
+        private int setor;
+        private int empresa;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Response {
+        private String nome;
+        private String email;
+        private int nivelPermissao;
+        private String funcao;
+        private String setor;
+        private String empresa;
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getSenha() { return senha; }
-    public void setSenha(String senha) { this.senha = senha; }
-
-    public int getNivelPermissao() { return nivelPermissao; }
-    public void setNivelPermissao(int nivelPermissao) { this.nivelPermissao = nivelPermissao; }
-
-    public String getFuncao() { return funcao; }
-    public void setFuncao(String funcao) { this.funcao = funcao; }
-
-    public Integer getSetor() { return setor; }
-    public void setSetor(int setor) { this.setor = setor; }
-
-    public int getEmpresa() { return empresa; }
-    public void setEmpresa(int empresa) { this.empresa = empresa; }
-
-
-    public String getCpf() { return cpf; }
-    public void setCpf(String cpf) { this.cpf = cpf; }
-
+       
+    }
 }

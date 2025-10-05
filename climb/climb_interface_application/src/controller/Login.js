@@ -46,7 +46,8 @@ function submitLogin(event) {
                     localStorage.setItem('id', response.id);
                     localStorage.setItem('nivelPermissao', response.nivelPermissao);
                     localStorage.setItem('empresaId', response.empresaId);
-
+                    localStorage.setItem('nome', response.nome);
+                    localStorage.setItem('funcao', response.funcao);
                     
                    
 

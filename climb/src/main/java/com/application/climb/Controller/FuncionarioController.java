@@ -1,7 +1,9 @@
 package com.application.climb.Controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +49,9 @@ public ResponseEntity<?> funcionarioLogin(@RequestBody Funcionario formFromWeb) 
             "nivelPermissao", funcionario.getNivelPermissao(),
             "id", funcionario.getId(),
             "setor", funcionario.getSetor().getId(),
-            "empresaId",  funcionario.getEmpresa().getId()
+            "empresaId",  funcionario.getEmpresa().getId(),
+            "nome", funcionario.getNome(),
+            "funcao", funcionario.getFuncao()
         ));
 
     } catch (RuntimeException e) {
@@ -83,7 +87,7 @@ public ResponseEntity<?> getFuncionario(@RequestParam Long id, @RequestHeader("A
 
 
 @PostMapping("/Create")
-public ResponseEntity<?> createFuncionario(@RequestHeader("Authorization") String token, @RequestBody FuncionarioDTO funcionarioForm){
+public ResponseEntity<?> createFuncionario(@RequestHeader("Authorization") String token, @RequestBody FuncionarioDTO.Create funcionarioForm){
 
         // Pega o funcionario baseado no token     
         Funcionario funcionarioformtoken = authService.getFuncionarioFromToken(token);
@@ -124,11 +128,50 @@ public ResponseEntity<?> createFuncionario(@RequestHeader("Authorization") Strin
             return ResponseEntity.status(400).body("Funcionário já existe");
 
     }
-
-
-
 }
 
+
+@GetMapping("/GetFuncionarioFromEmpresa")
+public ResponseEntity<?> getFuncionarioFromEmpresa(@RequestParam Long id, @RequestHeader("Authorization") String token) {
+
+    try {
+        if (!authService.authenticate(token)) {
+            return ResponseEntity.status(403).body("Token inválido");
+        }
+         if (authService.getFuncionarioFromToken(token).getNivelPermissao() != 1) {
+            return ResponseEntity.status(403).body("Sem permissão");
+        }
+    
+         if (authService.getFuncionarioFromToken(token).getEmpresa().getId().intValue() != id) {
+            return ResponseEntity.status(403).body("Sem permissão");
+        }
+
+
+        List<Funcionario> funcionariosList = funcionarioService.findByEmpresaId(id);
+
+        if (!funcionariosList.isEmpty()) {
+
+            //Gera uma lista que passa pelo DTO do funcionário, assim entrgando somente os campos escolhidos 
+
+            List<FuncionarioDTO.Response> funcionariosDTO = funcionariosList.stream()
+            .map(f -> new FuncionarioDTO.Response(
+                f.getNome(),
+                f.getEmail(),
+                f.getNivelPermissao(),
+                f.getFuncao(),
+                f.getSetor().getNome(),
+                f.getEmpresa().getNome()
+            ))
+            .collect(Collectors.toList());
+
+            return ResponseEntity.ok(funcionariosDTO);
+        } else {
+            return ResponseEntity.status(404).body("Funcionários inexistentes");
+        }
+    } catch (Exception e) {
+        return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
+    }
+}
 
 }
 

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.application.climb.Model.Funcionario;
 import com.application.climb.Repository.FuncionarioRepository;
+
+import java.util.List;
 import java.util.Optional;
 
 
@@ -23,6 +25,10 @@ public Funcionario findByEmail(String email) {
 
 public Optional<Funcionario> findById(Long id) {
     return this.funcionarioRepository.findById(id);
+}
+
+public List<Funcionario> findByEmpresaId(Long id) {
+    return this.funcionarioRepository.findByEmpresaId(id);
 }
 
 

@@ -29,72 +29,68 @@
             <div class=" logo-image-container">
             <img class="logo-image" src="../assets/EMBLEMA-PRINCIPAL.png" 
                 class="rounded " alt="Climb">
-            </div>
+            <div class="logo_name">Climb</div>
+            <i class="bx bx-menu" id="btn"></i>
+        </div>
+        <ul class="nav-list">
+            
+            <li>
+                <a id="dashboardbtn" href="#">
+                    <i class="bx bx-grid-alt"></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
 
-            <ul class="nav-list">
-                <li>
-                    <a id="dashboardbtn" href="#">
-                        <i class="bx bx-grid-alt"></i>
-                        <span class="links_name">Dashboard</span>
-                    </a>
-                    <span class="tooltip">Dashboard</span>
-                </li>
-
-                <li>
-                    <a id="funcionariosbtn" href="#">
-                        <i class='bx bx-group'></i>
-                        <span class="links_name">Funcionários</span>
-                    </a>
-                    <span class="tooltip">Funcionários</span>
-                </li>
-
-                <li>
-                    <a id="setoresbtn" href="#">
-                        <i class="bx bx-building"></i>
-                        <span class="links_name">Setores</span>
-                    </a>
-                    <span class="tooltip">Setores</span>
-                </li>
-
-                <li>
-                    <a id="perfilbtn" href="#">
-                        <i class='bx bx-user'></i>
-                        <span class="links_name">Perfil</span>
-                    </a>
-                    <span class="tooltip">Perfil</span>
-                </li>
-
-                <li class="profile">
-                    <div class="profile-details">
-                        <img src="../assets/usericon.png" alt="profileImg" />
-                        <div class="name_job">
-                            <div class="name"></div>
-                            <div class="job"></div>
-                        </div>
+            <li>
+                <a  id="funcionariosbtn" href="#">
+                    <i class='bx  bx-group'  ></i> 
+                    <span class="links_name">Funcinários</span>
+                </a>
+                <span class="tooltip">Funcinários</span>
+            </li>
+            <li>
+                <a id="setoresbtn" href="#">
+                    <i class="bx bx-building"></i>
+                    <span class="links_name">Setores</span>
+                </a>
+                <span class="tooltip">Setores</span>
+            </li>
+            <li>
+                <a  id="funcionariosbtn" href="#">
+                    <i class='bx  bx-user'  ></i> 
+                    <span class="links_name">Perfil</span>
+                </a>
+                <span class="tooltip">Perfil</span>
+            </li>
+           
+            <li class="profile">
+                <div class="profile-details">
+                    <img src="../assets/user.png"  alt="profileImg" />
+                    <div class="name_job">
+                        <div  id="nome" class="name"></div>
+                        <div id="funcao" class="job"></div>
                     </div>
-                    <i class="bx bx-log-out" id="log_out"></i>
-                </li>
-            </ul>
-        </nav>
+                </div>
 
-        <main class="main-content" id="main-content">
-            <!-- Conteúdo principal -->
-        </main>
+                <i  class="bx bx-log-out" id="log_out"></i>
+            </li>
+        </ul>
     </div>
+     <main class="main-content" id="main-content" >
+        
+        
+
+    </main>
+
 
     <script>
         let sidebar = document.querySelector(".sidebar");
         let closeBtn = document.querySelector("#btn");
-        let searchBtn = document.querySelector("#searchBtn"); // Certifique-se que existe
 
         closeBtn.addEventListener("click", () => {
             sidebar.classList.toggle("open");
-            menuBtnChange();
-        });
-
-        searchBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("open");
-            menuBtnChange(); 
+            menuBtnChange()
         });
 
         function menuBtnChange() {
@@ -104,6 +100,8 @@
                 closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
             }
         }
+
+
     </script>
 
     <script src="../events/adminHome.js"></script>

@@ -1,6 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("log_out");
 
+   const nomelbl = document.getElementById("nome");
+    const funcaolbl = document.getElementById("funcao");
+
+    insertUserInfo();
+
+    function insertUserInfo() {
+        const nome = localStorage.getItem('nome');
+        const funcao = localStorage.getItem('funcao');
+
+        nomelbl.innerText = nome
+        funcaolbl.innerText = funcao
+
+    }
+
+
     if (!localStorage.getItem("jwtToken") || localStorage.getItem("nivelPermissao") !== "2") {
     location.href = 'login.html';
 }

@@ -30,9 +30,9 @@ public class Funcionario {
     @Column(nullable = false)
     private int nivelPermissao;
 
-    @Column(length = 100, nullable = false)
-    private String funcao;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cargo_id", nullable = false)
+    private Cargo cargo;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "setor_id", nullable = false)

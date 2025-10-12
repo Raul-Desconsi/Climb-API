@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.application.climb.Dto.FuncionarioDTO;
+import com.application.climb.Model.Cargo;
 import com.application.climb.Model.Funcionario;
 import com.application.climb.Model.Setor;
 import com.application.climb.Service.AuthService;
+import com.application.climb.Service.CargoService;
 import com.application.climb.Service.FuncionarioService;
 import com.application.climb.Service.SetorService;
 
@@ -34,6 +36,10 @@ SetorService setorService;
 
 @Autowired
 AuthService authService;
+
+@Autowired
+CargoService cargoService;
+
 
 
 //Post de formulario (formFromWeb) para criar token e verificar senha e email e nivel de permissão 
@@ -51,7 +57,7 @@ public ResponseEntity<?> funcionarioLogin(@RequestBody Funcionario formFromWeb) 
             "setor", funcionario.getSetor().getId(),
             "empresaId",  funcionario.getEmpresa().getId(),
             "nome", funcionario.getNome(),
-            "funcao", funcionario.getFuncao()
+            "cargo", funcionario.getCargo().getId()
         ));
 
     } catch (RuntimeException e) {
@@ -105,7 +111,12 @@ public ResponseEntity<?> createFuncionario(@RequestHeader("Authorization") Strin
         funcionario.setEmail(funcionarioForm.getEmail().toLowerCase());
         funcionario.setNivelPermissao(funcionarioForm.getNivelPermissao());
         funcionario.setNome(funcionarioForm.getNome());
-        funcionario.setFuncao(funcionarioForm.getFuncao());
+        Optional<Cargo> cargoOpt = cargoService.buscarPorNome(funcionarioForm.getCargo());
+            if (cargoOpt.isEmpty()) {
+                return ResponseEntity.status(404).body("Cargo não encontrado");
+            }
+            funcionario.setCargo(cargoOpt.get());
+
         funcionario.setSenha(funcionarioForm.getSenha());
         
         // Criar o funcionário somente na empresa do admin
@@ -158,7 +169,7 @@ public ResponseEntity<?> getFuncionarioFromEmpresa(@RequestParam Long id, @Reque
                 f.getNome(),
                 f.getEmail(),
                 f.getNivelPermissao(),
-                f.getFuncao(),
+                f.getCargo().getNome(),
                 f.getSetor().getNome(),
                 f.getEmpresa().getNome()
             ))

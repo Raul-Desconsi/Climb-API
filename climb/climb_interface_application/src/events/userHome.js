@@ -41,7 +41,7 @@ function callRegisterFlow(maincontent, iframe) {
 function chamadosBtn(maincontent) {
   maincontent.innerHTML = "";
   const iframe = document.createElement("iframe"); // cria aqui, porque é novo
-  iframe.src = "../page/ticket.html"; 
+  iframe.src = "../page/tickets.html"; 
   maincontent.appendChild(iframe);
 }
 

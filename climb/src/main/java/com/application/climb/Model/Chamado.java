@@ -6,8 +6,6 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,11 +34,11 @@ public class Chamado {
     @Column(nullable = false)
     private LocalDateTime data;
 
-    @Column(length = 60, nullable = false)
-    private String areaAfetada;
-
     @Column(length = 255, nullable = false)
     private String descricao;
+
+    @ManyToOne
+    private Setor areaAfetada;
 
     @ManyToOne
     private Funcionario responsavelAbertura;
@@ -48,34 +46,17 @@ public class Chamado {
     @ManyToOne
     private Funcionario responsavelResolucao;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 15, nullable = false)
+    @ManyToOne
     private Urgencia urgencia;
-
-    public enum Urgencia {
-        Baixa,
-        Media,
-        Alta
-    }
 
     @ManyToOne
     private Setor setor;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 30, nullable = false)
+    @ManyToOne
     private Status status;
-
-    public enum Status {
-        Analise,
-        Desenvolvimento,
-        Devolvido,
-        Concluido
-    }
 
     @OneToMany(mappedBy = "chamado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<AtendimentoChamado> atendimentosChamado;
 
-    @OneToMany(mappedBy = "chamado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<ChamadoSetor> chamadosSetor;
     
 }

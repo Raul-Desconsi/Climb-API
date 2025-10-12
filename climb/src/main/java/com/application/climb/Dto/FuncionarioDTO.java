@@ -15,7 +15,7 @@ public class FuncionarioDTO {
         private String email;
         private String senha;
         private int nivelPermissao;
-        private String funcao;
+        private String cargo;
         private int setor;
         private int empresa;
     }
@@ -28,7 +28,7 @@ public class FuncionarioDTO {
         private String nome;
         private String email;
         private int nivelPermissao;
-        private String funcao;
+        private String cargo;
         private String setor;
         private String empresa;
 

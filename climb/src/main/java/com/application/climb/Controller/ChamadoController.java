@@ -102,11 +102,11 @@ public class ChamadoController {
                 }
                 chamado.setStatus(statusOpt.get());
             } else {
-                Optional<Status> statusPadrao = statusService.buscarPorNome("Recepção");
+                Optional<Status> statusPadrao = statusService.buscarPorNome("Na recepção");
                 if (statusPadrao.isPresent()) {
                     chamado.setStatus(statusPadrao.get());
                 } else {
-                    return ResponseEntity.status(404).body("Status 'Análise' não encontrado no banco");
+                    return ResponseEntity.status(404).body("Status não encontrado no banco");
                 }
 
             }

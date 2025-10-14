@@ -39,58 +39,51 @@
         <div class="form-card">
             <h2 class="mb-4 text-center text-primary color-primary">Cadastro de Fluxo</h2>
             <form id="fluxoForm" class="form-control">
-                <div class="mb-3">
-                    <label for="motivo" class="form-label">Por que você quer abrir esse fluxo?</label>
-                    <input type="text" class="form-control" id="motivo" name="motivo" placeholder="Digite o motivo"
-                        required>
-                </div>
 
-                
-                <div class="dropdown mb-3">
-                    <label class="form-label">Qual área será afetada com esse fluxo?</label>
+    <!-- Motivo -->
+    <div class="mb-3">
+        <label for="motivo" class="form-label">Por que você quer abrir esse fluxo?</label>
+        <input type="text" class="form-control" id="motivo" name="motivo" placeholder="Digite o motivo" required>
+    </div>
 
-                    <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropAreaAfetada"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Selecione uma opção
-                    </button>
+    <!-- Área Afetada -->
+    <div class="dropdown mb-3">
+        <label class="form-label">Qual área será afetada com esse fluxo?</label>
 
-                    <ul class="dropdown-menu w-100" id="dropAreaAfetada" aria-labelledby="dropAreaAfetada">
-                       
-                    </ul>
+        <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button"
+            id="dropAreaAfetada" data-bs-toggle="dropdown" aria-expanded="false">
+            Selecione uma opção
+        </button>
 
-                    <input type="hidden" id="areas-afetadas" name="areas-afetadas" required>
-                </div>
+        <ul class="dropdown-menu w-100" aria-labelledby="dropAreaAfetada"></ul>
+        <input type="hidden" id="areas-afetadas" name="areas-afetadas" required>
+    </div>
 
+    <!-- Problema -->
+    <div class="mb-3">
+        <label for="problema" class="form-label">Descreva seu problema</label>
+        <textarea class="form-control" id="problema" name="problema" rows="4"
+            placeholder="Detalhe o problema..." required></textarea>
+    </div>
 
+    <!-- Urgência -->
+    <div class="dropdown mb-3">
+        <label class="form-label">Qual é o nível de urgência?</label>
 
-                <div class="mb-3">
-                    <label for="problema" class="form-label">Descreva seu problema</label>
-                    <textarea class="form-control" id="problema" name="problema" rows="4"
-                        placeholder="Detalhe o problema..." required></textarea>
-                </div>
+        <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button"
+            id="dropUrgencia" data-bs-toggle="dropdown" aria-expanded="false">
+            Selecione a urgência
+        </button>
 
-                <div class="mb-3">
-                    <label class="form-label">Qual é o nível de urgência?</label>
-                    <div class="d-flex gap-2 flex-wrap">
+        <ul class="dropdown-menu w-100" aria-labelledby="dropUrgencia"></ul>
+        <input type="hidden" id="inputUrgencia" name="urgencia" required>
+    </div>
 
-                        <input type="radio" class="btn-check" name="urgencia" id="urgencia-baixa" value="baixa"
-                            required>
-                        <label class="btn btn-outline-success rounded-pill px-4" for="urgencia-baixa">Baixa</label>
-
-                        <input type="radio" class="btn-check" name="urgencia" id="urgencia-media" value="media">
-                        <label class="btn btn-outline-warning rounded-pill px-4" for="urgencia-media">Média</label>
-
-                        <input type="radio" class="btn-check" name="urgencia" id="urgencia-alta" value="alta">
-                        <label class="btn btn-outline-danger rounded-pill px-4" for="urgencia-alta">Alta</label>
-
-                    </div>
-                </div>
-
-                <!-- Botão -->
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary  bg-primary">Cadastrar Fluxo</button>
-                </div>
-            </form>
+    <!-- Botão -->
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary bg-primary">Cadastrar Fluxo</button>
+    </div>
+</form>
         </div>
     </div>
 

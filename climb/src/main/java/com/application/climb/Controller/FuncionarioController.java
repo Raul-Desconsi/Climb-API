@@ -57,7 +57,7 @@ public ResponseEntity<?> funcionarioLogin(@RequestBody Funcionario formFromWeb) 
             "setor", funcionario.getSetor().getId(),
             "empresaId",  funcionario.getEmpresa().getId(),
             "nome", funcionario.getNome(),
-            "cargo", funcionario.getCargo().getId()
+            "cargo", funcionario.getCargo().getNome()
         ));
 
     } catch (RuntimeException e) {
@@ -78,11 +78,27 @@ public ResponseEntity<?> getFuncionario(@RequestParam Long id, @RequestHeader("A
         if (!authService.authenticate(token)) {
             return ResponseEntity.status(403).body("Sem permissão");
         }
+         if (authService.getFuncionarioFromToken(token).getId().intValue() != id) {
+            return ResponseEntity.status(403).body("Sem permissão");
+        }
+
 
         Optional<Funcionario> funcionarioOPT = funcionarioService.findById(id);
 
         if (funcionarioOPT.isPresent()) {
-            return ResponseEntity.ok(funcionarioOPT.get());
+
+        Optional<FuncionarioDTO.Response> funcionarioDTO = funcionarioOPT.map(f -> new FuncionarioDTO.Response(
+                f.getCpf(),
+                f.getNome(),
+                f.getEmail(),
+                f.getNivelPermissao(),
+                f.getCargo().getNome(),
+                f.getSetor().getNome(),
+                f.getEmpresa().getNome()
+        ));
+
+            return ResponseEntity.ok(funcionarioDTO.get());
+
         } else {
             return ResponseEntity.status(404).body("Funcionário inexistente");
         }
@@ -165,7 +181,10 @@ public ResponseEntity<?> getFuncionarioFromEmpresa(@RequestParam Long id, @Reque
             //Gera uma lista que passa pelo DTO do funcionário, assim entrgando somente os campos escolhidos 
 
             List<FuncionarioDTO.Response> funcionariosDTO = funcionariosList.stream()
+            
+
             .map(f -> new FuncionarioDTO.Response(
+                null,
                 f.getNome(),
                 f.getEmail(),
                 f.getNivelPermissao(),

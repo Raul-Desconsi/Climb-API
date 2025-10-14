@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function insertUserInfo() {
         const nome = localStorage.getItem('nome');
-        const funcao = localStorage.getItem('funcao');
+        const funcao = localStorage.getItem('cargo');
 
         nomelbl.innerText = nome
         funcaolbl.innerText = funcao
@@ -28,7 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function callLogout() {
         localStorage.removeItem('jwtToken');
         localStorage.removeItem('setor');
+        localStorage.removeItem('nivelPermissao');
         localStorage.removeItem('id');
+        localStorage.removeItem('cargo');
         location.href = 'login.html';
     }
 });
@@ -48,7 +50,7 @@ function chamadosBtn(maincontent) {
 function accountBtn(maincontent) {
     maincontent.innerHTML = "";
     const iframe = document.createElement("iframe"); 
-    iframe.src = "../page/account.html"; 
+    iframe.src = "../page/profile.html"; 
     maincontent.appendChild(iframe);}
 
 document.addEventListener("click", function (event) {

@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function insertUserInfo() {
         const nome = localStorage.getItem('nome');
-        const funcao = localStorage.getItem('funcao');
+        const funcao = localStorage.getItem('cargo');
 
         nomelbl.innerText = nome
         funcaolbl.innerText = funcao
@@ -27,7 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
         logoutBtn.addEventListener("click", () => {
             localStorage.removeItem('jwtToken');
             localStorage.removeItem('setor');
+            localStorage.removeItem('nivelPermissao');
             localStorage.removeItem('id');
+            localStorage.removeItem('cargo');
             location.href = 'login.html';
         });
     }

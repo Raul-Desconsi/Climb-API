@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Perfil</title>
+    <link rel="stylesheet" href="../../libs/bootstrap.min.css">
+    <link rel="stylesheet" href="../style/componentsStyle.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .profile-header {
+            background: linear-gradient(155deg, #00EDDD 0%, #3e857e 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #3e857e;
+            object-fit: cover;
+        }
+        .card {
+            border-radius: 10px;
+            border: none;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid #eaeaea;
+            font-weight: 600;
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        .nav-tabs .nav-link.active {
+            color: #00ccbe;
+            font-weight: 600;
+            border-bottom: 3px solid #00ccbe;
+        }
+        .nav-tabs .nav-link {
+            color: #6c757d;
+            font-weight: 500;
+        }
+      
+        .tab-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+        }
+        .color-danger{
+            color: red;
+
+
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header text-center shadow-lg rounded-3">
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                    <img src="../assets/user.png" class="profile-pic" alt="Foto do perfil">
+                </div>
+                <div class="col-md-9">
+                    <h1 class="display-5">João Silva</h1>
+                    <p class="lead">joao.silva@exemplo.com</p>
+                    <p class="mb-0">Engenhairo</p>
+                </div>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab">Editar Perfil</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab">Alterar Senha</button>
+            </li>
+        </ul>
+
+    
+        <div class="tab-content rounded-3 shadow-sm" id="profileTabsContent">
+        
+        
+            
+            <div class="tab-pane fade show active" id="edit" role="tabpanel">
+              <div class="mb-4 ">
+                        <p class="color-danger">As opções com o símbolo "*" poderão ser alteradas somente por um administrador.</p>
+                    </div>
+
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label  class="form-label">Nome Completo</label>
+                            <input type="text" class="form-control" id="NomeCompleto" value="João">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label  class="form-label">Email</label>
+                            <input type="text" class="form-control" id="Email" value="joao.silva@exemplo.com">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="Cpf" value="000.000.000-00">
+                    </div>
+                     <div class="mb-3">
+                        <label  class="form-label">Nivel de Permissão no sistema (*)</label>
+                        <input type="text" class="form-control " id="Cpf" value="Administrador" disabled>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                               <label for="nivelUsuario" class="form-label">Cargo</label>
+                                <div class="input-group">
+                                    <select class="form-select" id="Cargo" required>
+                                        <option value="">Selecione</option>
+                                        <option value="1">Administrador</option>
+                                    </select>
+                                </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                                <label for="nivelUsuario" class="form-label">Setor</label>
+                                <div class="input-group">
+                                    <select class="form-select" id="Setor"  required>
+                                        <option value="">Selecione</option>
+                                        <option value="1">Administrador</option>
+                                    </select>
+                                </div>
+                        </div>
+                        
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">Empresa (*) </label>
+                        <input type="text" class="form-control" id="Empresa" value=""disabled>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="button" class="btn btn-secondary bg-secondary me-md-2">Cancelar</button>
+                        <button type="submit" class="btn btn-primary bg-primary">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Aba de Alteração de Senha -->
+            <div class="tab-pane fade" id="password" role="tabpanel">
+                <form>
+                    <div class="mb-3">
+                        <label for="currentPassword" class="form-label">Senha Atual</label>
+                        <input type="password" class="form-control" id="currentPassword">
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">Nova Senha</label>
+                        <input type="password" class="form-control" id="newPassword">
+                        <div class="password-strength password-medium mt-2"></div>
+                        <div class="form-text">
+                            Se não souber a senha atual, será necessário requisitar a troca a um administrador da sua empresa.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
+                        <input type="password" class="form-control" id="confirmPassword">
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="button" class="btn btn-secondary bg-secondary me-md-2">Cancelar</button>
+                        <button type="submit" class="btn btn-primary bg-primary">Alterar Senha</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../libs/bootstrap.bundle.min.js"></script>
+
+    
+</body>
+</html>

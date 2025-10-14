@@ -2,6 +2,8 @@ const emailInput = document.getElementById("email");
 const senhaInput = document.getElementById("senha");
 const submitLoginBtn = document.getElementById("submitLogin");
 
+localStorage.removeItem('nivelPermissao');
+
 submitLoginBtn.addEventListener('click', submitLogin);
 
 function submitLogin(event) {
@@ -47,7 +49,7 @@ function submitLogin(event) {
                     localStorage.setItem('nivelPermissao', response.nivelPermissao);
                     localStorage.setItem('empresaId', response.empresaId);
                     localStorage.setItem('nome', response.nome);
-                    localStorage.setItem('funcao', response.funcao);
+                    localStorage.setItem('cargo', response.cargo);
                     
                    
 
@@ -61,7 +63,7 @@ function submitLogin(event) {
                         break;
 
                         default:
-                            break;
+                            return;
                     } 
 
 

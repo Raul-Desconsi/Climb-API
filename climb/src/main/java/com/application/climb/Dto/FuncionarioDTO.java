@@ -25,6 +25,7 @@ public class FuncionarioDTO {
     @Setter
     @AllArgsConstructor
     public static class Response {
+        private String cpf;
         private String nome;
         private String email;
         private int nivelPermissao;
@@ -34,4 +35,18 @@ public class FuncionarioDTO {
 
        
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class UpdateProfile {
+        private String cpf;
+        private String nome;
+        private String email;
+        private String cargo;
+
+    }
+
+
+
 }

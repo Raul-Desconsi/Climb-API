@@ -9,6 +9,13 @@
             "name": "ClimbApplication",
             "request": "launch",
             "mainClass": "com.application.climb.ClimbApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "ClimbApplication",
+            "request": "launch",
+            "mainClass": "com.application.climb.ClimbApplication",
             "projectName": "climb"
         },
         {

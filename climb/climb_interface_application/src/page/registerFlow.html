@@ -50,13 +50,17 @@
     <div class="dropdown mb-3">
         <label class="form-label">Qual área será afetada com esse fluxo?</label>
 
-        <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button"
-            id="dropAreaAfetada" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-primary bg-primary dropdown-toggle w-100" 
+        type="button"
+        id="dropAreaAfetada"
+        data-bs-toggle="dropdown" 
+        data-input="#areas-afetadas"
+        aria-expanded="false">
             Selecione uma opção
         </button>
 
-        <ul class="dropdown-menu w-100" aria-labelledby="dropAreaAfetada"></ul>
-        <input type="hidden" id="areas-afetadas" name="areas-afetadas" required>
+        <ul class="dropdown-menu w-100" id="menuAreaAfetada" aria-labelledby="dropAreaAfetada"></ul>
+        <input type="hidden" id="areas-afetadas" name="areaAfetadaId" required>
     </div>
 
     <!-- Problema -->
@@ -71,9 +75,11 @@
         <label class="form-label">Qual é o nível de urgência?</label>
 
         <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button"
-            id="dropUrgencia" data-bs-toggle="dropdown" aria-expanded="false">
+            id="dropUrgencia" data-input="#inputUrgencia" data-bs-toggle="dropdown" aria-expanded="false">
             Selecione a urgência
         </button>
+
+
 
         <ul class="dropdown-menu w-100" aria-labelledby="dropUrgencia"></ul>
         <input type="hidden" id="inputUrgencia" name="urgencia" required>
@@ -89,7 +95,7 @@
 
     <script src="../../libs/bootstrap.bundle.min.js"></script>
     <script src="../controller/openFlow.js"></script>
-    <script src="../events/flowScreen.js"></script>
+    <script src="../events/flowScreen.js"></script> 
 
 </body>
 

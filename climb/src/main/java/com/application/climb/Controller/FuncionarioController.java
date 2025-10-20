@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -156,6 +157,76 @@ public ResponseEntity<?> createFuncionario(@RequestHeader("Authorization") Strin
 
     }
 }
+
+@PutMapping("/Update")
+public ResponseEntity<?> updateFuncionario(@RequestHeader("Authorization") String token, @RequestBody FuncionarioDTO.UpdateProfile funcionarioForm){
+   
+        Funcionario funcionarioformtoken = authService.getFuncionarioFromToken(token);
+        
+    try {
+        if (!authService.authenticate(token)) {
+            return ResponseEntity.status(401).body("Token inválido");
+        }
+    
+
+        Funcionario funcionario = new Funcionario();
+        funcionario.setCpf(funcionarioForm.getCpf());
+        funcionario.setEmail(funcionarioForm.getEmail().toLowerCase());
+        funcionario.setNivelPermissao(funcionarioformtoken.getNivelPermissao());
+        funcionario.setNome(funcionarioForm.getNome());
+        Optional<Cargo> cargoOpt = cargoService.findById(funcionarioForm.getCargo());
+           
+        if (cargoOpt.isEmpty()) {
+                return ResponseEntity.status(404).body("Cargo não encontrado");
+            }
+            funcionario.setCargo(cargoOpt.get());
+
+        
+        // Criar o funcionário somente na empresa do admin
+        
+        // Pesquisa se o setor existe
+        Optional<Setor> setorFromFuncionarioFormDTO = this.setorService.buscarPorId(funcionarioForm.getSetor());
+
+        if (setorFromFuncionarioFormDTO.isPresent()) {
+                Setor setorFromFuncionarioForm = setorFromFuncionarioFormDTO.get();
+                funcionario.setSetor(setorFromFuncionarioForm);
+       }else{
+            return ResponseEntity.status(404).body("Setor não encontrado");
+       }
+
+        this.funcionarioService.update(funcionario,funcionarioformtoken.getId().longValue());
+        return ResponseEntity.status(201).body("funcionário Salvo");
+        
+    } catch (Exception e) {
+            return ResponseEntity.status(400).body("Operação inválida");
+
+    }
+}
+
+
+@PutMapping("/UpdatePassword")
+public ResponseEntity<?> updateFuncionarioSenha( @RequestHeader("Authorization") String token, @RequestBody FuncionarioDTO.UpdatePassword senhaDTO) {
+
+    try {
+        Funcionario funcionarioformtoken = authService.getFuncionarioFromToken(token);
+
+        if (!authService.authenticate(token)) {
+            return ResponseEntity.status(401).body("Token inválido");
+        }
+
+        if (funcionarioformtoken.getSenha().equals(senhaDTO.getOldPassword())) {
+            funcionarioService.updatePassword(senhaDTO.getNewPassword().toString(),funcionarioformtoken.getId().longValue());
+
+            return ResponseEntity.status(200).body("Senha atualizada com sucesso");
+        } else {
+            return ResponseEntity.status(403).body("Senha antiga incorreta");
+        }
+
+    } catch (Exception e) {
+        return ResponseEntity.status(400).body("Erro ao atualizar senha: " + e.getMessage());
+    }
+}
+
 
 
 @GetMapping("/GetFuncionarioFromEmpresa")

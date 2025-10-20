@@ -43,9 +43,21 @@ public class FuncionarioDTO {
         private String cpf;
         private String nome;
         private String email;
-        private String cargo;
+        private Integer cargo;
+        private Integer setor;
 
     }
+
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class UpdatePassword {
+        private String newPassword;
+        private String oldPassword;
+    }
+
+
 
 
 

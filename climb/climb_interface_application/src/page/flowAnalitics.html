@@ -2,11 +2,13 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Fluxo</title>
-    <link rel="stylesheet" href="../../libs/bootstrap.min.css">
-    <link rel="stylesheet" href="../style/componentsStyle.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fluxo e Análise</title>
+    <link rel="stylesheet" href="../../libs/bootstrap.min.css" />
+    <link rel="stylesheet" href="../style/componentsStyle.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
     <style>
         body,
         html {
@@ -15,12 +17,13 @@
             background-color: #f8f9fa;
         }
 
-        .form-container {
+        .page-container {
             min-height: 100%;
+            padding: 40px 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 20px;
+            gap: 40px;
         }
 
         .form-card {
@@ -31,77 +34,140 @@
             padding: 30px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
+
+        .seta-container {
+            text-align: center;
+            font-size: 3rem;
+            /* aumenta o tamanho do ícone */
+            color: #0d6efd;
+            margin: 20px 0;
+            animation: mover 1.5s infinite alternate;
+        }
+
+        @keyframes mover {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(10px);
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="form-container">
+    <div class="page-container">
+        <!-- FORMULÁRIO 1 - CRIAÇÃO DO FLUXO -->
         <div class="form-card">
-            <h2 class="mb-4 text-center text-primary color-primary">Cadastro de Fluxo</h2>
+            <h2 class="mb-4 text-center text-primary">Cadastro de Fluxo</h2>
             <form id="fluxoForm" class="form-control">
+
+                <!-- Motivo -->
                 <div class="mb-3">
                     <label for="motivo" class="form-label">Por que você quer abrir esse fluxo?</label>
                     <input type="text" class="form-control" id="motivo" name="motivo" placeholder="Digite o motivo"
                         required>
                 </div>
 
-                
+                <!-- Área Afetada -->
                 <div class="dropdown mb-3">
                     <label class="form-label">Qual área será afetada com esse fluxo?</label>
 
                     <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropAreaAfetada"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                        data-bs-toggle="dropdown" data-input="#areas-afetadas" aria-expanded="false">
                         Selecione uma opção
                     </button>
 
-                    <ul class="dropdown-menu w-100" id="dropAreaAfetada" aria-labelledby="dropAreaAfetada">
-                       
-                    </ul>
-
-                    <input type="hidden" id="areas-afetadas" name="areas-afetadas" required>
+                    <ul class="dropdown-menu w-100" id="menuAreaAfetada" aria-labelledby="dropAreaAfetada"></ul>
+                    <input type="hidden" id="areas-afetadas" name="areaAfetadaId" required>
                 </div>
 
-
-
+                <!-- Problema -->
                 <div class="mb-3">
                     <label for="problema" class="form-label">Descreva seu problema</label>
                     <textarea class="form-control" id="problema" name="problema" rows="4"
                         placeholder="Detalhe o problema..." required></textarea>
                 </div>
 
-                <div class="mb-3">
+                <!-- Urgência -->
+                <div class="dropdown mb-3">
                     <label class="form-label">Qual é o nível de urgência?</label>
-                    <div class="d-flex gap-2 flex-wrap">
 
-                        <input type="radio" class="btn-check" name="urgencia" id="urgencia-baixa" value="baixa"
-                            required>
-                        <label class="btn btn-outline-success rounded-pill px-4" for="urgencia-baixa">Baixa</label>
+                    <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropUrgencia"
+                        data-input="#inputUrgencia" data-bs-toggle="dropdown" aria-expanded="false">
+                        Selecione a urgência
+                    </button>
 
-                        <input type="radio" class="btn-check" name="urgencia" id="urgencia-media" value="media">
-                        <label class="btn btn-outline-warning rounded-pill px-4" for="urgencia-media">Média</label>
 
-                        <input type="radio" class="btn-check" name="urgencia" id="urgencia-alta" value="alta">
-                        <label class="btn btn-outline-danger rounded-pill px-4" for="urgencia-alta">Alta</label>
 
-                    </div>
+                    <ul class="dropdown-menu w-100" aria-labelledby="dropUrgencia"></ul>
+                    <input type="hidden" id="inputUrgencia" name="urgencia" required>
+                </div>
+            </form>
+        </div>
+
+        <div class="seta-container"><i class="bi bi-arrow-down"></i></div>
+
+
+        <!-- FORMULÁRIO 2 - ANÁLISE DO FLUXO -->
+        <div class="form-card">
+            <h2 class="mb-4 text-center text-success">Análise do Fluxo</h2>
+            <form id="analiseForm" class="form-control">
+                <div class="mb-3">
+                    <label for="responsavel" class="form-label">Responsável pela análise</label>
+                    <input type="text" class="form-control" id="responsavel" name="responsavel"
+                        placeholder="Nome do analista" required />
                 </div>
 
-                <!-- Botão -->
+                <div class="mb-3">
+                    <label for="dataAnalise" class="form-label">Data da análise</label>
+                    <input type="date" class="form-control" id="dataAnalise" name="dataAnalise" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status do fluxo</label>
+                    <select class="form-select" id="status" name="status" required>
+                        <option value="">Selecione...</option>
+                        <option value="em_andamento">Em andamento</option>
+                        <option value="aprovado">Aprovado</option>
+                        <option value="reprovado">Reprovado</option>
+                        <option value="pendente">Pendente</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="observacoes" class="form-label">Observações</label>
+                    <textarea class="form-control" id="observacoes" name="observacoes" rows="4"
+                        placeholder="Deixe aqui a análise ou comentários sobre o fluxo..."></textarea>
+                </div>
+
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary  bg-primary">Direcionar Fluxo</button>
-                </div>
-                <div class="d-grid" style="margin-top: 10px;">
-                    <button type="submit" class="btn btn-danger">Fechar Fluxo</button>
-                </div>
-                <div class="d-grid"  style="margin-top: 10px;">
-                    <button type="submit" class="btn btn-secondary">Devolver Fluxo</button>
+                    <button type="submit" class="btn btn-success">Enviar Análise</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script src="../../libs/bootstrap.bundle.min.js"></script>
+    <script src="../events/analiticsScreen.js"></script>
+    <script>
+        // Exemplo: preencher dropdown de áreas dinamicamente
+        const areas = ["Financeiro", "RH", "TI", "Marketing"];
+        const lista = document.getElementById("listaAreas");
+        const hiddenInput = document.getElementById("areas-afetadas");
+        const dropBtn = document.getElementById("dropAreaAfetada");
 
+        areas.forEach(area => {
+            const li = document.createElement("li");
+            li.innerHTML = `<a class="dropdown-item" href="#">${area}</a>`;
+            li.addEventListener("click", () => {
+                dropBtn.textContent = area;
+                hiddenInput.value = area;
+            });
+            lista.appendChild(li);
+        });
+    </script>
 </body>
 
 </html>

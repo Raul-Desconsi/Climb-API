@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "atendimento_chamado")
 @Getter
@@ -40,4 +41,7 @@ public class AtendimentoChamado {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "chamado_id", nullable = false)
     private Chamado chamado;
+
+
+
 }

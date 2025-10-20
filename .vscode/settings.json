@@ -1,5 +1,4 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "disabled",
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.configuration.updateBuildConfiguration": "disabled"
 }

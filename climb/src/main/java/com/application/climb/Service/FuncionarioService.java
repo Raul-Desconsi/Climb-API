@@ -36,9 +36,41 @@ public Funcionario create(Funcionario funcionario){
     return this.funcionarioRepository.save(funcionario);
 }
 
+public Funcionario update(Funcionario funcionarioFromForm, Long id){
+    Optional<Funcionario> funcionarioOPT = this.findById(id);
 
+    if(funcionarioOPT.isPresent()){
+        Funcionario Oldfuncionario = funcionarioOPT.get();
+        
+        funcionarioFromForm.setId(Oldfuncionario.getId());
+        funcionarioFromForm.setSenha(Oldfuncionario.getSenha());
+        funcionarioFromForm.setEmpresa(Oldfuncionario.getEmpresa());
+        return this.funcionarioRepository.save(funcionarioFromForm);
+
+
+    }else{
+           throw new RuntimeException("Erro ao salvar funcionário");
+    }
 }
 
+public Funcionario updatePassword(String newPassword, Long id){
+    Optional<Funcionario> funcionarioOPT = this.findById(id);
+
+    if(funcionarioOPT.isPresent()){
+        Funcionario Oldfuncionario = funcionarioOPT.get();
+        
+        Oldfuncionario.setSenha(newPassword);
+        return this.funcionarioRepository.save(Oldfuncionario);
+
+
+    }else{
+           throw new RuntimeException("Erro ao salvar senha");
+    }
+}
+
+
+
+}
 
 
 

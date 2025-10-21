@@ -22,6 +22,10 @@ public class StatusService {
         return statusRepository.findByNome(nome);
     }
 
+    public Optional<Status> buscarPorEmpresaId(Integer empresaId) {
+        return statusRepository.findByEmpresaId(empresaId);
+    }
+
     public List<Status> findAll() {
         return statusRepository.findAll();
     }

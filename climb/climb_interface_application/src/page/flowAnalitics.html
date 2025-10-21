@@ -120,21 +120,13 @@
                         placeholder="Nome do analista" required />
                 </div>
 
+
                 <div class="mb-3">
                     <label for="dataAnalise" class="form-label">Data da análise</label>
                     <input type="date" class="form-control" id="dataAnalise" name="dataAnalise" required />
                 </div>
 
-                <div class="mb-3">
-                    <label for="status" class="form-label">Status do fluxo</label>
-                    <select class="form-select" id="status" name="status" required>
-                        <option value="">Selecione...</option>
-                        <option value="em_andamento">Em andamento</option>
-                        <option value="aprovado">Aprovado</option>
-                        <option value="reprovado">Reprovado</option>
-                        <option value="pendente">Pendente</option>
-                    </select>
-                </div>
+                
 
                 <div class="mb-3">
                     <label for="observacoes" class="form-label">Observações</label>
@@ -142,9 +134,25 @@
                         placeholder="Deixe aqui a análise ou comentários sobre o fluxo..."></textarea>
                 </div>
 
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-success">Enviar Análise</button>
+
+                <div class="dropdown mb-3">
+                    <label class="form-label">Qual área esse fluxo será direcionado?</label>
+
+                    <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropAreaAfetada"
+                        data-bs-toggle="dropdown" data-input="#areas-afetadas" aria-expanded="false">
+                        Selecione uma opção
+                    </button>
+
+                    <ul class="dropdown-menu w-100" id="menuAreaAfetada" aria-labelledby="dropAreaAfetada"></ul>
+                    <input type="hidden" id="areas-afetadas" name="areaAfetadaId" required>
                 </div>
+
+
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="submit" class="btn btn-success w-50 me-2">Enviar Análise</button>
+                    <button type="button" class="btn btn-primary w-50">Concluir Chamado</button>
+                </div>
+
             </form>
         </div>
     </div>

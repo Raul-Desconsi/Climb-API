@@ -54,3 +54,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     await carregarDropdown("setores", "#dropAreaAfetada");
     await carregarDropdown("urgencias", "#dropUrgencia");
 });
+

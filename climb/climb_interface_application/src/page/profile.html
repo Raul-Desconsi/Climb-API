@@ -74,10 +74,10 @@
                 <div class="col-md-3 text-center">
                     <img src="../assets/user.png" class="profile-pic" alt="Foto do perfil">
                 </div>
-                <div class="col-md-9">
-                    <h1 class="display-5">João Silva</h1>
-                    <p class="lead">joao.silva@exemplo.com</p>
-                    <p class="mb-0">Engenhairo</p>
+                <div id="Userheader" class="col-md-9">
+                    <h1 class="display-5"></h1>
+                    <p class="lead"></p>
+                    <p class="mb-0"></p>
                 </div>
             </div>
         </div>
@@ -105,11 +105,11 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label  class="form-label">Nome Completo</label>
-                            <input type="text" class="form-control" id="NomeCompleto" value="João">
+                            <input type="text" class="form-control" id="NomeCompleto" value="">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label  class="form-label">Email</label>
-                            <input type="text" class="form-control" id="Email" value="joao.silva@exemplo.com">
+                            <input type="text" class="form-control" id="Email" value="">
                         </div>
                     </div>
                     <div class="mb-3">
@@ -118,24 +118,24 @@
                     </div>
                      <div class="mb-3">
                         <label  class="form-label">Nivel de Permissão no sistema (*)</label>
-                        <input type="text" class="form-control " id="Cpf" value="Administrador" disabled>
+                        <input type="text" class="form-control " id="nivelPermissao" value="" disabled>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                               <label for="nivelUsuario" class="form-label">Cargo</label>
+                               <label class="form-label">Cargo</label>
                                 <div class="input-group">
-                                    <select class="form-select" id="Cargo" required>
+                                    <select class="form-select" id="CargoDrop" required>
                                         <option value="">Selecione</option>
-                                        <option value="1">Administrador</option>
+                                        
                                     </select>
                                 </div>
                         </div>
                         <div class="col-md-6 mb-3">
                                 <label for="nivelUsuario" class="form-label">Setor</label>
                                 <div class="input-group">
-                                    <select class="form-select" id="Setor"  required>
+                                    <select class="form-select" id="SetorDrop"  required>
                                         <option value="">Selecione</option>
-                                        <option value="1">Administrador</option>
+                                        
                                     </select>
                                 </div>
                         </div>
@@ -146,8 +146,8 @@
                         <input type="text" class="form-control" id="Empresa" value=""disabled>
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="button" class="btn btn-secondary bg-secondary me-md-2">Cancelar</button>
-                        <button type="submit" class="btn btn-primary bg-primary">Salvar Alterações</button>
+                        <button id="cancelUser" type="button" class="btn btn-secondary bg-secondary me-md-2">Cancelar</button>
+                        <button id="SaveUser" type="submit" class="btn btn-primary bg-primary">Salvar Alterações</button>
                     </div>
                 </form>
             </div>
@@ -172,14 +172,14 @@
                         <input type="password" class="form-control" id="confirmPassword">
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="button" class="btn btn-secondary bg-secondary me-md-2">Cancelar</button>
-                        <button type="submit" class="btn btn-primary bg-primary">Alterar Senha</button>
+                        <button type="button" id="cancelPasswordBtn" class="btn btn-secondary bg-secondary me-md-2">Cancelar</button>
+                        <button type="submitPassword" id="submitPasswordBtn" class="btn btn-primary bg-primary">Alterar Senha</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
+    <script src="../controller/profile.js"></script>
     <script src="../../libs/bootstrap.bundle.min.js"></script>
 
     

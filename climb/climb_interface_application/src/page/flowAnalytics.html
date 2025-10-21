@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fluxo e Análise</title>
+  <link rel="stylesheet" href="../../libs/bootstrap.min.css" />
+  <link rel="stylesheet" href="../style/componentsStyle.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      background-color: #f8f9fa;
+    }
+
+    .page-container {
+      min-height: 100%;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 700px;
+      background: #fff;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .seta-container {
+      text-align: center;
+      font-size: 3rem;
+      color: #0d6efd;
+      margin: 20px 0;
+      animation: mover 1.5s infinite alternate;
+    }
+
+    @keyframes mover {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(10px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-container">
+    <!-- FORMULÁRIO 1 -->
+    <div class="form-card">
+      <h2 class="mb-4 text-center text-primary">Dados do Chamado</h2>
+
+      <form class="form-control">
+        <div class="mb-3">
+          <label class="form-label">Área Afetada</label>
+          <input type="text" class="form-control" id="areaAfetada" readonly>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Descrição</label>
+          <textarea class="form-control" id="descricao" readonly></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Motivo</label>
+          <input type="text" class="form-control" id="motivo" readonly>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Urgência</label>
+          <input type="text" class="form-control" id="urgencia" readonly>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Responsável pela abertura</label>
+          <input type="text" class="form-control" id="responsavelAbertura" readonly>
+        </div>
+      </form>
+    </div>
+
+    <div class="seta-container"><i class="bi bi-arrow-down"></i></div>
+
+    <!-- FORMULÁRIO 2 -->
+    <div class="form-card">
+      <h2 class="mb-4 text-center text-success">Análise do Fluxo</h2>
+      <form id="analiseForm" class="form-control">
+        <div class="mb-3">
+          <label for="responsavel" class="form-label">Responsável pela análise</label>
+          <input type="text" class="form-control" id="responsavel" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="dataAnalise" class="form-label">Data da análise</label>
+          <input type="date" class="form-control" id="dataAnalise" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="status" class="form-label">Status do fluxo</label>
+          <select class="form-select" id="status" required>
+            <option value="">Selecione...</option>
+            <option value="em_andamento">Em andamento</option>
+            <option value="aprovado">Aprovado</option>
+            <option value="reprovado">Reprovado</option>
+            <option value="pendente">Pendente</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="observacoes" class="form-label">Observações</label>
+          <textarea class="form-control" id="observacoes" rows="4"
+            placeholder="Deixe aqui a análise ou comentários sobre o fluxo..."></textarea>
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-success">Enviar Análise</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../../libs/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const chamado = JSON.parse(localStorage.getItem("chamadoSelecionado"));
+    if (!chamado) {
+      alert("Nenhum chamado selecionado.");
+      window.location.href = "/pages/gerenciamentoTickets.html";
+    }
+
+    // Preenche os campos
+    document.getElementById("areaAfetada").value = chamado.areaAfetada?.nome || chamado.area_afetada || "N/A";
+    document.getElementById("descricao").value = chamado.descricao || "";
+    document.getElementById("motivo").value = chamado.motivo || "";
+    document.getElementById("urgencia").value = chamado.urgencia.nome || "";
+    document.getElementById("responsavelAbertura").value = chamado.responsavelAbertura?.nome || "Desconhecido";
+
+    // Preenche automaticamente o responsável (usuário atual, se armazenado)
+    const usuarioAtual = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (usuarioAtual) {
+      document.getElementById("responsavel").value = usuarioAtual.nome;
+    }
+
+    // Envia análise ao backend
+    document.getElementById("analiseForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const token = localStorage.getItem("jwtToken");
+      const data = {
+        chamadoId: chamado.id,
+        status: document.getElementById("status").value,
+        observacoes: document.getElementById("observacoes").value,
+        dataAnalise: document.getElementById("dataAnalise").value,
+        responsavelAnalise: usuarioAtual?.id || null
+      };
+
+      try {
+        const response = await fetch("http://localhost:8080/chamado/analise", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          alert("Análise enviada com sucesso!");
+          window.location.href = "/pages/gerenciamentoTickets.html";
+        } else {
+          alert("Erro ao enviar análise.");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("Falha na comunicação com o servidor.");
+      }
+    });
+  </script>
+</body>
+
+</html>

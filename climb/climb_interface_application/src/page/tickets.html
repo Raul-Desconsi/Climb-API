@@ -1,123 +1,139 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gerenciamento de Tickets</title>
-    <link rel="stylesheet" href="../../libs/bootstrap.min.css" />
-    <link rel="stylesheet" href="../style/componentsStyle.css" />
 
-    <style>
-      body {
-        background-color: #f4f6f9;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerenciamento de Tickets</title>
+  <link rel="stylesheet" href="../../libs/bootstrap.min.css" />
+  <link rel="stylesheet" href="../style/componentsStyle.css" />
 
-      .ticket-card {
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        transition: 0.2s;
-        height: 100%;
-      }
+  <style>
+    body {
+      background-color: #f4f6f9;
+    }
 
-      .ticket-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-        cursor: pointer;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="form-container">
-      <div class="form-card card shadow-sm p-4">
-        <h2 class="text-center color-primary mb-5">Gerenciamento de Tickets</h2>
+    .ticket-card {
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      transition: 0.2s;
+      height: 100%;
+      cursor: pointer;
+    }
 
-        <div class="row g-4" id="tickets-container"></div>
-      </div>
+    .ticket-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .badge-id {
+      background-color: #0d6efd;
+      color: white;
+      font-size: 0.8rem;
+      border-radius: 8px;
+      padding: 0.35em 0.6em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <div class="form-card card shadow-sm p-4">
+      <h2 class="text-center color-primary mb-5">Gerenciamento de Tickets</h2>
+
+      <div class="row g-4" id="tickets-container"></div>
     </div>
+  </div>
 
-    <script>
-      // Define as cores das badges de status
-      function getBadgeClass(status) {
-        switch (status) {
-          case "Analise":
-            return "bg-warning text-dark";
-          case "Aberto":
-            return "bg-primary";
-          case "Fechado":
-            return "bg-success";
-          case "Cancelado":
-            return "bg-danger";
-          default:
-            return "bg-secondary";
-        }
+  <script>
+    function getBadgeClass(status) {
+      switch (status) {
+        case "Analise":
+          return "bg-warning text-dark";
+        case "Aberto":
+          return "bg-primary";
+        case "Fechado":
+          return "bg-success";
+        case "Cancelado":
+          return "bg-danger";
+        default:
+          return "bg-secondary";
       }
+    }
 
-      // Função principal: busca e exibe os chamados
-      async function carregarChamados() {
-        try {
-          const token = localStorage.getItem("jwtToken");
+    async function carregarChamados() {
+      try {
+        const token = localStorage.getItem("jwtToken");
 
-          if (!token) {
-            alert("Token não encontrado. Faça login novamente.");
-            return;
+        if (!token) {
+          alert("Token não encontrado. Faça login novamente.");
+          return;
+        }
+
+        const response = await fetch("http://localhost:8080/chamado/all", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token.trim(),
+          },
+        });
+
+        if (!response.ok) {
+          if (response.status === 403) {
+            alert("Acesso negado (403). Verifique o token de autenticação.");
           }
+          throw new Error("Erro ao buscar chamados: " + response.status);
+        }
 
-          const response = await fetch("http://localhost:8080/chamado/all", {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token.trim(),
-            },
-          });
+        const chamados = await response.json();
+        const container = document.getElementById("tickets-container");
+        container.innerHTML = "";
 
-          if (!response.ok) {
-            if (response.status === 403) {
-              alert("Acesso negado (403). Verifique o token de autenticação.");
-            }
-            throw new Error("Erro ao buscar chamados: " + response.status);
-          }
+        if (chamados.length === 0) {
+          container.innerHTML = '<p class="text-center text-muted">Nenhum chamado encontrado.</p>';
+          return;
+        }
 
-          const chamados = await response.json();
-          const container = document.getElementById("tickets-container");
-          container.innerHTML = "";
+        chamados.forEach((ch) => {
+          const statusNome = ch.status?.nome || ch.status || "Desconhecido";
 
-          if (chamados.length === 0) {
-            container.innerHTML =
-              '<p class="text-center text-muted">Nenhum chamado encontrado.</p>';
-            return;
-          }
-
-          chamados.forEach((ch) => {
-            const card = `
-              <div class="col-md-6 col-lg-4">
-                <div class="card ticket-card">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                      <h5 class="card-title">${ch.motivo}</h5>
-                      <span class="badge ${getBadgeClass(ch.status)}">${ch.status}</span>
-                    </div>
-                    <p class="card-text mt-2">${ch.descricao}</p>
-                    <p class="small text-muted">
-                      Aberto por: ${ch.responsavelAbertura ? ch.responsavelAbertura.nome : "Desconhecido"} 
-                      | Urgência: ${ch.urgencia}
-                    </p>
+          const card = document.createElement("div");
+          card.className = "col-md-6 col-lg-4";
+          card.innerHTML = `
+            <div class="card ticket-card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h5 class="card-title mb-1">${ch.motivo}</h5>
+                    <span class="badge badge-id">#${ch.id}</span>
                   </div>
-                  <div class="card-footer d-flex justify-content-between">
-                    <button class="btn btn-sm btn-outline-primary">Editar</button>
-                    <button class="btn btn-sm btn-outline-danger">Excluir</button>
-                  </div>
+                  <span class="badge ${getBadgeClass(statusNome)}">${statusNome}</span>
                 </div>
-              </div>`;
-            container.insertAdjacentHTML("beforeend", card);
+                <p class="card-text mt-3">${ch.descricao}</p>
+                <p class="small text-muted">
+                  Aberto por: ${ch.responsavelAbertura ? ch.responsavelAbertura.nome : "Desconhecido"} 
+                  | Urgência: ${ch.urgencia.nome}
+                </p>
+              </div>
+            </div>
+          `;
+
+          // Clique no card → salva e vai para /flowAnalytics
+          card.addEventListener("click", () => {
+            localStorage.setItem("chamadoSelecionado", JSON.stringify(ch));
+            window.location.href = "../page/flowAnalytics.html";
           });
-        } catch (error) {
-          console.error("Erro:", error);
-        }
+
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error("Erro:", error);
       }
+    }
 
-      // Executa ao carregar a página
-      window.addEventListener("DOMContentLoaded", carregarChamados);
-    </script>
+    window.addEventListener("DOMContentLoaded", carregarChamados);
+  </script>
 
-    <script src="../../libs/bootstrap.bundle.min.js"></script>
-  </body>
+  <script src="../../libs/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

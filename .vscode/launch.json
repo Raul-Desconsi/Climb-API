@@ -5,20 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "java",
-            "name": "ClimbApplication",
-            "request": "launch",
-            "mainClass": "com.application.climb.ClimbApplication",
-            "projectName": ""
-        },
-        {
-            "type": "java",
-            "name": "ClimbApplication",
-            "request": "launch",
-            "mainClass": "com.application.climb.ClimbApplication",
-            "projectName": "climb"
-        },
-        {
             "type": "jdk",
             "request": "launch",
             "name": "Launch Java App"

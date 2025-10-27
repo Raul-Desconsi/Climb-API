@@ -1,5 +1,6 @@
 package com.application.climb.Controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class ChamadoController {
             // Campos básicos
             chamado.setMotivo(dto.getMotivo());
             chamado.setDescricao(dto.getDescricao());
-            chamado.setData(dto.getData() != null ? dto.getData() : LocalDateTime.now());
+            chamado.setData(dto.getData() != null ? dto.getData() : LocalDate.now());
 
             // 🔹 Setor
             if (dto.getSetorId() != null && setorService != null) {

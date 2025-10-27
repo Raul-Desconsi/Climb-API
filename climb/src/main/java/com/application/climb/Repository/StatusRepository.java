@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import com.application.climb.Model.Status;
 
@@ -11,5 +12,5 @@ import com.application.climb.Model.Status;
 public interface StatusRepository extends 
 JpaRepository<Status, Integer> {
     Optional<Status> findByNome(String nome);
-    Optional<Status> findByEmpresaId(Integer empresaId);
+    List<Status> findByEmpresaId(Integer empresaId);
 }

@@ -1,7 +1,9 @@
 package com.application.climb.Model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -32,7 +34,8 @@ public class Chamado {
     private String motivo;
 
     @Column(nullable = false)
-    private LocalDateTime data;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate data;
 
     @Column(length = 255, nullable = false)
     private String descricao;

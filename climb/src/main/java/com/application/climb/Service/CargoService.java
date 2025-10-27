@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.application.climb.Model.Cargo;
-import com.application.climb.Model.Funcionario;
 import com.application.climb.Repository.CargoRepository;
 
 @Service

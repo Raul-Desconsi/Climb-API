@@ -4,13 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fluxo e Análise</title>
-
-  <!-- Bootstrap e Ícones -->
+  <title>Fluxo e Análise</title> <!-- Bootstrap e Ícones -->
   <link rel="stylesheet" href="../../libs/bootstrap.min.css" />
   <link rel="stylesheet" href="../style/componentsStyle.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
   <style>
     body,
     html {
@@ -62,90 +59,66 @@
 </head>
 
 <body>
-  <div class="page-container">
-
-    <!-- FORMULÁRIO 1 - DADOS DO CHAMADO -->
+  <div class="page-container"> <!-- FORMULÁRIO 1 - DADOS DO CHAMADO -->
     <div class="form-card">
       <h2 class="mb-4 text-center text-primary color-primary">Dados do Chamado</h2>
-
-      <form id="fluxoForm" class="form-control">
-
-        <!-- Motivo -->
-        <div class="mb-3">
-          <label for="motivo" class="form-label">Por que você quer abrir esse fluxo?</label>
-          <input type="text" class="form-control" id="motivo" name="motivo" placeholder="Digite o motivo" readonly>
-        </div>
-
+      <form id="fluxoForm"> <!-- Motivo -->
+        <div class="mb-3"> <label for="motivo" class="form-label">Por que você quer abrir esse fluxo?</label> <input
+            type="text" class="form-control" id="motivo" name="motivo" placeholder="Digite o motivo" readonly> </div>
         <!-- Quem abriu o fluxo -->
-        <div class="mb-3">
-          <label for="responsavelAbertura" class="form-label">Quem abriu esse fluxo?</label>
-          <input type="text" class="form-control" id="responsavelAbertura" name="responsavelAbertura" placeholder="" readonly>
-        </div>
-
-        <div class="mb-3">
-          <label for="setorAbertura" class="form-label">Qual setor que abriu o fluxo?</label>
-          <input type="text" class="form-control" id="setorAbertura" name="setorAbertura" placeholder="" readonly>
-        </div>
-
+        <div class="mb-3"> <label for="responsavelAbertura" class="form-label">Quem abriu esse fluxo?</label> <input
+            type="text" class="form-control" id="responsavelAbertura" name="responsavelAbertura" placeholder=""
+            readonly> </div>
+        <div class="mb-3"> <label for="setorAbertura" class="form-label">Qual setor que abriu o fluxo?</label> <input
+            type="text" class="form-control" id="setorAbertura" name="setorAbertura" placeholder="" readonly> </div>
         <!-- Data de Abertura -->
-        <div class="mb-3">
-          <label for="dataAbertura" class="form-label">Data da Abertura</label>
-          <input type="text" id="dataAberturaTexto" class="form-control" >
-
-        </div>\
-
-
-        <!-- Área Afetada -->
-        <div class="dropdown mb-3">
-          <label class="form-label">Qual área será afetada com esse fluxo?</label>
-
-          <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropAreaAfetada"
-            data-bs-toggle="dropdown" data-input="#areas-afetadas" aria-expanded="false">
-            Selecione uma opção
-          </button>
-
-          <ul class="dropdown-menu w-100" id="menuAreaAfetada" aria-labelledby="dropAreaAfetada"></ul>
-          <input type="hidden" id="areas-afetadas" name="areaAfetadaId" readonly>
+        <div class="mb-3"> <label for="dataAbertura" class="form-label">Data da Abertura</label> <input type="text"
+            id="dataAberturaTexto" class="form-control"> </div> <!-- Área Afetada -->
+        <div class="dropdown mb-3"> <label class="form-label">Qual área será afetada com esse fluxo?</label> <button
+            class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropAreaAfetada"
+            data-bs-toggle="dropdown" data-input="#areas-afetadas" aria-expanded="false"> Selecione uma opção </button>
+          <ul class="dropdown-menu w-100" id="menuAreaAfetada" aria-labelledby="dropAreaAfetada"></ul> <input
+            type="hidden" id="areas-afetadas" name="areaAfetadaId" readonly>
+        </div> <!-- Problema -->
+        <div class="mb-3"> <label for="problema" class="form-label">Descreva seu problema</label> <textarea
+            class="form-control" id="problema" name="problema" rows="4" placeholder="Detalhe o problema..."
+            readonly></textarea> </div> <!-- Urgência -->
+        <div class="dropdown mb-3"> <label class="form-label">Qual é o nível de urgência?</label> <button
+            class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropUrgencia"
+            data-input="#inputUrgencia" data-bs-toggle="dropdown" aria-expanded="false"> Selecione a urgência </button>
+          <ul class="dropdown-menu w-100" aria-labelledby="dropUrgencia"></ul> <input type="hidden" id="inputUrgencia"
+            name="urgencia">
         </div>
-
-        <!-- Problema -->
-        <div class="mb-3">
-          <label for="problema" class="form-label">Descreva seu problema</label>
-          <textarea class="form-control" id="problema" name="problema" rows="4" placeholder="Detalhe o problema..."
-            readonly></textarea>
+        <div class="dropdown mb-3"> <label class="form-label">Status</label> <button
+            class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropStatus"
+            data-input="#inputStatus" data-bs-toggle="dropdown" aria-expanded="false"> Definir novo status </button>
+          <ul class="dropdown-menu w-100" aria-labelledby="dropStatus"></ul> <input type="hidden" id="inputStatus"
+            name="status">
         </div>
-
-        <!-- Urgência -->
-        <div class="dropdown mb-3">
-          <label class="form-label">Qual é o nível de urgência?</label>
-
-          <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropUrgencia"
-            data-input="#inputUrgencia" data-bs-toggle="dropdown" aria-expanded="false" >
-            Selecione a urgência
-          </button>
-          <ul class="dropdown-menu w-100" aria-labelledby="dropUrgencia"></ul>
-          <input type="hidden" id="inputUrgencia" name="urgencia">
-        </div>
-
-        <div class="dropdown mb-3">
-          <label class="form-label">Status</label>
-
-          <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropStatus"
-            data-input="#inputStatus" data-bs-toggle="dropdown" aria-expanded="false" >
-            Definir novo status
-          </button>
-          <ul class="dropdown-menu w-100" aria-labelledby="dropStatus"></ul>
-          <input type="hidden" id="inputStatus" name="status">
-        </div>
+      </form>
     </div>
-
-    <!-- Seta animada entre os formulários -->
-    <div class="seta-container"><i class="bi bi-arrow-down"></i></div>
-
-    <!-- Scripts -->
-    <script src="../events/analiticsScreen.js"></script>
-    <script src="../../libs/bootstrap.bundle.min.js"></script>
-    <script src="../controller/analitics.js"></script>
+  </div> <!-- Seta animada entre os formulários -->
+  <div class="seta-container"><i class="bi bi-arrow-down color-primary"></i></div>
+  <div class="page-container"> <!-- FORMULÁRIO 1 - DADOS DO CHAMADO -->
+    <div class="form-card">
+      <h2 class="mb-4 text-center text-primary color-primary">Resposta do chamado</h2>
+      <form id="atendimentoForm"> <!-- Problema -->
+        <div class="mb-3"> <label for="resposta" class="form-label">Resposta do atendimento</label> <textarea
+            class="form-control" id="resposta" name="resposta" rows="4"
+            placeholder="Descreva o que você fez nesse fluxo..."></textarea> </div>
+        <div class="dropdown mb-3"> <label class="form-label">Qual setor esse fluxo será direcionado?</label> <button
+            class="btn btn-primary bg-primary dropdown-toggle w-100" type="button" id="dropSetorDirecionado"
+            data-bs-toggle="dropdown" data-input="#setor-direcionado" aria-expanded="false"> Selecione uma opção
+          </button>
+          <ul class="dropdown-menu w-100" id="menuSetorDirecionado" aria-labelledby="dropSetorDirecionado"></ul> <input
+            type="hidden" id="setor-direcionado" name="setorDirecionadoId">
+        </div>
+      </form>
+    </div>
+  </div> <!-- Scripts -->
+  <script src="../events/analiticsScreen.js"></script>
+  <script src="../../libs/bootstrap.bundle.min.js"></script>
+  <script src="../controller/analitics.js"></script>
 </body>
 
 </html>

@@ -1,52 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gerenciamento de Tickets</title>
-  <link rel="stylesheet" href="../../libs/bootstrap.min.css" />
-  <link rel="stylesheet" href="../style/componentsStyle.css" />
-
-  <style>
-    body {
-      background-color: #f4f6f9;
-    }
-
-    .ticket-card {
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-      transition: 0.2s;
-      height: 100%;
-      cursor: pointer;
-    }
-
-    .ticket-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    .badge-id {
-      background-color: #0d6efd;
-      color: white;
-      font-size: 0.8rem;
-      border-radius: 8px;
-      padding: 0.35em 0.6em;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="form-container">
-    <div class="form-card card shadow-sm p-4">
-      <h2 class="text-center color-primary mb-5">Gerenciamento de Tickets</h2>
-
-      <div class="row g-4" id="tickets-container"></div>
-    </div>
-  </div>
-
-  <script>
-    function getBadgeClass(status) {
+function getBadgeClass(status) {
       switch (status) {
         case "Analise":
           return "bg-warning text-dark";
@@ -131,9 +83,3 @@
     }
 
     window.addEventListener("DOMContentLoaded", carregarChamados);
-  </script>
-
-  <script src="../../libs/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>

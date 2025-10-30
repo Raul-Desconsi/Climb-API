@@ -1,10 +1,10 @@
 package com.application.climb.Controller;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.application.climb.Dto.ChamadoDTO;
-import com.application.climb.Dto.ChamadoResponseDTO;
 import com.application.climb.Model.Chamado;
 import com.application.climb.Model.Funcionario;
 import com.application.climb.Model.Setor;
@@ -161,7 +160,7 @@ public class ChamadoController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ChamadoResponseDTO>> listarTodos(
+    public ResponseEntity<List<ChamadoDTO>> listarTodos(
             @RequestHeader("Authorization") String token,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String urgencia,
@@ -174,14 +173,14 @@ public class ChamadoController {
         List<Chamado> chamados = chamadoService.findAll();
 
         // 🔍 Filtros simples no Java (pode mover para Query mais tarde)
-        List<ChamadoResponseDTO> filtrados = chamados.stream()
+        List<ChamadoDTO> filtrados = chamados.stream()
                 .filter(c -> status == null || 
                         (c.getStatus() != null && c.getStatus().getNome().equalsIgnoreCase(status)))
                 .filter(c -> urgencia == null || 
                         (c.getUrgencia() != null && c.getUrgencia().getNome().equalsIgnoreCase(urgencia)))
                 .filter(c -> responsavel == null || 
                         (c.getResponsavelAbertura() != null && c.getResponsavelAbertura().getNome().equalsIgnoreCase(responsavel)))
-                .map(ChamadoResponseDTO::new)
+                .map(ChamadoDTO::new)
                 .toList();
 
         return ResponseEntity.ok(filtrados);

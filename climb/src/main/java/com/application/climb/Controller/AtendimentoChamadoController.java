@@ -106,6 +106,18 @@ public class AtendimentoChamadoController {
         }
     }
 
+    @GetMapping("/api/atendimento/chamado/{chamadoId}")
+    public ResponseEntity<?> listarPorChamado(@PathVariable Integer chamadoId,
+                                              @RequestHeader("Authorization") String token) {
+        try {
+            if (!authService.authenticate(token)) return ResponseEntity.status(403).body("Sem permissão");
+            List<AtendimentoChamado> lista = atendimentoService.findByChamadoId(chamadoId);
+            return ResponseEntity.ok(lista);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<AtendimentoChamado>> listarTodos(@RequestHeader("Authorization") String token) {
         if (!authService.authenticate(token)) return ResponseEntity.status(403).build();

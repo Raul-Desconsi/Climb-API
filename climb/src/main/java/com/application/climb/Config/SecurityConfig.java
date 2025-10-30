@@ -36,10 +36,12 @@ public class SecurityConfig {
         "/chamado/**",
         "/Cargo/**",
         "/api/urgencias/empresa/**",
+        "/api/status/empresa/**",
         "/urgencia/**",
         "/urgencia/all",
         "/status/**",
-        "/status/all"
+        "/status/all",
+        "/api/atendimento/chamado/**"
     }; 
         
             

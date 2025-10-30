@@ -91,7 +91,12 @@ function exibirChamados(lista) {
 
     card.addEventListener("click", () => {
       localStorage.setItem("chamadoSelecionado", JSON.stringify(ch));
+      localStorage.setItem("Token", token);
+      localStorage.setItem("funcionario", JSON.stringify(usuario));
+      localStorage.setItem("setorUsuario", usuario.setor.id);
+
       window.location.href = "../page/flowAnalytics.html";
+       alert(`Abrindo fluxo analítico para o chamado #${chamadoSelecionado.id}`);
     });
 
     card.addEventListener("contextmenu", (e) => {
@@ -181,7 +186,17 @@ document.addEventListener("click", () => {
 
 document.getElementById("abrirFluxo").addEventListener("click", () => {
   if (!chamadoSelecionado) return;
-  localStorage.setItem("chamadoSelecionado", JSON.stringify(chamadoSelecionado));
+      const token = localStorage.getItem("jwtToken");
+      const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+      localStorage.setItem("chamadoSelecionado", JSON.stringify(chamadoSelecionado));
+      localStorage.setItem("jwtToken", token);
+      localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+      localStorage.setItem("setorUsuario", usuario?.setor?.id);
+      localStorage.setItem("responsavelAbertura", JSON.stringify(chamadoSelecionado?.responsavelAbertura));
+
+  alert(`Abrindo fluxo analítico para o chamado #${chamadoSelecionado.id}, TOKEN ${token}, MOTIVO: ${chamadoSelecionado.motivo}, DESCRIÇÃO: ${chamadoSelecionado.descricao}, RESPONSÁVEL ID: ${chamadoSelecionado.responsavelAbertura}, SETOR ID: ${chamadoSelecionado.setor}, URGÊNCIA ID: ${chamadoSelecionado.urgencia}, STATUS ID: ${chamadoSelecionado.status}`);
+  console.log("Token:", token);
   window.location.href = "../page/flowAnalytics.html";
 });
 

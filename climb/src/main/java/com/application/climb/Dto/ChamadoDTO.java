@@ -2,6 +2,8 @@ package com.application.climb.Dto;
 
 import java.time.LocalDate;
 
+import com.application.climb.Model.Chamado;
+
 public class ChamadoDTO {
 
     private Integer id;
@@ -16,74 +18,82 @@ public class ChamadoDTO {
     private Integer setorId;
     private Integer statusId;
 
+    // 🔹 Campos auxiliares para exibição e filtro
+    private String statusNome;
+    private String urgenciaNome;
+    private String responsavelNome;
 
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public ChamadoDTO() {}
 
-    public String getMotivo() {
-        return motivo;
-    }
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
+    // 🔹 Construtor para converter de entidade para DTO
+    public ChamadoDTO(Chamado chamado) {
+        this.id = chamado.getId();
+        this.motivo = chamado.getMotivo();
+        this.descricao = chamado.getDescricao();
+        this.data = chamado.getData();
 
-    public String getDescricao() {
-        return descricao;
-    }
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+        if (chamado.getAreaAfetada() != null)
+            this.areaAfetadaId = chamado.getAreaAfetada().getId();
 
-    public LocalDate getData() {
-        return data;
-    }
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
+        if (chamado.getResponsavelAbertura() != null) {
+            this.responsavelAberturaId = chamado.getResponsavelAbertura().getId().intValue();
+            this.responsavelNome = chamado.getResponsavelAbertura().getNome();
+        }
 
-    public Integer getAreaAfetadaId() {
-        return areaAfetadaId;
-    }
-    public void setAreaAfetadaId(Integer areaAfetadaId) {
-        this.areaAfetadaId = areaAfetadaId;
-    }
+        if (chamado.getResponsavelResolucao() != null)
+            this.responsavelResolucaoId = chamado.getResponsavelResolucao().getId().intValue();
 
-    public Integer getResponsavelAberturaId() {
-        return responsavelAberturaId;
-    }
-    public void setResponsavelAberturaId(Integer responsavelAberturaId) {
-        this.responsavelAberturaId = responsavelAberturaId;
+        if (chamado.getUrgencia() != null) {
+            this.urgenciaId = chamado.getUrgencia().getId();
+            this.urgenciaNome = chamado.getUrgencia().getNome();
+        }
+
+        if (chamado.getSetor() != null)
+            this.setorId = chamado.getSetor().getId();
+
+        if (chamado.getStatus() != null) {
+            this.statusId = chamado.getStatus().getId();
+            this.statusNome = chamado.getStatus().getNome();
+        }
     }
 
-    public Integer getResponsavelResolucaoId() {
-        return responsavelResolucaoId;
-    }
-    public void setResponsavelResolucaoId(Integer responsavelResolucaoId) {
-        this.responsavelResolucaoId = responsavelResolucaoId;
-    }
+    // Getters e Setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    public Integer getUrgenciaId() {
-        return urgenciaId;
-    }
-    public void setUrgenciaId(Integer urgenciaId) {
-        this.urgenciaId = urgenciaId;
-    }
+    public String getMotivo() { return motivo; }
+    public void setMotivo(String motivo) { this.motivo = motivo; }
 
-    public Integer getSetorId() {
-        return setorId;
-    }
-    public void setSetorId(Integer setorId) {
-        this.setorId = setorId;
-    }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public Integer getStatusId() {
-        return statusId;
-    }
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
-    }
+    public LocalDate getData() { return data; }
+    public void setData(LocalDate data) { this.data = data; }
+
+    public Integer getAreaAfetadaId() { return areaAfetadaId; }
+    public void setAreaAfetadaId(Integer areaAfetadaId) { this.areaAfetadaId = areaAfetadaId; }
+
+    public Integer getResponsavelAberturaId() { return responsavelAberturaId; }
+    public void setResponsavelAberturaId(Integer responsavelAberturaId) { this.responsavelAberturaId = responsavelAberturaId; }
+
+    public Integer getResponsavelResolucaoId() { return responsavelResolucaoId; }
+    public void setResponsavelResolucaoId(Integer responsavelResolucaoId) { this.responsavelResolucaoId = responsavelResolucaoId; }
+
+    public Integer getUrgenciaId() { return urgenciaId; }
+    public void setUrgenciaId(Integer urgenciaId) { this.urgenciaId = urgenciaId; }
+
+    public Integer getSetorId() { return setorId; }
+    public void setSetorId(Integer setorId) { this.setorId = setorId; }
+
+    public Integer getStatusId() { return statusId; }
+    public void setStatusId(Integer statusId) { this.statusId = statusId; }
+
+    public String getStatusNome() { return statusNome; }
+    public void setStatusNome(String statusNome) { this.statusNome = statusNome; }
+
+    public String getUrgenciaNome() { return urgenciaNome; }
+    public void setUrgenciaNome(String urgenciaNome) { this.urgenciaNome = urgenciaNome; }
+
+    public String getResponsavelNome() { return responsavelNome; }
+    public void setResponsavelNome(String responsavelNome) { this.responsavelNome = responsavelNome; }
 }

@@ -26,9 +26,12 @@ public class Urgencia {
     @Column(length = 50, nullable = false)
     private String nome;
 
+    @Column(length = 50, nullable = false)
+    private String cor;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", nullable = false)
-    
+
     private Empresa empresa;
 
 }

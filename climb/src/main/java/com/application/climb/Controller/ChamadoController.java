@@ -1,7 +1,6 @@
 package com.application.climb.Controller;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -152,4 +151,31 @@ public class ChamadoController {
         List<Chamado> chamados = chamadoService.findAll();
         return ResponseEntity.ok(chamados);
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<ChamadoDTO>> listarTodos(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String urgencia,
+            @RequestParam(required = false) String responsavel
+    ) {
+        if (!authService.authenticate(token.replace("Bearer ", ""))) {
+            return ResponseEntity.status(403).build();
+        }
+
+        List<Chamado> chamados = chamadoService.findAll();
+
+        List<ChamadoDTO> filtrados = chamados.stream()
+                .map(ChamadoDTO::new)
+                .filter(dto -> status == null || 
+                        (dto.getStatusNome() != null && dto.getStatusNome().equalsIgnoreCase(status)))
+                .filter(dto -> urgencia == null || 
+                        (dto.getUrgenciaNome() != null && dto.getUrgenciaNome().equalsIgnoreCase(urgencia)))
+                .filter(dto -> responsavel == null || 
+                        (dto.getResponsavelNome() != null && dto.getResponsavelNome().equalsIgnoreCase(responsavel)))
+                .toList();
+
+        return ResponseEntity.ok(filtrados);
+    }
+
 }

@@ -83,20 +83,26 @@ function exibirChamados(lista) {
           <p class="card-text mt-3">${ch.descricao}</p>
           <p class="small text-muted">
             Aberto por: ${ch.responsavelAbertura?.nome || "Desconhecido"} 
-            | Urgência: ${ch.urgencia?.nome || "N/A"}
           </p>
+          <p class="small fw-bold" style="
+            background: ${ch.urgencia?.cor};
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            text-shadow: 
+                0px 0px 6px black,
+                0px 0px 6px black;
+            ">
+            ${ch.urgencia?.nome || "N/A"}
+        </p>
         </div>
       </div>
     `;
 
     card.addEventListener("click", () => {
       localStorage.setItem("chamadoSelecionado", JSON.stringify(ch));
-      localStorage.setItem("Token", token);
-      localStorage.setItem("funcionario", JSON.stringify(usuario));
-      localStorage.setItem("setorUsuario", usuario.setor.id);
-
       window.location.href = "../page/flowAnalytics.html";
-       alert(`Abrindo fluxo analítico para o chamado #${chamadoSelecionado.id}`);
     });
 
     card.addEventListener("contextmenu", (e) => {
@@ -186,17 +192,7 @@ document.addEventListener("click", () => {
 
 document.getElementById("abrirFluxo").addEventListener("click", () => {
   if (!chamadoSelecionado) return;
-      const token = localStorage.getItem("jwtToken");
-      const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-
-      localStorage.setItem("chamadoSelecionado", JSON.stringify(chamadoSelecionado));
-      localStorage.setItem("jwtToken", token);
-      localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
-      localStorage.setItem("setorUsuario", usuario?.setor?.id);
-      localStorage.setItem("responsavelAbertura", JSON.stringify(chamadoSelecionado?.responsavelAbertura));
-
-  alert(`Abrindo fluxo analítico para o chamado #${chamadoSelecionado.id}, TOKEN ${token}, MOTIVO: ${chamadoSelecionado.motivo}, DESCRIÇÃO: ${chamadoSelecionado.descricao}, RESPONSÁVEL ID: ${chamadoSelecionado.responsavelAbertura}, SETOR ID: ${chamadoSelecionado.setor}, URGÊNCIA ID: ${chamadoSelecionado.urgencia}, STATUS ID: ${chamadoSelecionado.status}`);
-  console.log("Token:", token);
+  localStorage.setItem("chamadoSelecionado", JSON.stringify(chamadoSelecionado));
   window.location.href = "../page/flowAnalytics.html";
 });
 

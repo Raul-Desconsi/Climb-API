@@ -1,33 +1,18 @@
 package com.application.climb.Controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.application.climb.Dto.ChamadoDTO;
-import com.application.climb.Model.Chamado;
-import com.application.climb.Model.Funcionario;
-import com.application.climb.Model.Setor;
-import com.application.climb.Model.Status;
-import com.application.climb.Model.Urgencia;
-import com.application.climb.Service.AuthService;
-import com.application.climb.Service.ChamadoService;
-import com.application.climb.Service.FuncionarioService;
-import com.application.climb.Service.SetorService;
-import com.application.climb.Service.StatusService;
-import com.application.climb.Service.UrgenciaService;
+import com.application.climb.Model.*;
+import com.application.climb.Service.*;
 
 @RestController
 @RequestMapping("/chamado")
@@ -160,29 +145,38 @@ public class ChamadoController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ChamadoDTO>> listarTodos(
-            @RequestHeader("Authorization") String token,
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String urgencia,
-            @RequestParam(required = false) String responsavel
-    ) {
+    public ResponseEntity<List<Chamado>> listarTodos(@RequestHeader("Authorization") String token) {
         if (!authService.authenticate(token.replace("Bearer ", ""))) {
             return ResponseEntity.status(403).build();
         }
-
         List<Chamado> chamados = chamadoService.findAll();
-
-        // 🔍 Filtros simples no Java (pode mover para Query mais tarde)
-        List<ChamadoDTO> filtrados = chamados.stream()
-                .filter(c -> status == null || 
-                        (c.getStatus() != null && c.getStatus().getNome().equalsIgnoreCase(status)))
-                .filter(c -> urgencia == null || 
-                        (c.getUrgencia() != null && c.getUrgencia().getNome().equalsIgnoreCase(urgencia)))
-                .filter(c -> responsavel == null || 
-                        (c.getResponsavelAbertura() != null && c.getResponsavelAbertura().getNome().equalsIgnoreCase(responsavel)))
-                .map(ChamadoDTO::new)
-                .toList();
-
-        return ResponseEntity.ok(filtrados);
+        return ResponseEntity.ok(chamados);
     }
+
+    @GetMapping("/filter")
+public ResponseEntity<List<ChamadoDTO>> listarTodos(
+        @RequestHeader("Authorization") String token,
+        @RequestParam(required = false) String status,
+        @RequestParam(required = false) String urgencia,
+        @RequestParam(required = false) String responsavel
+) {
+    if (!authService.authenticate(token.replace("Bearer ", ""))) {
+        return ResponseEntity.status(403).build();
+    }
+
+    List<Chamado> chamados = chamadoService.findAll();
+
+    List<ChamadoDTO> filtrados = chamados.stream()
+            .map(ChamadoDTO::new)
+            .filter(dto -> status == null || 
+                    (dto.getStatusNome() != null && dto.getStatusNome().equalsIgnoreCase(status)))
+            .filter(dto -> urgencia == null || 
+                    (dto.getUrgenciaNome() != null && dto.getUrgenciaNome().equalsIgnoreCase(urgencia)))
+            .filter(dto -> responsavel == null || 
+                    (dto.getResponsavelNome() != null && dto.getResponsavelNome().equalsIgnoreCase(responsavel)))
+            .toList();
+
+    return ResponseEntity.ok(filtrados);
+}
+
 }

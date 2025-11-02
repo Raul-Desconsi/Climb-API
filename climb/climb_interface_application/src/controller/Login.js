@@ -50,6 +50,7 @@ function submitLogin(event) {
                     localStorage.setItem('empresaId', response.empresaId);
                     localStorage.setItem('nome', response.nome);
                     localStorage.setItem('cargo', response.cargo);
+
                     
                    
 

@@ -43,4 +43,14 @@ public class Setor {
     @JsonIgnore
     @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Chamado> chamados;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "setorDirecionado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<AtendimentoChamado> atendimentosDirecionados;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "setorAtendimento", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<AtendimentoChamado> atendimentosRealizados;
+
+
 }

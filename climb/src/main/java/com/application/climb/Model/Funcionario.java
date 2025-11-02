@@ -42,4 +42,16 @@ public class Funcionario {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "responsavelAbertura")
+    private java.util.List<Chamado> chamadosAbertos;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "responsavelResolucao")
+    private java.util.List<Chamado> chamadosResolvidos;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "responsavelAtendimento")
+    private java.util.List<AtendimentoChamado> atendimentosRealizados;
 }

@@ -145,16 +145,7 @@ public class ChamadoController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Chamado>> listarTodos(@RequestHeader("Authorization") String token) {
-        if (!authService.authenticate(token.replace("Bearer ", ""))) {
-            return ResponseEntity.status(403).build();
-        }
-        List<Chamado> chamados = chamadoService.findAll();
-        return ResponseEntity.ok(chamados);
-    }
-
-    @GetMapping("/filter")
-public ResponseEntity<List<ChamadoDTO>> listarTodos(
+public ResponseEntity<List<Chamado>> listarFiltrados(
         @RequestHeader("Authorization") String token,
         @RequestParam(required = false) String status,
         @RequestParam(required = false) String urgencia,
@@ -166,17 +157,14 @@ public ResponseEntity<List<ChamadoDTO>> listarTodos(
 
     List<Chamado> chamados = chamadoService.findAll();
 
-    List<ChamadoDTO> filtrados = chamados.stream()
-            .map(ChamadoDTO::new)
-            .filter(dto -> status == null || 
-                    (dto.getStatusNome() != null && dto.getStatusNome().equalsIgnoreCase(status)))
-            .filter(dto -> urgencia == null || 
-                    (dto.getUrgenciaNome() != null && dto.getUrgenciaNome().equalsIgnoreCase(urgencia)))
-            .filter(dto -> responsavel == null || 
-                    (dto.getResponsavelNome() != null && dto.getResponsavelNome().equalsIgnoreCase(responsavel)))
+    List<Chamado> filtrados = chamados.stream()
+            .filter(c -> status == null ||
+                    (c.getStatus() != null && c.getStatus().getNome().equalsIgnoreCase(status)))
+            .filter(c -> urgencia == null ||
+                    (c.getUrgencia() != null && c.getUrgencia().getNome().equalsIgnoreCase(urgencia)))
+            .filter(c -> responsavel == null ||
+                    (c.getResponsavelAbertura() != null && c.getResponsavelAbertura().getNome().equalsIgnoreCase(responsavel)))
             .toList();
 
     return ResponseEntity.ok(filtrados);
-}
-
-}
+}}

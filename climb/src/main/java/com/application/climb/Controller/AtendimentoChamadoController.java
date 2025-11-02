@@ -1,5 +1,6 @@
 package com.application.climb.Controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -34,60 +35,85 @@ public class AtendimentoChamadoController {
 
     @PostMapping("/create")
     public ResponseEntity<?> criarAtendimento(@RequestBody AtendimentoChamadoDTO dto,
-                                              @RequestHeader("Authorization") String token) {
+            @RequestHeader("Authorization") String token) {
         try {
-            if (!authService.authenticate(token)) {
+            String rawToken = token != null ? token.replace("Bearer ", "").trim() : null;
+
+            if (!authService.authenticate(rawToken)) {
                 return ResponseEntity.status(403).body("Sem permissão");
             }
 
-            // validações básicas
+            // pega o usuário logado a partir do token (útil para preencher dados
+            // automaticamente)
+            Funcionario usuarioLogado = authService.getFuncionarioFromToken(rawToken);
+            if (usuarioLogado == null) {
+                return ResponseEntity.status(403).body("Usuário inválido no token");
+            }
+
             if (dto.getResposta() == null || dto.getResposta().isBlank()) {
                 return ResponseEntity.badRequest().body("Resposta é obrigatória");
             }
+
             AtendimentoChamado at = new AtendimentoChamado();
             at.setResposta(dto.getResposta());
             at.setConclusao_chamado(dto.getConclusaoChamado() != null ? dto.getConclusaoChamado() : 0);
-            at.setData_atendimento(dto.getDataAtendimento() != null ? dto.getDataAtendimento() : LocalDateTime.now());
+            // usa LocalDateTime (compatível com a entidade)
+            at.setData_atendimento(dto.getDataAtendimento() != null ? dto.getDataAtendimento() : LocalDate.now());
 
             // setor direcionado (obrigatório)
             if (dto.getSetorDirecionadoId() == null) {
                 return ResponseEntity.badRequest().body("Setor direcionado é obrigatório");
             }
             Optional<Setor> setorDir = setorService.buscarPorId(dto.getSetorDirecionadoId());
-            if (setorDir.isEmpty()) return ResponseEntity.status(404).body("Setor direcionado não encontrado");
+            if (setorDir.isEmpty())
+                return ResponseEntity.status(404).body("Setor direcionado não encontrado");
             at.setSetorDirecionado(setorDir.get());
 
-            // setor atendimento (obrigatório)
-            if (dto.getSetorAtendimentoId() == null) {
-                return ResponseEntity.badRequest().body("Setor de atendimento é obrigatório");
+            // setor atendimento -> se não vier no dto, usa setor do usuário logado
+            Integer setorAtId = dto.getSetorAtendimentoId();
+            if (setorAtId == null) {
+                if (usuarioLogado.getSetor() == null) {
+                    return ResponseEntity.badRequest().body("Setor do atendimento não informado e usuário sem setor");
+                }
+                setorAtId = usuarioLogado.getSetor().getId();
             }
-            Optional<Setor> setorAt = setorService.buscarPorId(dto.getSetorAtendimentoId());
-            if (setorAt.isEmpty()) return ResponseEntity.status(404).body("Setor de atendimento não encontrado");
+            Optional<Setor> setorAt = setorService.buscarPorId(setorAtId);
+            if (setorAt.isEmpty())
+                return ResponseEntity.status(404).body("Setor de atendimento não encontrado");
             at.setSetorAtendimento(setorAt.get());
 
-            // responsavel atendimento (obrigatório)
-            if (dto.getResponsavelAtendimentoId() == null) {
-                return ResponseEntity.badRequest().body("Responsável pelo atendimento é obrigatório");
-            }
-            Optional<Funcionario> funcOpt = funcionarioService.findById(dto.getResponsavelAtendimentoId().longValue());
-            if (funcOpt.isEmpty()) return ResponseEntity.status(404).body("Funcionário não encontrado");
+            // responsavel atendimento -> se não vier no dto, usa id do usuário logado
+            Long respId = dto.getResponsavelAtendimentoId() != null ? dto.getResponsavelAtendimentoId().longValue()
+                    : usuarioLogado.getId();
+            Optional<Funcionario> funcOpt = funcionarioService.findById(respId);
+            if (funcOpt.isEmpty())
+                return ResponseEntity.status(404).body("Funcionário não encontrado");
             at.setResponsavelAtendimento(funcOpt.get());
 
-            // chamado (obrigatório)
+            // chamado
             if (dto.getChamadoId() == null) {
                 return ResponseEntity.badRequest().body("Chamado é obrigatório");
             }
             Optional<Chamado> chamadoOpt = chamadoService.findById(dto.getChamadoId());
-            if (chamadoOpt.isEmpty()) return ResponseEntity.status(404).body("Chamado não encontrado");
+            if (chamadoOpt.isEmpty())
+                return ResponseEntity.status(404).body("Chamado não encontrado");
             at.setChamado(chamadoOpt.get());
 
+            // salva atendimento
             AtendimentoChamado salvo = atendimentoService.save(at);
 
-            return ResponseEntity.ok(Map.of(
-                "message", "Atendimento criado com sucesso",
-                "id", salvo.getId()
-            ));
+            // opcional: atualizar status/setor do Chamado aqui (se desejar)...
+            // Exemplo simples (se quiser atualizar setor atual do chamado para
+            // setorDirecionado):
+            /*
+             * Chamado chamado = chamadoOpt.get();
+             * chamado.setSetor(setorDir.get());
+             * chamadoService.save(chamado);
+             */
 
+            return ResponseEntity.ok(Map.of(
+                    "message", "Atendimento criado com sucesso",
+                    "id", salvo.getId()));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
         }
@@ -95,11 +121,14 @@ public class AtendimentoChamadoController {
 
     @GetMapping("/get")
     public ResponseEntity<?> getAtendimento(@RequestParam Integer id,
-                                            @RequestHeader("Authorization") String token) {
+            @RequestHeader("Authorization") String token) {
         try {
-            if (!authService.authenticate(token)) return ResponseEntity.status(403).body("Sem permissão");
+            token = token.replace("Bearer ", "");
+            if (!authService.authenticate(token))
+                return ResponseEntity.status(403).body("Sem permissão");
             Optional<AtendimentoChamado> atOpt = atendimentoService.findById(id);
-            if (atOpt.isEmpty()) return ResponseEntity.status(404).body("Atendimento não encontrado");
+            if (atOpt.isEmpty())
+                return ResponseEntity.status(404).body("Atendimento não encontrado");
             return ResponseEntity.ok(atOpt.get());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
@@ -108,15 +137,19 @@ public class AtendimentoChamadoController {
 
     @GetMapping("/all")
     public ResponseEntity<List<AtendimentoChamado>> listarTodos(@RequestHeader("Authorization") String token) {
-        if (!authService.authenticate(token)) return ResponseEntity.status(403).build();
+        token = token.replace("Bearer ", "");
+        if (!authService.authenticate(token))
+            return ResponseEntity.status(403).build();
         List<AtendimentoChamado> lista = atendimentoService.findAll();
         return ResponseEntity.ok(lista);
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> excluir(@RequestParam Integer id,
-                                     @RequestHeader("Authorization") String token) {
-        if (!authService.authenticate(token)) return ResponseEntity.status(403).body("Sem permissão");
+            @RequestHeader("Authorization") String token) {
+        token = token.replace("Bearer ", "");
+        if (!authService.authenticate(token))
+            return ResponseEntity.status(403).body("Sem permissão");
         try {
             atendimentoService.deleteById(id);
             return ResponseEntity.ok(Map.of("message", "Atendimento excluído"));
@@ -124,4 +157,67 @@ public class AtendimentoChamadoController {
             return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
         }
     }
+
+    @GetMapping("/listarPorChamado")
+    public ResponseEntity<?> listarPorChamado(@RequestParam Integer chamadoId,
+            @RequestHeader("Authorization") String token) {
+        token = token.replace("Bearer ", "");
+        if (!authService.authenticate(token))
+            return ResponseEntity.status(403).body("Sem permissão");
+
+        List<AtendimentoChamado> lista = atendimentoService.findByChamadoId(chamadoId);
+        return ResponseEntity.ok(lista);
+    }
+
+    @PostMapping("/finalizar")
+    public ResponseEntity<?> concluirChamado(@RequestBody AtendimentoChamadoDTO dto,
+            @RequestHeader("Authorization") String token) {
+        try {
+            token = token.replace("Bearer ", "");
+            if (!authService.authenticate(token)) {
+                return ResponseEntity.status(403).body("Sem permissão");
+            }
+
+            if (dto.getChamadoId() == null) {
+                return ResponseEntity.badRequest().body("Chamado é obrigatório");
+            }
+
+            Optional<Chamado> chamadoOpt = chamadoService.findById(dto.getChamadoId());
+            if (chamadoOpt.isEmpty()) {
+                return ResponseEntity.status(404).body("Chamado não encontrado");
+            }
+
+            AtendimentoChamado at = new AtendimentoChamado();
+            at.setResposta(dto.getResposta());
+            at.setConclusao_chamado(1);
+            at.setData_atendimento(LocalDate.now());
+
+            Optional<Setor> setorAt = setorService.buscarPorId(dto.getSetorAtendimentoId());
+            if (setorAt.isEmpty())
+                return ResponseEntity.status(404).body("Setor do atendimento não encontrado");
+            at.setSetorAtendimento(setorAt.get());
+
+            Optional<Setor> setorDir = setorService.buscarPorId(dto.getSetorDirecionadoId());
+            at.setSetorDirecionado(setorDir.orElse(setorAt.get()));
+
+            Optional<Funcionario> func = funcionarioService.findById(dto.getResponsavelAtendimentoId().longValue());
+            if (func.isEmpty())
+                return ResponseEntity.status(404).body("Funcionário não encontrado");
+            at.setResponsavelAtendimento(func.get());
+
+            at.setChamado(chamadoOpt.get());
+            atendimentoService.save(at);
+
+            Chamado chamado = chamadoOpt.get();
+            chamadoService.save(chamado);
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Chamado concluído com sucesso",
+                    "chamadoId", chamado.getId()));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
+        }
+    }
+
 }

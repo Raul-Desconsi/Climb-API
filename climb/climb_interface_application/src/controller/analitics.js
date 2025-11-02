@@ -2,99 +2,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     const empresaId = localStorage.getItem("empresaId");
     const token = localStorage.getItem("jwtToken");
     const chamado = JSON.parse(localStorage.getItem("chamadoSelecionado"));
-    const usuarioAtual = JSON.parse(localStorage.getItem("usuarioLogado"));
 
-    if (!chamado) {
-        alert("Nenhum chamado selecionado.");
-        window.location.href = "/pages/gerenciamentoTickets.html";
-        return;
-    }
 
-    // Função para carregar dropdowns
-    async function carregarDropdown(endpoint, buttonSelector, nomeCampo = "nome") {
-        try {
-            const response = await fetch(`http://localhost:8080/api/${endpoint}/empresa/${empresaId}`, {
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            });
-
-            if (!response.ok) throw new Error(`Erro ao buscar ${endpoint}`);
-            const dados = await response.json();
-
-            const dropdownButton = document.querySelector(buttonSelector);
-            const dropdownMenu = dropdownButton.nextElementSibling;
-            const hiddenInput = document.querySelector(dropdownButton.getAttribute("data-input"));
-            dropdownMenu.innerHTML = "";
-
-            dados.forEach(item => {
-                const li = document.createElement("li");
-                li.innerHTML = `<a class="dropdown-item" href="#" data-id="${item.id}">${item[nomeCampo]}</a>`;
-                dropdownMenu.appendChild(li);
-            });
-
-            // Selecionar item existente do chamado se houver
-            const valorAtual = hiddenInput.value || (chamado[endpoint.slice(0, -1)]?.id);
-            if (valorAtual) {
-                const selecionado = dados.find(d => d.id == valorAtual);
-                if (selecionado) {
-                    dropdownButton.textContent = selecionado[nomeCampo];
-                    hiddenInput.value = selecionado.id;
-                }
-            }
-
-            dropdownMenu.querySelectorAll(".dropdown-item").forEach(item => {
-                item.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    dropdownButton.textContent = item.textContent;
-                    hiddenInput.value = item.dataset.id;
-                });
-            });
-        } catch (error) {
-            console.error(`Erro ao carregar ${endpoint}:`, error);
-        }
-    }
-
-    // Carregar dropdowns
-    await carregarDropdown("setores", "#dropAreaAfetada");
-    await carregarDropdown("urgencias", "#dropUrgencia");
-    await carregarDropdown("status", "#dropStatus");
-
-    // Preenche dados do chamado principal
+    // Preenche campos do chamado
     document.getElementById("motivo").value = chamado.motivo || "";
     document.getElementById("problema").value = chamado.descricao || "";
     document.getElementById("responsavelAbertura").value = chamado.responsavelAbertura?.nome || "N/A";
-
-
-
-    // Preenche setor que abriu o fluxo
-    if (chamado.setorAbertura && chamado.setorAbertura.nome) {
-        document.getElementById("setorAbertura").value = chamado.setorAbertura.nome;
-    } else if (chamado.setor && chamado.setor.nome) {
-        // Caso o JSON tenha outro nome de chave
-        document.getElementById("setorAbertura").value = chamado.setor.nome;
-    } else {
-        document.getElementById("setorAbertura").value = "N/A";
-    }
-
-
-    // Preenche data de abertura
+    document.getElementById("setorAbertura").value = chamado.setorAbertura?.nome || chamado.setor?.nome || "N/A";
     if (chamado.data) {
-        const data = new Date(chamado.data); // converte para Date
-        const dia = String(data.getDate()).padStart(2, '0');
-        const mes = String(data.getMonth() + 1).padStart(2, '0'); // Janeiro = 0
+        const data = new Date(chamado.data);
+        const dia = String(data.getDate()).padStart(2, "0");
+        const mes = String(data.getMonth() + 1).padStart(2, "0");
         const ano = data.getFullYear();
         document.getElementById("dataAberturaTexto").value = `${dia}/${mes}/${ano}`;
-    } else {
-        document.getElementById("dataAberturaTexto").value = "N/A";
     }
 
-
-
-
-
-    // Preencher dropdowns já selecionados se houver no chamado
+    // Dropdowns selecionados
     if (chamado.areaAfetada) {
         document.getElementById("dropAreaAfetada").textContent = chamado.areaAfetada.nome;
         document.getElementById("areas-afetadas").value = chamado.areaAfetada.id;
@@ -107,4 +30,126 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("dropStatus").textContent = chamado.status.nome;
         document.getElementById("inputStatus").value = chamado.status.id;
     }
+
+    // ---------- ATENDIMENTOS ----------
+    const containerForm = document.querySelector(".page-container:last-of-type .form-card ");
+    const atendimentoForm = document.getElementById("atendimentoForm");
+
+    async function carregarAtendimentos() {
+        try {
+            const resp = await fetch(`http://localhost:8080/atendimento/listarPorChamado?chamadoId=${chamado.id}`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (!resp.ok) throw new Error("Não foi possível carregar atendimentos");
+            const atendimentos = await resp.json();
+
+            function renderAtendimentoReadonly(at) {
+                const div = document.createElement("div");
+                div.className = "form-card mb-3";
+
+                // --- Preenchendo campos com base na estrutura correta ---
+                const responsavel = at.responsavelAtendimento?.nome || "N/A";
+                const setor = at.setorAtendimento?.nome || "N/A";
+                const data = at.data_atendimento ? new Date(at.data_atendimento) : null;
+                const dataFormatada = data
+                    ? `${String(data.getDate()).padStart(2, "0")}/${String(data.getMonth() + 1).padStart(2, "0")}/${data.getFullYear()}`
+                    : "N/A";
+
+                div.innerHTML = `
+                <h5>Atendimento realizado por: <b>${responsavel}</b></h5>
+                <p><b>Setor:</b> ${setor}</p>
+                <p><b>Data:</b> ${dataFormatada}</p>
+                <textarea class="form-control" rows="3" readonly>${at.resposta || ""}</textarea>
+                <hr>
+            
+                <div class="seta-container"><i class="bi bi-arrow-down color-primary"></i></div>
+            `;
+                containerForm.parentNode.insertBefore(div, containerForm);
+            }
+
+            const temConclusao = atendimentos.some(a => a.conclusao_chamado === 1);
+
+            if (atendimentos.length === 0) {
+                atendimentoForm.style.display = "block";
+            } else if (temConclusao) {
+                atendimentos.forEach(renderAtendimentoReadonly);
+                atendimentoForm.style.display = "none";
+            } else {
+                atendimentos.forEach(renderAtendimentoReadonly);
+                atendimentoForm.style.display = "block";
+            }
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+
+    await carregarAtendimentos();
+
+    // ----------- BOTÕES DE AÇÃO -----------
+    const btnEnviar = document.querySelector("#btnEnviarEtapa");
+    const btnConcluir = document.querySelector("#btnConcluirChamado");
+
+    async function enviarAtendimento(concluir = false) {
+        const resposta = document.getElementById("resposta").value;
+        const statusId = document.getElementById("inputStatus").value;
+        const setorDirecionadoId = document.getElementById("setor-direcionado")?.value || null;
+        const setorAtendimentoId = localStorage.getItem("setor");
+        const responsavelAtendimentoId = localStorage.getItem("id");
+
+
+        if (!resposta.trim()) {
+            alert("Digite a resposta do atendimento");
+            return;
+        }
+
+        if (!statusId) {
+            alert("Selecione o novo status");
+            return;
+        }
+
+        if (!setorAtendimentoId || !responsavelAtendimentoId) {
+            alert(setorAtendimentoId, responsavelAtendimentoId);
+
+            return;
+        }
+
+        const payload = {
+            chamadoId: chamado.id,
+            resposta,
+            statusId,
+            setorDirecionadoId,
+            setorAtendimentoId,
+            responsavelAtendimentoId,
+            conclusaoChamado: concluir ? 1 : 0
+        };
+
+        try {
+            const token = localStorage.getItem("jwtToken");
+            const resp = await fetch("http://localhost:8080/atendimento/create", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload),
+                mode: "cors"
+            });
+
+
+            if (!resp.ok) throw new Error("Erro ao enviar atendimento");
+
+            alert(concluir ? "Chamado concluído!" : "Atendimento enviado!");
+            window.location.href = "/pages/gerenciamentoTickets.html";
+
+        } catch (e) {
+            console.error(e);
+            alert("Erro ao processar atendimento.");
+        }
+    }
+
+
+    if (btnEnviar) btnEnviar.addEventListener("click", () => enviarAtendimento(false));
+    if (btnConcluir) btnConcluir.addEventListener("click", () => enviarAtendimento(true));
 });

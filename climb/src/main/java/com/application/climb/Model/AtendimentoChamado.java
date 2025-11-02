@@ -3,7 +3,7 @@ package com.application.climb.Model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 @Entity
@@ -24,7 +24,7 @@ public class AtendimentoChamado {
     private int conclusao_chamado;
 
     @Column(nullable = false)
-    private LocalDateTime data_atendimento;
+    private LocalDate data_atendimento;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "setor_direcionado_id", nullable = false)
@@ -41,6 +41,7 @@ public class AtendimentoChamado {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "chamado_id", nullable = false)
     private Chamado chamado;
+
 
 
 

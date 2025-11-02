@@ -1,6 +1,6 @@
 package com.application.climb.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +18,7 @@ public class AtendimentoChamadoService {
 
     public AtendimentoChamado save(AtendimentoChamado at) {
         if (at.getData_atendimento() == null) {
-            at.setData_atendimento(LocalDateTime.now());
+            at.setData_atendimento(LocalDate.now());
         }
         return repo.save(at);
     }

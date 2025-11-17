@@ -182,27 +182,31 @@
             ></button>
           </div>
           <div class="modal-body">
-            <div class="filter-select">
-              <label class="form-label">Urgência</label>
-              <select id="filtroUrgencia" class="form-select">
-                <option value="">Todas</option>
-              </select>
-            </div>
-            <div class="filter-select">
+            <div class="dropdown mb-3">
               <label class="form-label">Status</label>
-              <select id="filtroStatus" class="form-select">
-                <option value="">Todos</option>
-              </select>
-            </div>
-            <div class="filter-select">
-              <label class="form-label">Responsável</label>
-              <input
-                id="filtroResponsavel"
-                type="text"
-                class="form-control"
-                placeholder="Nome do responsável"
-              />
-            </div>
+
+              <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button"
+                  id="dropStatusFilter" data-input="#inputStatusFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                  Selecione a status
+              </button>
+              <ul class="dropdown-menu w-100" aria-labelledby="dropStatusFilter">
+                  <li><a class="dropdown-item" data-value="null">Todos</a></li>
+              </ul>
+              <input type="hidden" id="inputStatusFilter" name="status" required>
+          </div>
+            <div class="dropdown mb-3">
+              <label class="form-label">Urgência</label>
+
+              <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button"
+                  id="dropUrgenciaFilter" data-input="#inputUrgenciaFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                  Selecione a urgência
+              </button>
+              <ul class="dropdown-menu w-100" aria-labelledby="dropUrgencia">
+                  <li><a class="dropdown-item" data-value="null">Todos</a></li>
+              </ul>
+              <input type="hidden" id="inputUrgenciaFilter" name="urgencia" required>
+          </div>
+
           </div>
           <div class="modal-footer">
             <button

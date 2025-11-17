@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Climb</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #f8f9fa, #eaf8f7);
+      font-family: "Inter", sans-serif;
+      overflow: hidden;
+    }
+
+    h2 {
+      color: #00ccbe;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    h2 i {
+      font-size: 1.6rem;
+    }
+
+    .dashboard-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      padding: 25px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .tab-buttons button {
+      background: #ffffff;
+      border: 2px solid #00ccbe;
+      color: #00ccbe;
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .tab-buttons button:hover {
+      background: #00ccbe;
+      color: #fff;
+    }
+
+    .tab-buttons .active {
+      background: #00ccbe;
+      color: #fff;
+    }
+
+    .chart-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 90%;
+      max-width: 850px;
+      height: 440px;
+      transition: all 0.3s ease;
+    }
+
+    .chart-card h4 {
+      text-align: center;
+      color: #00ccbe;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    canvas {
+      max-height: 330px !important;
+    }
+
+    /* Transição suave entre gráficos */
+    .fade {
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .fade.show {
+      opacity: 1;
+    }
+
+  
+    .filter-card {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 900px;
+      background: #ffffff;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.15);
+      transition: all 0.4s ease;
+      overflow: hidden;
+    }
+
+    .filter-header {
+      padding: 12px 20px;
+      background-color: #00ccbe;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 500;
+    }
+
+    .filter-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      padding: 0 20px;
+    }
+
+    .filter-body.show {
+      max-height: 180px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .filter-body input {
+      border: 2px solid #00ccbe;
+      border-radius: 8px;
+      padding: 8px;
+      width: 45%;
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- LOADING BONITO -->
+<div id="loading-overlay">
+  <div class="loading-spinner"></div>
+  <p>Carregando dados...</p>
+</div>
+  <div class="dashboard-container">
+    <h2 class="mb-4"><i class="bi bi-bar-chart-fill"></i> Dashboard de Chamados - Climb</h2>
+
+    <div class="tab-buttons">
+      <button class="active" id="btnVolume">Volume</button>
+      <button id="btnSetor">Por Setor</button>
+      <button id="btnStatus">Por Status</button>
+      <button id="btnUrgencia">Por Urgência</button>
+    </div>
+
+    <div class="chart-card">
+      <h4 id="chartTitle">Volume de Tickets</h4>
+      <canvas id="chartMain" class="fade show"></canvas>
+    </div>
+  </div>
+
+
+  <div class="filter-card" id="filterCard">
+    <div class="filter-header">
+      <span><i class="bi bi-funnel-fill"></i> Filtro de Data</span>
+      <i class="bi bi-chevron-up" id="toggleIcon"></i>
+    </div>
+    <div class="filter-body" id="filterBody">
+      <div class="d-flex justify-content-around align-items-center">
+        <input type="date" id="dataInicio">
+        <span>até</span>
+        <input type="date" id="dataFim">
+      </div>
+      <div class="text-center mt-3">
+        <button class="btn btn-sm btn-primary" style="background:#00ccbe;border:none;">Aplicar Filtro</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+let chartInstance = null;
+let chamadosGlobais = [];
+
+function parseDateOnly(s){
+  if(!s) return null;
+  if(typeof s === "string" && s.includes("T")) s = s.split("T")[0];
+  const parts = s.split("-");
+  if(parts.length < 3) return null;
+  const y = parseInt(parts[0],10);
+  const m = parseInt(parts[1],10) - 1;
+  const d = parseInt(parts[2],10);
+  return new Date(y,m,d);
+}
+
+async function carregarDados() {
+  const token = localStorage.getItem("jwtToken");
+  const response = await fetch("http://localhost:8080/chamado/all", {
+    headers: {
+      "Authorization": "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) throw new Error("Erro ao carregar dados.");
+  return await response.json();
+}
+
+function renderChart(type, labels, data, colors, labelText) {
+  const ctx = document.getElementById("chartMain").getContext("2d");
+  const canvas = document.getElementById("chartMain");
+  canvas.classList.remove("show");
+  setTimeout(() => {
+    if (chartInstance) chartInstance.destroy();
+    chartInstance = new Chart(ctx, {
+      type,
+      data: {
+        labels,
+        datasets: [{
+          label: labelText,
+          data,
+          backgroundColor: colors,
+          borderColor: "#00ccbe",
+          borderWidth: 2,
+          fill: type === "line",
+          tension: 0.3,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: "bottom" } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+    setTimeout(() => canvas.classList.add("show"), 100);
+  }, 150);
+}
+
+function graficoVolume(chamados) {
+  const meses = {};
+  chamados.forEach(c => {
+    const raw = c.data || c.dataCriacao;
+    const d = parseDateOnly(raw);
+    if(!d) return;
+    const mes = d.toLocaleString("pt-BR", { month: "short", timeZone: "UTC" });
+    meses[mes] = (meses[mes] || 0) + 1;
+  });
+  renderChart("bar", Object.keys(meses), Object.values(meses), "#00ccbe", "Tickets Criados");
+}
+
+function graficoSetor(chamados) {
+  const setorCounts = {};
+  chamados.forEach(c => {
+    const setor = c.setorAbertura?.nome || c.setor?.nome || "Sem setor";
+    setorCounts[setor] = (setorCounts[setor] || 0) + 1;
+  });
+  renderChart("line", Object.keys(setorCounts), Object.values(setorCounts), "rgba(0,204,190,0.4)", "Chamados por Setor");
+}
+
+function graficoStatus(chamados) {
+  const statusCounts = {};
+  const coresStatus = ["#ff4c4c", "#4caf50", "#3b82f6", "#9c27b0"];
+  chamados.forEach(c => {
+    const st = c.status?.nome || "Desconhecido";
+    statusCounts[st] = (statusCounts[st] || 0) + 1;
+  });
+  renderChart("doughnut", Object.keys(statusCounts), Object.values(statusCounts), coresStatus, "Chamados por Status");
+}
+
+function graficoUrgencia(chamados) {
+  const urgenciaCounts = {};
+  chamados.forEach(c => {
+    const urg = c.urgencia?.nome || "Não definida";
+    urgenciaCounts[urg] = (urgenciaCounts[urg] || 0) + 1;
+  });
+  renderChart("bar", Object.keys(urgenciaCounts), Object.values(urgenciaCounts),
+    ["#ff4c4c", "#4caf50", "#3b82f6", "#9c27b0"], "Chamados por Urgência");
+}
+
+function aplicarFiltro(chamados) {
+  const inicioVal = document.getElementById("dataInicio").value;
+  const fimVal = document.getElementById("dataFim").value;
+  const inicio = inicioVal ? parseDateOnly(inicioVal) : null;
+  const fim = fimVal ? parseDateOnly(fimVal) : null;
+  if (!inicio && !fim) return chamados;
+  return chamados.filter(c => {
+    const raw = c.data || c.dataCriacao;
+    const dataChamado = parseDateOnly(raw);
+    if(!dataChamado) return false;
+    if (inicio && dataChamado < inicio) return false;
+    if (fim && dataChamado > fim) return false;
+    return true;
+  });
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const overlay = document.getElementById("loading-overlay");
+  const filterCard = document.getElementById("filterCard");
+  const filterBody = document.getElementById("filterBody");
+  const toggleIcon = document.getElementById("toggleIcon");
+  const btnAplicar = filterCard.querySelector("button");
+
+  filterCard.querySelector(".filter-header").addEventListener("click", () => {
+    filterBody.classList.toggle("show");
+    toggleIcon.classList.toggle("bi-chevron-down");
+    toggleIcon.classList.toggle("bi-chevron-up");
+  });
+
+  try {
+    chamadosGlobais = await carregarDados();
+
+    const dataFimInput = document.getElementById("dataFim");
+    const dataInicioInput = document.getElementById("dataInicio");
+    const hoje = new Date();
+    const fimPadrao = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+    const inicioPadrao = new Date(fimPadrao.getFullYear(), fimPadrao.getMonth()-1, fimPadrao.getDate());
+    if(!dataFimInput.value) dataFimInput.value = fimPadrao.toISOString().slice(0,10);
+    if(!dataInicioInput.value) dataInicioInput.value = inicioPadrao.toISOString().slice(0,10);
+
+    overlay.classList.add("hidden");
+
+    const btnVolume = document.getElementById("btnVolume");
+    const btnSetor = document.getElementById("btnSetor");
+    const btnStatus = document.getElementById("btnStatus");
+    const btnUrgencia = document.getElementById("btnUrgencia");
+    const title = document.getElementById("chartTitle");
+    const buttons = [btnVolume, btnSetor, btnStatus, btnUrgencia];
+
+    let tipoAtivo = "volume";
+
+    function atualizarGrafico() {
+      const filtrados = aplicarFiltro(chamadosGlobais);
+      if (tipoAtivo === "volume") graficoVolume(filtrados);
+      if (tipoAtivo === "setor") graficoSetor(filtrados);
+      if (tipoAtivo === "status") graficoStatus(filtrados);
+      if (tipoAtivo === "urgencia") graficoUrgencia(filtrados);
+    }
+
+    btnVolume.onclick = () => {
+      tipoAtivo = "volume";
+      buttons.forEach(b => b.classList.remove("active"));
+      btnVolume.classList.add("active");
+      title.innerText = "Volume de Tickets";
+      atualizarGrafico();
+    };
+
+    btnSetor.onclick = () => {
+      tipoAtivo = "setor";
+      buttons.forEach(b => b.classList.remove("active"));
+      btnSetor.classList.add("active");
+      title.innerText = "Chamados por Setor";
+      atualizarGrafico();
+    };
+
+    btnStatus.onclick = () => {
+      tipoAtivo = "status";
+      buttons.forEach(b => b.classList.remove("active"));
+      btnStatus.classList.add("active");
+      title.innerText = "Chamados por Status";
+      atualizarGrafico();
+    };
+
+    btnUrgencia.onclick = () => {
+      tipoAtivo = "urgencia";
+      buttons.forEach(b => b.classList.remove("active"));
+      btnUrgencia.classList.add("active");
+      title.innerText = "Chamados por Urgência";
+      atualizarGrafico();
+    };
+
+    btnAplicar.addEventListener("click", atualizarGrafico);
+
+    atualizarGrafico();
+  } catch (error) {
+    console.error("Erro no Dashboard:", error);
+  }
+});
+</script>
+
+
+
+</body>
+</html>

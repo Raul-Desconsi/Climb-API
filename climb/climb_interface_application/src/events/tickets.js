@@ -203,58 +203,94 @@ document.getElementById("verHistorico").addEventListener("click", () => {
 });
 
 // 🔹 Carregar filtros
+// 🔹 Carregar filtros (AGORA USANDO DROPDOWN)
+// 🔹 Carregar filtros utilizando os ENDPOINTS CORRETOS
 async function carregarFiltros() {
-  const token = localStorage.getItem("jwtToken");
-  const endpoints = [
-    { id: "filtroStatus", url: "http://localhost:8080/status/all" },
-    { id: "filtroUrgencia", url: "http://localhost:8080/urgencia/all" },
-  ];
+    const token = localStorage.getItem("jwtToken");
+    const empresaId = localStorage.getItem("empresaId");
 
-  for (const e of endpoints) {
-    try {
-      const response = await fetch(e.url, {
-        headers: { Authorization: "Bearer " + token.trim() },
-      });
-      if (!response.ok) continue;
+    async function carregarDropdownAPI(endpoint, buttonId, hiddenInputId) {
+        try {
+            const response = await fetch(`http://localhost:8080/api/${endpoint}/empresa/${empresaId}`, {
+                headers: {
+                    "Authorization": `Bearer ${token.trim()}`,
+                    "Content-Type": "application/json"
+                }
+            });
 
-      const data = await response.json();
-      const select = document.getElementById(e.id);
+            if (!response.ok) {
+                console.error("Erro ao buscar dados do endpoint:", endpoint);
+                return;
+            }
 
-      data.forEach((item) => {
-        const opt = document.createElement("option");
-        opt.value = item.nome;
-        opt.textContent = item.nome;
-        select.appendChild(opt);
-      });
-    } catch (err) {
-      console.error("Erro ao carregar " + e.id, err);
+            const dados = await response.json();
+
+            const btn = document.getElementById(buttonId);
+            const menu = btn.nextElementSibling;
+            const hiddenInput = document.getElementById(hiddenInputId);
+
+            // Limpa e adiciona "Todos"
+            menu.innerHTML = `
+                <li><a class="dropdown-item" href="#" data-value="">Todos</a></li>
+            `;
+
+            dados.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <a class="dropdown-item" href="#" data-value="${item.nome}">
+                        ${item.nome}
+                    </a>
+                `;
+                menu.appendChild(li);
+            });
+
+            // Eventos
+            menu.querySelectorAll(".dropdown-item").forEach(el => {
+                el.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    btn.textContent = el.textContent;
+                    hiddenInput.value = el.dataset.value;
+                });
+            });
+
+        } catch (err) {
+            console.error("Erro ao carregar dropdown:", err);
+        }
     }
-  }
+
+    // 🔸 Carregar STATUS
+    await carregarDropdownAPI("status", "dropStatusFilter", "inputStatusFilter");
+
+    // 🔸 Carregar URGÊNCIA
+    await carregarDropdownAPI("urgencias", "dropUrgenciaFilter", "inputUrgenciaFilter");
 }
+
+
 
 // 🔹 Aplicar filtros
 function aplicarFiltros() {
-  const urgencia = document.getElementById("filtroUrgencia").value.toLowerCase();
-  const status = document.getElementById("filtroStatus").value.toLowerCase();
-  const responsavel = document.getElementById("filtroResponsavel").value.toLowerCase();
+    const urgenciaFiltro = document.getElementById("inputUrgenciaFilter").value.toLowerCase();
+    const statusFiltro = document.getElementById("inputStatusFilter").value.toLowerCase();
+    
+    chamadosFiltrados = todosChamados.filter((ch) => {
+        const urg = ch.urgencia?.nome?.toLowerCase() || "";
+        const sts = (ch.status?.nome || ch.status || "").toLowerCase();
+        
+        return (
+            (urgenciaFiltro === "" || urg.includes(urgenciaFiltro)) &&
+            (statusFiltro === "" || sts.includes(statusFiltro)) 
+            
+        );
+    });
 
-  chamadosFiltrados = todosChamados.filter((ch) => {
-    const urg = ch.urgencia?.nome?.toLowerCase() || "";
-    const sts = (ch.status?.nome || ch.status || "").toLowerCase();
-    const resp = ch.responsavelAbertura?.nome?.toLowerCase() || "";
+    paginaAtual = 1;
+    exibirChamados(chamadosFiltrados);
 
-    return (
-      (urgencia === "" || urg.includes(urgencia)) &&
-      (status === "" || sts.includes(status)) &&
-      (responsavel === "" || resp.includes(responsavel))
-    );
-  });
-
-  paginaAtual = 1;
-  exibirChamados(chamadosFiltrados);
-  const modal = bootstrap.Modal.getInstance(document.getElementById("filterModal"));
-  modal.hide();
+    const modal = bootstrap.Modal.getInstance(document.getElementById("filterModal"));
+    modal.hide();
 }
+
+
 
 // 🔹 Inicialização
 document.addEventListener("DOMContentLoaded", () => {
@@ -268,8 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultados = chamadosFiltrados.filter(
       (ch) =>
         ch.motivo.toLowerCase().includes(termo) ||
-        ch.descricao.toLowerCase().includes(termo) ||
-        ch.responsavelAbertura?.nome?.toLowerCase().includes(termo)
+        ch.descricao.toLowerCase().includes(termo)
     );
     paginaAtual = 1;
     exibirChamados(resultados);

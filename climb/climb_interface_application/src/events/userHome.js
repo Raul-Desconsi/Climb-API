@@ -53,6 +53,12 @@ function accountBtn(maincontent) {
     iframe.src = "../page/profile.html"; 
     maincontent.appendChild(iframe);}
 
+function dashboardBtn(maincontent) {
+    maincontent.innerHTML = "";
+    const iframe = document.createElement("iframe"); 
+    iframe.src = "../page/dashboard.html"; 
+    maincontent.appendChild(iframe);}
+
 document.addEventListener("click", function (event) {
   const maincontent = document.getElementById("main-content");
   const iframe = document.createElement("iframe");
@@ -67,6 +73,10 @@ document.addEventListener("click", function (event) {
     case "accountBtn":
         accountBtn(maincontent, iframe);
         break; // chama a função correta
+    case "dashboardBtn":
+        dashboardBtn(maincontent, iframe);
+        break; // chama a função correta
+       
   }
 });
 

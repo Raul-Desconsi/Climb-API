@@ -82,7 +82,7 @@ public ResponseEntity<?> getFuncionario(@RequestParam Long id, @RequestHeader("A
          if (authService.getFuncionarioFromToken(token).getId().intValue() != id) {
             return ResponseEntity.status(403).body("Sem permissão");
         }
-
+        
 
         Optional<Funcionario> funcionarioOPT = funcionarioService.findById(id);
 

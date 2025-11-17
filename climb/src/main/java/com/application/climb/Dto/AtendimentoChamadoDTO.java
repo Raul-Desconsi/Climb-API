@@ -1,13 +1,13 @@
 package com.application.climb.Dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class AtendimentoChamadoDTO {
 
     private Integer id;
     private String resposta;
     private Integer conclusaoChamado; // 0 ou 1 conforme seu model
-    private LocalDate dataAtendimento;
+    private LocalDateTime dataAtendimento;
 
     private Integer setorDirecionadoId;
     private Integer setorAtendimentoId;
@@ -24,8 +24,8 @@ public class AtendimentoChamadoDTO {
     public Integer getConclusaoChamado() { return conclusaoChamado; }
     public void setConclusaoChamado(Integer conclusaoChamado) { this.conclusaoChamado = conclusaoChamado; }
 
-    public LocalDate getDataAtendimento() { return dataAtendimento; }
-    public void setDataAtendimento(LocalDate dataAtendimento) { this.dataAtendimento = dataAtendimento; }
+    public LocalDateTime getDataAtendimento() { return dataAtendimento; }
+    public void setDataAtendimento(LocalDateTime dataAtendimento) { this.dataAtendimento = dataAtendimento; }
 
     public Integer getSetorDirecionadoId() { return setorDirecionadoId; }
     public void setSetorDirecionadoId(Integer setorDirecionadoId) { this.setorDirecionadoId = setorDirecionadoId; }

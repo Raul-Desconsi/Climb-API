@@ -1,6 +1,5 @@
 package com.application.climb.Controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -8,11 +7,27 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.application.climb.Dto.ChamadoDTO;
-import com.application.climb.Model.*;
-import com.application.climb.Service.*;
+import com.application.climb.Model.Chamado;
+import com.application.climb.Model.Funcionario;
+import com.application.climb.Model.Setor;
+import com.application.climb.Model.Status;
+import com.application.climb.Model.Urgencia;
+import com.application.climb.Service.AuthService;
+import com.application.climb.Service.ChamadoService;
+import com.application.climb.Service.FuncionarioService;
+import com.application.climb.Service.SetorService;
+import com.application.climb.Service.StatusService;
+import com.application.climb.Service.UrgenciaService;
 
 @RestController
 @RequestMapping("/chamado")
@@ -49,7 +64,7 @@ public class ChamadoController {
             // Campos básicos
             chamado.setMotivo(dto.getMotivo());
             chamado.setDescricao(dto.getDescricao());
-            chamado.setData(dto.getData() != null ? dto.getData() : LocalDate.now());
+            chamado.setData(dto.getData() != null ? dto.getData() : LocalDateTime.now());
 
             // 🔹 Setor
             if (dto.getSetorId() != null && setorService != null) {
@@ -157,14 +172,46 @@ public ResponseEntity<List<Chamado>> listarFiltrados(
 
     List<Chamado> chamados = chamadoService.findAll();
 
-    List<Chamado> filtrados = chamados.stream()
-            .filter(c -> status == null ||
-                    (c.getStatus() != null && c.getStatus().getNome().equalsIgnoreCase(status)))
-            .filter(c -> urgencia == null ||
-                    (c.getUrgencia() != null && c.getUrgencia().getNome().equalsIgnoreCase(urgencia)))
-            .filter(c -> responsavel == null ||
-                    (c.getResponsavelAbertura() != null && c.getResponsavelAbertura().getNome().equalsIgnoreCase(responsavel)))
-            .toList();
+    return ResponseEntity.ok(chamados);
+}
+    @GetMapping("/setorId/nao-concluidos")
+    public ResponseEntity<List<Chamado>> listarChamadosNaoConcluidos(
+            @RequestParam Integer setorId) {
 
-    return ResponseEntity.ok(filtrados);
-}}
+        List<Chamado> chamados = chamadoService.listarChamadosPorSetor(setorId);
+
+        if (chamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(chamados);
+    }
+
+
+    @GetMapping("/setorId/all-nao-concluidos")
+    public ResponseEntity<List<Chamado>> listarTodosChamadosSemConclusao() {
+
+        List<Chamado> chamados = chamadoService.listarChamadosSemConclusao();
+
+        if (chamados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(chamados);
+    }
+
+    @PutMapping("/atualizarStatus")
+    public ResponseEntity<?> atualizarStatus(
+            @RequestParam Integer id,
+            @RequestParam Integer statusId,
+            @RequestHeader("Authorization") String token,
+            @RequestBody ChamadoDTO payload) {
+
+        token = token.replace("Bearer ", "");
+        if (!authService.authenticate(token))
+            return ResponseEntity.status(403).body("Sem permissão");
+
+        Chamado atualizado = chamadoService.atualizarStatus(id, statusId, payload);
+        return ResponseEntity.ok(atualizado);
+    }
+
+
+}

@@ -44,9 +44,6 @@ public class AuthService {
             throw new RuntimeException("Email ou senha incorretos");
         }
 
-        if (funcionario.getNivelPermissao() >= 3) {
-            throw new RuntimeException("Sem permissão");
-        }
 
         String token = Jwts.builder()
                 .setSubject(funcionario.getId().toString())         

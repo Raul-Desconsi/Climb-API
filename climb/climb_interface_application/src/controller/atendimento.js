@@ -27,20 +27,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       const formCard = document.createElement("div");
       formCard.classList.add("form-card");
 
-      formCard.innerHTML = `
-        <h2 class="mb-4 text-center text-primary color-primary">
-          Atendimento ${index + 1}
-        </h2>
+      formCard.innerHTML = ` 
         <form class="atendimentoExistente">
+    
           <div class="mb-3">
+            <h2 class="mb-4 text-center text-primary color-primary">
+            Atendimento ${index + 1}
+          </h2>
             <label class="form-label">Resposta do atendimento</label>
             <textarea class="form-control" rows="4" readonly>${atendimento.resposta || ""}</textarea>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label">Setor direcionado</label>
-            <input type="text" class="form-control" readonly value="${atendimento.setorDirecionado?.nome || "N/A"}">
+          <div class="dropdown mb-3">
+            <label class="form-label">Qual setor esse fluxo será direcionado?</label>
+            <button class="btn btn-primary bg-primary dropdown-toggle w-100" type="button"
+              id="dropSetorDirecionado" data-bs-toggle="dropdown"
+              data-input="#setor-direcionado" aria-expanded="false" readonly value="${atendimento.setorDirecionado?.nome || "N/A"}">
+            </button>
+            <ul class="dropdown-menu w-100" id="menuSetorDirecionado"
+              aria-labelledby="dropSetorDirecionado"></ul>
+            <input type="hidden" id="setor-direcionado" name="setorDirecionadoId">
           </div>
+
+
         </form>
       `;
       container.appendChild(formCard);
@@ -59,7 +68,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       formCardNovo.classList.add("form-card");
 
       formCardNovo.innerHTML = `
-        <h2 class="mb-4 text-center text-primary color-primary">Novo Atendimento</h2>
         <form id="novoAtendimentoForm">
           <div class="mb-3">
             <label class="form-label">Resposta do atendimento</label>

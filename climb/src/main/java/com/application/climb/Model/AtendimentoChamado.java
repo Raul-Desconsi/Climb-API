@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 @Entity
@@ -24,7 +27,8 @@ public class AtendimentoChamado {
     private int conclusao_chamado;
 
     @Column(nullable = false)
-    private LocalDate data_atendimento;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime data_atendimento;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "setor_direcionado_id", nullable = false)

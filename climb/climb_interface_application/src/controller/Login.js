@@ -51,29 +51,17 @@ function submitLogin(event) {
                     localStorage.setItem('nome', response.nome);
                     localStorage.setItem('cargo', response.cargo);
 
-                    
-                   
+                                
+                    location.href = 'userHome.html';
 
-                    switch (response.nivelPermissao) {
-                        case 1:
-                        location.href = 'adminHome.html';
-                        break;
-                    
-                        case 2:
-                        location.href = 'userHome.html';
-                        break;
-
-                        default:
-                            return;
-                    } 
 
 
 
                 } else if (status === 401) {
-                    window.alert(response.message || "Email ou senha incorretos");
+                    window.alert(response.message || "Email ou senha incorretos" );
 
                 } else if (status === 403) {
-                    window.alert(response.message || "Usuário sem permissão para acessar o sistema");
+                    window.alert(response.message || "Usuário sem permissão para acessar o sistema"+ error.message);
                 
                 } else {
                     window.alert("Erro desconhecido: " + status);

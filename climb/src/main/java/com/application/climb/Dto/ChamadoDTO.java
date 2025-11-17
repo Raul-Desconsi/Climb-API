@@ -1,6 +1,6 @@
 package com.application.climb.Dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.application.climb.Model.Chamado;
 
@@ -9,7 +9,7 @@ public class ChamadoDTO {
     private Integer id;
     private String motivo;
     private String descricao;
-    private LocalDate data;
+    private LocalDateTime data;
 
     private Integer areaAfetadaId;
     private Integer responsavelAberturaId;
@@ -67,8 +67,8 @@ public class ChamadoDTO {
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public LocalDate getData() { return data; }
-    public void setData(LocalDate data) { this.data = data; }
+    public LocalDateTime getData() { return data; }
+    public void setData(LocalDateTime data) { this.data = data; }
 
     public Integer getAreaAfetadaId() { return areaAfetadaId; }
     public void setAreaAfetadaId(Integer areaAfetadaId) { this.areaAfetadaId = areaAfetadaId; }

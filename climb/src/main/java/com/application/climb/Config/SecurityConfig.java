@@ -44,7 +44,9 @@ public class SecurityConfig {
             "/atendimento/all",
             "/atendimento/listarPorChamado/**",
             "/atendimento/get/**",
-            "/atendimento/finalizar/**"
+            "/atendimento/finalizar/**",
+            "/chamado/setorId/nao-concluidos/**",
+            "/chamado/atualizarStatus"
 
     };
 
@@ -62,6 +64,10 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
                         .requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
                         .requestMatchers(PUBLIC_MATCHERS_POST).permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/chamado/atualizarStatus").permitAll()
+
+                        .requestMatchers("/**").permitAll()
+
 
                         // Qualquer outra requisição precisa estar autenticada
                         .anyRequest().authenticated());

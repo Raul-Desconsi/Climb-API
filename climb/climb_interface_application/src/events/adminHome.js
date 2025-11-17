@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // Verificação de autenticação
-    if (!localStorage.getItem("jwtToken") || localStorage.getItem("nivelPermissao") !== "1") {
+    if (!localStorage.getItem("jwtToken")) {
         location.href = 'login.html';
         return;
     }

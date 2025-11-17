@@ -1,6 +1,5 @@
 package com.application.climb.Controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -8,11 +7,25 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.application.climb.Dto.AtendimentoChamadoDTO;
-import com.application.climb.Model.*;
-import com.application.climb.Service.*;
+import com.application.climb.Model.AtendimentoChamado;
+import com.application.climb.Model.Chamado;
+import com.application.climb.Model.Funcionario;
+import com.application.climb.Model.Setor;
+import com.application.climb.Service.AtendimentoChamadoService;
+import com.application.climb.Service.AuthService;
+import com.application.climb.Service.ChamadoService;
+import com.application.climb.Service.FuncionarioService;
+import com.application.climb.Service.SetorService;
 
 @RestController
 @RequestMapping("/atendimento")
@@ -58,7 +71,7 @@ public class AtendimentoChamadoController {
             at.setResposta(dto.getResposta());
             at.setConclusao_chamado(dto.getConclusaoChamado() != null ? dto.getConclusaoChamado() : 0);
             // usa LocalDateTime (compatível com a entidade)
-            at.setData_atendimento(dto.getDataAtendimento() != null ? dto.getDataAtendimento() : LocalDate.now());
+            at.setData_atendimento(dto.getDataAtendimento() != null ? dto.getDataAtendimento() : LocalDateTime.now());
 
             // setor direcionado (obrigatório)
             if (dto.getSetorDirecionadoId() == null) {
@@ -190,7 +203,7 @@ public class AtendimentoChamadoController {
             AtendimentoChamado at = new AtendimentoChamado();
             at.setResposta(dto.getResposta());
             at.setConclusao_chamado(1);
-            at.setData_atendimento(LocalDate.now());
+            at.setData_atendimento(LocalDateTime.now());
 
             Optional<Setor> setorAt = setorService.buscarPorId(dto.getSetorAtendimentoId());
             if (setorAt.isEmpty())

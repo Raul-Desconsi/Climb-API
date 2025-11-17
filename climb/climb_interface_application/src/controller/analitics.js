@@ -9,13 +9,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("problema").value = chamado.descricao || "";
     document.getElementById("responsavelAbertura").value = chamado.responsavelAbertura?.nome || "N/A";
     document.getElementById("setorAbertura").value = chamado.setorAbertura?.nome || chamado.setor?.nome || "N/A";
+
     if (chamado.data) {
-        const data = new Date(chamado.data);
+        // Substitui espaço por 'T' para compatibilidade com LocalDateTime Java
+        const data = new Date(chamado.data.replace(" ", "T"));
+
         const dia = String(data.getDate()).padStart(2, "0");
         const mes = String(data.getMonth() + 1).padStart(2, "0");
         const ano = data.getFullYear();
-        document.getElementById("dataAberturaTexto").value = `${dia}/${mes}/${ano}`;
+        const hora = String(data.getHours()).padStart(2, "0");
+        const minuto = String(data.getMinutes()).padStart(2, "0");
+
+        // Exibe no formato dd/MM/yyyy HH:mm
+        document.getElementById("dataAberturaTexto").value = `${dia}/${mes}/${ano} ${hora}:${minuto}`;
     }
+
 
     // Dropdowns selecionados
     if (chamado.areaAfetada) {
@@ -48,32 +56,71 @@ document.addEventListener("DOMContentLoaded", async () => {
                 div.className = "form-card mb-3";
 
                 // --- Preenchendo campos com base na estrutura correta ---
+                const conclusaoChamado = at.conclusao_chamado === 1 ? "Sim" : "Não";
                 const responsavel = at.responsavelAtendimento?.nome || "N/A";
                 const setor = at.setorAtendimento?.nome || "N/A";
                 const data = at.data_atendimento ? new Date(at.data_atendimento) : null;
+                const setorDirecionado = at.setorDirecionado?.nome || "N/A";
                 const dataFormatada = data
+
                     ? `${String(data.getDate()).padStart(2, "0")}/${String(data.getMonth() + 1).padStart(2, "0")}/${data.getFullYear()}`
                     : "N/A";
 
                 div.innerHTML = `
-                <h5>Atendimento realizado por: <b>${responsavel}</b></h5>
-                <p><b>Setor:</b> ${setor}</p>
-                <p><b>Data:</b> ${dataFormatada}</p>
-                <textarea class="form-control" rows="3" readonly>${at.resposta || ""}</textarea>
-                <hr>
-            
+                <form class="atendimentoExistente">
+                <h2 class="mb-4 text-center text-primary color-primary">Resposta do chamado</h2>
+        <label class="form-label">
+        Responsável: <button class="borda" disabled style="border-radius: 8px; color: #000000ff; border-color: #fff" >${(responsavel || "")}</button> 
+                                        &nbsp;&nbsp;&nbsp;&nbsp;    |                    Setor: <button class="borda " disabled style="border-radius: 8px; color: #000000ff; border-color: #fff" >${(setor || "")}</button> 
+&nbsp;&nbsp;&nbsp;&nbsp;     |   Chamado Concluído? <button class="borda " disabled style="border-radius: 8px; color: #000000ff; border-color: #fff" >${(conclusaoChamado || "")}</button><br>
+            </label>
+
+          <div class="mb-3">
+            <label class="form-label">Resposta do atendimento</label>
+            <textarea class="form-control" rows="4" readonly>${at.resposta || ""}</textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Data do atendimento</label>
+            <textarea class="form-control" rows="1" readonly>${dataFormatada || ""}</textarea>
+          </div>
+
+
+        <div class="mb-3">
+            <label class="form-label">Setor que o atendimento foi direcionado</label>
+            <textarea class="form-control" rows="1" readonly>${setorDirecionado || ""}</textarea>
+          </div>
+
+                
                 <div class="seta-container"><i class="bi bi-arrow-down color-primary"></i></div>
+
+        </form>
             `;
                 containerForm.parentNode.insertBefore(div, containerForm);
             }
 
             const temConclusao = atendimentos.some(a => a.conclusao_chamado === 1);
 
+
+
             if (atendimentos.length === 0) {
                 atendimentoForm.style.display = "block";
             } else if (temConclusao) {
                 atendimentos.forEach(renderAtendimentoReadonly);
                 atendimentoForm.style.display = "none";
+
+                const div = document.createElement("div");
+                div.className = "form-card mb-3 text-center p-3";
+
+                div.innerHTML = `
+            <div class="alert alert-success" role="alert" 
+                 style="font-size:18px; font-weight:bold;">
+                Chamado Concluído
+            </div>
+        `;
+
+                containerForm.parentNode.insertBefore(div, containerForm);
+
             } else {
                 atendimentos.forEach(renderAtendimentoReadonly);
                 atendimentoForm.style.display = "block";
@@ -125,6 +172,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             conclusaoChamado: concluir ? 1 : 0
         };
 
+        const payloadChamado = {
+            statusId: statusId
+        };
+
         try {
             const token = localStorage.getItem("jwtToken");
             const resp = await fetch("http://localhost:8080/atendimento/create", {
@@ -139,6 +190,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
             if (!resp.ok) throw new Error("Erro ao enviar atendimento");
+
+
+            // ---- ATUALIZAR STATUS DO CHAMADO ----
+            const respAtualizarChamado = await fetch(
+                `http://localhost:8080/chamado/atualizarStatus?id=${chamado.id}&statusId=${statusId}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payloadChamado)
+                }
+            );
+
+            if (respAtualizarChamado.ok) {
+                const chamadoAtualizado = await respAtualizarChamado.json();
+                localStorage.setItem("chamadoSelecionado", JSON.stringify(chamadoAtualizado));
+            } else {
+                console.warn("Falha ao atualizar status do chamado");
+            }
+
 
             alert(concluir ? "Chamado concluído!" : "Atendimento enviado!");
             window.location.href = "/pages/gerenciamentoTickets.html";

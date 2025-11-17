@@ -50,6 +50,7 @@ public class SetorService {
             throw new RuntimeException("Setor com ID " + id + " não encontrado.");
         }
     }
+    
 
     // Deletar setor por ID
     public void deletar(Integer id) {

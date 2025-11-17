@@ -5,17 +5,35 @@ let chamadoSelecionado = null;
 // Paginação
 let paginaAtual = 1;
 const itensPorPagina = 9;
+let endpointAPI ="";
 
 // 🔹 Carregar chamados da API
 async function carregarChamados() {
   try {
     const token = localStorage.getItem("jwtToken");
+    const permissao = localStorage.getItem("nivelPermissao");
+    const setorId = localStorage.getItem("setor");
     if (!token) {
       alert("Token não encontrado. Faça login novamente.");
       return;
     }
 
-    const response = await fetch("http://localhost:8080/chamado/all", {
+    switch(permissao){
+      case '1':
+        endpointAPI = `http://localhost:8080/chamado/all`;
+        break;
+      case '2':
+        endpointAPI = `http://localhost:8080/chamado/setorId/nao-concluidos?setorId=${setorId}`;
+        break;
+      case '3':
+        endpointAPI = `http://localhost:8080/chamado/setorId/all-nao-concluidos`;
+        break;
+      default:
+        alert("Nível de permissão inválido.");
+        return;
+    }
+  
+    const response = await fetch(endpointAPI, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token.trim(),
@@ -33,21 +51,6 @@ async function carregarChamados() {
   }
 }
 
-// 🔹 Badge de status
-function getBadgeClass(status) {
-  switch (status) {
-    case "Analise":
-      return "bg-warning text-dark";
-    case "Aberto":
-      return "bg-primary";
-    case "Fechado":
-      return "bg-success";
-    case "Cancelado":
-      return "bg-danger";
-    default:
-      return "bg-secondary";
-  }
-}
 
 // 🔹 Exibir chamados com paginação
 function exibirChamados(lista) {
@@ -78,7 +81,7 @@ function exibirChamados(lista) {
               <h5 class="card-title mb-1">${ch.motivo}</h5>
               <span class="badge badge-id">#${ch.id}</span>
             </div>
-            <span class="badge ${getBadgeClass(statusNome)}">${statusNome}</span>
+           
           </div>
           <p class="card-text mt-3">${ch.descricao}</p>
           <p class="small text-muted">
@@ -90,13 +93,11 @@ function exibirChamados(lista) {
             padding: 3px 8px;
             border-radius: 6px;
             display: inline-block;
-            text-shadow: 
-                0px 0px 6px black,
-                0px 0px 6px black;
             ">
             ${ch.urgencia?.nome || "N/A"}
         </p>
         </div>
+        <span class="badge badge-id bg-primary fs-6">${statusNome}</span>
       </div>
     `;
 

@@ -4,6 +4,7 @@
 }
 
 
+
 /*Backgound primary*/
 .bg-primary {
     background-color: #00ccbe !important;
@@ -12,7 +13,7 @@
 .bg-primary:hover,
 .bg-primary:focus,
 .bg-primary:active {
-    background-color: #00EDDD !important;
+    background-color: #4e5b5a !important;
 }
 
 
@@ -33,6 +34,10 @@
     transform: translateY(2px);
 }
 
+.borda{
+    border-radius: 8px;
+    border-color: #00ccbe !important;
+}
 /*-----------------------------------------------------*/
 
 

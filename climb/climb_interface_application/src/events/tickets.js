@@ -67,6 +67,41 @@ async function carregarChamados() {
   }
 }
 
+function calcularTempoDesdeAbertura(dataString) {
+  if (!dataString) return "Data inválida";
+
+  // Converter a string "yyyy-MM-dd HH:mm:ss" → Date
+  const abertura = new Date(dataString.replace(" ", "T"));
+  const agora = new Date();
+
+  const diffMs = agora - abertura;
+  const diffMin = Math.floor(diffMs / 60000);
+  const diffHoras = Math.floor(diffMin / 60);
+  const dias = Math.floor(diffHoras / 24);
+
+  const horas = diffHoras % 24;
+  const minutos = diffMin % 60;
+
+  return `${dias}d ${horas}h ${minutos}min`;
+}
+
+function arrumarStringData(dataString) {
+  if (!dataString) return "Data inválida";
+
+  const data = new Date(dataString.replace(" ", "T"));
+
+  if (isNaN(data.getTime())) return "Data inválida";
+
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const ano = data.getFullYear();
+
+  const hora = String(data.getHours()).padStart(2, "0");
+  const minuto = String(data.getMinutes()).padStart(2, "0");
+
+  return `${dia}/${mes}/${ano} ${hora}:${minuto}`;
+}
+
 
 // 🔹 Exibir chamados com paginação
 function exibirChamados(lista) {
@@ -79,7 +114,6 @@ function exibirChamados(lista) {
     document.getElementById("paginationContainer").innerHTML = "";
     return;
   }
-
   const inicio = (paginaAtual - 1) * itensPorPagina;
   const fim = inicio + itensPorPagina;
   const paginaAtualChamados = lista.slice(inicio, fim);
@@ -111,6 +145,7 @@ function exibirChamados(lista) {
             display: inline-block;
             ">
             ${ch.urgencia?.nome || "N/A"}
+            <h6 class="card-title mb-1">Aberto em: ${arrumarStringData(ch.data)}   |   Tempo desde a abertura: ${calcularTempoDesdeAbertura(ch.data)}</h6>
         </p>
         </div>
         <span class="badge badge-id bg-primary fs-6">${statusNome}</span>

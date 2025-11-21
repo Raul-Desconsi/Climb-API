@@ -46,7 +46,8 @@ public class SecurityConfig {
             "/atendimento/get/**",
             "/atendimento/finalizar/**",
             "/chamado/setorId/nao-concluidos/**",
-            "/chamado/atualizarStatus"
+            "/chamado/atualizarStatus",
+            "/meus-chamados"
 
     };
 

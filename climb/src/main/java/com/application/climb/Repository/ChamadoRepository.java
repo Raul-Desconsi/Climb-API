@@ -56,4 +56,7 @@ WHERE c.id NOT IN (
 """, nativeQuery = true)
     List<Chamado> findAllSemConclusao();
 
+    @Query("SELECT c FROM Chamado c WHERE c.responsavelAbertura.id = :responsavelId")
+    List<Chamado> findByResponsavelAberturaId(@Param("responsavelId") Integer responsavelId);
+
 }

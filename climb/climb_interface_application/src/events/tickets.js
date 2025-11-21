@@ -5,34 +5,50 @@ let chamadoSelecionado = null;
 // Paginação
 let paginaAtual = 1;
 const itensPorPagina = 9;
-let endpointAPI ="";
+let endpointAPI = "";
 
-// 🔹 Carregar chamados da API
+const meusChamadosBtn = document.getElementById("meusChamadosBtn");
+
 async function carregarChamados() {
   try {
     const token = localStorage.getItem("jwtToken");
     const permissao = localStorage.getItem("nivelPermissao");
     const setorId = localStorage.getItem("setor");
+    const idUsuario = localStorage.getItem("id");
     if (!token) {
       alert("Token não encontrado. Faça login novamente.");
       return;
     }
 
-    switch(permissao){
-      case '1':
-        endpointAPI = `http://localhost:8080/chamado/all`;
-        break;
-      case '2':
-        endpointAPI = `http://localhost:8080/chamado/setorId/nao-concluidos?setorId=${setorId}`;
-        break;
-      case '3':
-        endpointAPI = `http://localhost:8080/chamado/setorId/all-nao-concluidos`;
-        break;
-      default:
-        alert("Nível de permissão inválido.");
-        return;
+    if (meusChamadosBtn.classList.contains("btn-meus-active")) {
+      endpointAPI = `http://localhost:8080/chamado/meus-chamados?responsavelId=${idUsuario}`;
+
+    } else {
+
+      // 2. Senão, verifica a permissão normalmente
+      switch (permissao) {
+        case "1": // Admin
+          endpointAPI = "http://localhost:8080/chamado/all";
+          break;
+
+        case "2": // Responsável de setor
+          endpointAPI = `http://localhost:8080/chamado/setorId/nao-concluidos?setorId=${setorId}`;
+          break;
+
+        case "3": // Funcionário comum
+          endpointAPI = "http://localhost:8080/chamado/setorId/all-nao-concluidos";
+          break;
+
+        default:
+          alert("Nível de permissão inválido.");
+          return;
+      }
     }
-  
+
+    console.log("Endpoint usado →", endpointAPI);
+
+
+
     const response = await fetch(endpointAPI, {
       headers: {
         "Content-Type": "application/json",
@@ -206,88 +222,88 @@ document.getElementById("verHistorico").addEventListener("click", () => {
 // 🔹 Carregar filtros (AGORA USANDO DROPDOWN)
 // 🔹 Carregar filtros utilizando os ENDPOINTS CORRETOS
 async function carregarFiltros() {
-    const token = localStorage.getItem("jwtToken");
-    const empresaId = localStorage.getItem("empresaId");
+  const token = localStorage.getItem("jwtToken");
+  const empresaId = localStorage.getItem("empresaId");
 
-    async function carregarDropdownAPI(endpoint, buttonId, hiddenInputId) {
-        try {
-            const response = await fetch(`http://localhost:8080/api/${endpoint}/empresa/${empresaId}`, {
-                headers: {
-                    "Authorization": `Bearer ${token.trim()}`,
-                    "Content-Type": "application/json"
-                }
-            });
+  async function carregarDropdownAPI(endpoint, buttonId, hiddenInputId) {
+    try {
+      const response = await fetch(`http://localhost:8080/api/${endpoint}/empresa/${empresaId}`, {
+        headers: {
+          "Authorization": `Bearer ${token.trim()}`,
+          "Content-Type": "application/json"
+        }
+      });
 
-            if (!response.ok) {
-                console.error("Erro ao buscar dados do endpoint:", endpoint);
-                return;
-            }
+      if (!response.ok) {
+        console.error("Erro ao buscar dados do endpoint:", endpoint);
+        return;
+      }
 
-            const dados = await response.json();
+      const dados = await response.json();
 
-            const btn = document.getElementById(buttonId);
-            const menu = btn.nextElementSibling;
-            const hiddenInput = document.getElementById(hiddenInputId);
+      const btn = document.getElementById(buttonId);
+      const menu = btn.nextElementSibling;
+      const hiddenInput = document.getElementById(hiddenInputId);
 
-            // Limpa e adiciona "Todos"
-            menu.innerHTML = `
+      // Limpa e adiciona "Todos"
+      menu.innerHTML = `
                 <li><a class="dropdown-item" href="#" data-value="">Todos</a></li>
             `;
 
-            dados.forEach(item => {
-                const li = document.createElement("li");
-                li.innerHTML = `
+      dados.forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = `
                     <a class="dropdown-item" href="#" data-value="${item.nome}">
                         ${item.nome}
                     </a>
                 `;
-                menu.appendChild(li);
-            });
+        menu.appendChild(li);
+      });
 
-            // Eventos
-            menu.querySelectorAll(".dropdown-item").forEach(el => {
-                el.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    btn.textContent = el.textContent;
-                    hiddenInput.value = el.dataset.value;
-                });
-            });
+      // Eventos
+      menu.querySelectorAll(".dropdown-item").forEach(el => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          btn.textContent = el.textContent;
+          hiddenInput.value = el.dataset.value;
+        });
+      });
 
-        } catch (err) {
-            console.error("Erro ao carregar dropdown:", err);
-        }
+    } catch (err) {
+      console.error("Erro ao carregar dropdown:", err);
     }
+  }
 
-    // 🔸 Carregar STATUS
-    await carregarDropdownAPI("status", "dropStatusFilter", "inputStatusFilter");
+  // 🔸 Carregar STATUS
+  await carregarDropdownAPI("status", "dropStatusFilter", "inputStatusFilter");
 
-    // 🔸 Carregar URGÊNCIA
-    await carregarDropdownAPI("urgencias", "dropUrgenciaFilter", "inputUrgenciaFilter");
+  // 🔸 Carregar URGÊNCIA
+  await carregarDropdownAPI("urgencias", "dropUrgenciaFilter", "inputUrgenciaFilter");
 }
 
 
 
 // 🔹 Aplicar filtros
 function aplicarFiltros() {
-    const urgenciaFiltro = document.getElementById("inputUrgenciaFilter").value.toLowerCase();
-    const statusFiltro = document.getElementById("inputStatusFilter").value.toLowerCase();
-    
-    chamadosFiltrados = todosChamados.filter((ch) => {
-        const urg = ch.urgencia?.nome?.toLowerCase() || "";
-        const sts = (ch.status?.nome || ch.status || "").toLowerCase();
-        
-        return (
-            (urgenciaFiltro === "" || urg.includes(urgenciaFiltro)) &&
-            (statusFiltro === "" || sts.includes(statusFiltro)) 
-            
-        );
-    });
+  const urgenciaFiltro = document.getElementById("inputUrgenciaFilter").value.toLowerCase();
+  const statusFiltro = document.getElementById("inputStatusFilter").value.toLowerCase();
 
-    paginaAtual = 1;
-    exibirChamados(chamadosFiltrados);
+  chamadosFiltrados = todosChamados.filter((ch) => {
+    const urg = ch.urgencia?.nome?.toLowerCase() || "";
+    const sts = (ch.status?.nome || ch.status || "").toLowerCase();
 
-    const modal = bootstrap.Modal.getInstance(document.getElementById("filterModal"));
-    modal.hide();
+    return (
+      (urgenciaFiltro === "" || urg.includes(urgenciaFiltro)) &&
+      (statusFiltro === "" || sts.includes(statusFiltro))
+
+    );
+  });
+
+  paginaAtual = 1;
+  exibirChamados(chamadosFiltrados);
+
+  const modal = bootstrap.Modal.getInstance(document.getElementById("filterModal"));
+  modal.hide();
 }
 
 

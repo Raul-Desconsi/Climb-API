@@ -49,11 +49,11 @@ public class ChamadoController {
     private UrgenciaService urgenciaService;
 
     @Autowired(required = false)
-    private StatusService statusService; 
+    private StatusService statusService;
 
     @PostMapping("/create")
     public ResponseEntity<?> criarChamado(@RequestBody ChamadoDTO dto,
-                                          @RequestHeader("Authorization") String token) {
+            @RequestHeader("Authorization") String token) {
         try {
             if (!authService.authenticate(token)) {
                 return ResponseEntity.status(403).body("Sem permissão");
@@ -141,7 +141,7 @@ public class ChamadoController {
 
     @GetMapping("/get")
     public ResponseEntity<?> getChamado(@RequestParam Integer id,
-                                        @RequestHeader("Authorization") String token) {
+            @RequestHeader("Authorization") String token) {
         try {
             if (!authService.authenticate(token)) {
                 return ResponseEntity.status(403).body("Sem permissão");
@@ -160,20 +160,21 @@ public class ChamadoController {
     }
 
     @GetMapping("/all")
-public ResponseEntity<List<Chamado>> listarFiltrados(
-        @RequestHeader("Authorization") String token,
-        @RequestParam(required = false) String status,
-        @RequestParam(required = false) String urgencia,
-        @RequestParam(required = false) String responsavel
-) {
-    if (!authService.authenticate(token.replace("Bearer ", ""))) {
-        return ResponseEntity.status(403).build();
+    public ResponseEntity<List<Chamado>> listarFiltrados(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String urgencia,
+            @RequestParam(required = false) String responsavel
+    ) {
+        if (!authService.authenticate(token.replace("Bearer ", ""))) {
+            return ResponseEntity.status(403).build();
+        }
+
+        List<Chamado> chamados = chamadoService.findAll();
+
+        return ResponseEntity.ok(chamados);
     }
 
-    List<Chamado> chamados = chamadoService.findAll();
-
-    return ResponseEntity.ok(chamados);
-}
     @GetMapping("/setorId/nao-concluidos")
     public ResponseEntity<List<Chamado>> listarChamadosNaoConcluidos(
             @RequestParam Integer setorId) {
@@ -186,7 +187,6 @@ public ResponseEntity<List<Chamado>> listarFiltrados(
         return ResponseEntity.ok(chamados);
     }
 
-
     @GetMapping("/setorId/all-nao-concluidos")
     public ResponseEntity<List<Chamado>> listarTodosChamadosSemConclusao() {
 
@@ -198,20 +198,43 @@ public ResponseEntity<List<Chamado>> listarFiltrados(
         return ResponseEntity.ok(chamados);
     }
 
-    @PutMapping("/atualizarStatus")
+    @PutMapping("/atualizarStatus") 
     public ResponseEntity<?> atualizarStatus(
             @RequestParam Integer id,
             @RequestParam Integer statusId,
             @RequestHeader("Authorization") String token,
-            @RequestBody ChamadoDTO payload) {
+            @RequestBody(required = false) ChamadoDTO payload) {
 
         token = token.replace("Bearer ", "");
         if (!authService.authenticate(token))
             return ResponseEntity.status(403).body("Sem permissão");
 
+        // Se nenhum body for enviado, criamos um DTO vazio
+        if (payload == null) {
+            payload = new ChamadoDTO();
+            payload.setId(id);
+            payload.setStatusId(statusId);
+        }
+
         Chamado atualizado = chamadoService.atualizarStatus(id, statusId, payload);
         return ResponseEntity.ok(atualizado);
     }
 
+
+
+    @GetMapping("/meus-chamados")
+    public ResponseEntity<List<Chamado>> listarPorResponsavelAbertura(
+            @RequestParam("responsavelId") Integer responsavelId) {
+
+        if (responsavelId == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<Chamado> chamados = chamadoService.listarChamadosPorResponsavelId(responsavelId);
+
+        return chamados.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(chamados);
+    }
 
 }

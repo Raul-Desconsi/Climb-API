@@ -22,9 +22,8 @@ public class ChamadoService {
     @Autowired
     private StatusRepository statusRepository;
 
-
     public Chamado save(Chamado chamado) {
-        
+
         if (chamado.getData() == null) {
             chamado.setData(LocalDateTime.now());
         }
@@ -36,15 +35,15 @@ public class ChamadoService {
     }
 
     public List<Chamado> findAll() {
-    return chamadoRepository.findAll();
+        return chamadoRepository.findAll();
     }
 
-   public List<Chamado> listarChamadosPorSetor(Integer setorId) {
-    return chamadoRepository.findAllSemConclusaoPorSetor(setorId, setorId);
+    public List<Chamado> listarChamadosPorSetor(Integer setorId) {
+        return chamadoRepository.findAllSemConclusaoPorSetor(setorId, setorId);
     }
 
-   public List<Chamado> listarChamadosSemConclusao() {
-    return chamadoRepository.findAllSemConclusao();
+    public List<Chamado> listarChamadosSemConclusao() {
+        return chamadoRepository.findAllSemConclusao();
     }
 
     public Chamado atualizarStatus(Integer id, Integer statusId, ChamadoDTO payload) {
@@ -57,16 +56,22 @@ public class ChamadoService {
 
         chamado.setStatus(novoStatus);
 
-        // Atualizar outros campos opcionais (se vierem no body)
-        if (payload.getDescricao() != null) chamado.setDescricao(payload.getDescricao());
-        if (payload.getMotivo() != null) chamado.setMotivo(payload.getMotivo());
+        // Atualiza apenas se vier no body — mantém tudo funcional
+        if (payload.getDescricao() != null)
+            chamado.setDescricao(payload.getDescricao());
+
+        if (payload.getMotivo() != null)
+            chamado.setMotivo(payload.getMotivo());
 
         return chamadoRepository.save(chamado);
     }
 
-    //public List<Chamado> findBySetorPermissao(Integer setor, Integer permissao) {
-       // return chamadoRepository.findBySetorIdPermissaoId(setor, permissao);
-   // }
+    public List<Chamado> listarChamadosPorResponsavelId(Integer id) {
+        return chamadoRepository.findByResponsavelAberturaId(id);
+    }
 
+    // public List<Chamado> findBySetorPermissao(Integer setor, Integer permissao) {
+    // return chamadoRepository.findBySetorIdPermissaoId(setor, permissao);
+    // }
 
 }

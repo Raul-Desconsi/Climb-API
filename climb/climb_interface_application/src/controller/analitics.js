@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+
     const empresaId = localStorage.getItem("empresaId");
     const token = localStorage.getItem("jwtToken");
     const chamado = JSON.parse(localStorage.getItem("chamadoSelecionado"));
@@ -38,6 +40,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("dropStatus").textContent = chamado.status.nome;
         document.getElementById("inputStatus").value = chamado.status.id;
     }
+
+
 
     // ---------- ATENDIMENTOS ----------
     const containerForm = document.querySelector(".page-container:last-of-type .form-card ");
@@ -138,9 +142,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     const btnEnviar = document.querySelector("#btnEnviarEtapa");
     const btnConcluir = document.querySelector("#btnConcluirChamado");
 
+    async function atualizarStatusChamado() {
+        const token = localStorage.getItem("jwtToken");
+        const chamado = JSON.parse(localStorage.getItem("chamadoSelecionado"));
+        const statusId = document.getElementById("inputStatus").value;
+
+        if (!statusId) {
+            alert("Selecione um novo status.");
+            return;
+        }
+
+        try {
+            const resp = await fetch(`http://localhost:8080/chamado/atualizarStatus?id=${chamado.id}&statusId=${statusId}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+                keepalive: true
+            });
+
+            if (!resp.ok) throw new Error("Falha ao atualizar");
+
+            console.log("Status atualizado com sucesso.");
+
+        } catch (err) {
+            console.error("Erro ao atualizar status:", err);
+        }
+    }
+
+
+
     async function enviarAtendimento(concluir = false) {
         const resposta = document.getElementById("resposta").value;
-        const statusId = document.getElementById("inputStatus").value;
         const setorDirecionadoId = document.getElementById("setor-direcionado")?.value || null;
         const setorAtendimentoId = localStorage.getItem("setor");
         const responsavelAtendimentoId = localStorage.getItem("id");
@@ -148,11 +181,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (!resposta.trim()) {
             alert("Digite a resposta do atendimento");
-            return;
-        }
-
-        if (!statusId) {
-            alert("Selecione o novo status");
             return;
         }
 
@@ -165,16 +193,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const payload = {
             chamadoId: chamado.id,
             resposta,
-            statusId,
             setorDirecionadoId,
             setorAtendimentoId,
             responsavelAtendimentoId,
             conclusaoChamado: concluir ? 1 : 0
         };
 
-        const payloadChamado = {
-            statusId: statusId
-        };
 
         try {
             const token = localStorage.getItem("jwtToken");
@@ -185,44 +209,47 @@ document.addEventListener("DOMContentLoaded", async () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(payload),
-                mode: "cors"
+                mode: "cors",
+                keepalive: true
             });
+
 
 
             if (!resp.ok) throw new Error("Erro ao enviar atendimento");
 
 
-            // ---- ATUALIZAR STATUS DO CHAMADO ----
-            const respAtualizarChamado = await fetch(
-                `http://localhost:8080/chamado/atualizarStatus?id=${chamado.id}&statusId=${statusId}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(payloadChamado)
-                }
-            );
-
-            if (respAtualizarChamado.ok) {
-                const chamadoAtualizado = await respAtualizarChamado.json();
-                localStorage.setItem("chamadoSelecionado", JSON.stringify(chamadoAtualizado));
-            } else {
-                console.warn("Falha ao atualizar status do chamado");
-            }
-
 
             alert(concluir ? "Chamado concluído!" : "Atendimento enviado!");
-            window.location.href = "/pages/gerenciamentoTickets.html";
+            await carregarAtendimentos();
 
         } catch (e) {
             console.error(e);
-            alert("Erro ao processar atendimento.");
         }
     }
 
 
-    if (btnEnviar) btnEnviar.addEventListener("click", () => enviarAtendimento(false));
-    if (btnConcluir) btnConcluir.addEventListener("click", () => enviarAtendimento(true));
+    if (btnEnviar) {
+    btnEnviar.addEventListener("click", async () => {
+        try {
+            // Atualiza status e envia atendimento (sem concluir)
+            await atualizarStatusChamado();
+            await enviarAtendimento(false);
+        } catch (err) {
+            console.error("Erro ao enviar etapa:", err);
+        }
+    });
+}
+
+if (btnConcluir) {
+    btnConcluir.addEventListener("click", async () => {
+        try {
+            // Atualiza status e envia atendimento (concluindo)
+            await atualizarStatusChamado();
+            await enviarAtendimento(true);
+        } catch (err) {
+            console.error("Erro ao concluir chamado:", err);
+        }
+    });
+}
+
 });
